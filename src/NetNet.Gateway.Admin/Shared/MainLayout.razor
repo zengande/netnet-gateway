@@ -1,0 +1,48 @@
+﻿@inherits LayoutComponentBase
+
+<PageTitle>NetNet.Gateway.Admin</PageTitle>
+
+<div style="width: 100%; height: 100%; border: 1px solid rgba(0,0,0,.125);">
+    <Layout ShowFooter="true" SideWidth="240px" IsFullSide="true">
+        <Header>
+            <div class="d-flex justify-content-center align-items-center" style="height: 50px; color: #000; margin: 0 -1px;">Header</div>
+        </Header>
+        <Side>
+            <div style="position: absolute; top: 0; left:0; right: 0; bottom: 0; overflow: auto; border-right: 1px solid rgba(0,0,0,
+            .125);
+            padding: 6px 0;">
+                <Menu Items="@IconSideMenuItems" IsVertical="true"></Menu>
+            </div>
+        </Side>
+        <Main>
+            <div style="padding: 1rem;">@Body</div>
+        </Main>
+        <Footer>
+            <div class="d-flex justify-content-center align-items-center" style="height: 30px; color: #fff; background-color: #5b6e84; margin: 0 -1px;">Footer</div>
+        </Footer>
+    </Layout>
+</div>
+
+@code
+{
+    private IEnumerable<MenuItem>? IconSideMenuItems;
+
+    protected override void OnInitialized()
+    {
+        IconSideMenuItems = new List<MenuItem>()
+        {
+            new ("HOME", "/", "fa-solid fa-terminal"),
+            new ("Counter", "/counter", "fa-solid fa-terminal"),
+            new ("Fetch data", "/fetchdata", "fa-solid fa-terminal"),
+            new ("设置", null, "fa-solid fa-gears")
+            {
+                Items  = new List<MenuItem>()
+                {
+                    new ("用户", "/Setting/User"),
+                    new ("结点", "/Setting/Node"),
+                }
+            },
+            new ("控制台", "Control", "fa-solid fa-terminal"),
+        };
+    }
+}

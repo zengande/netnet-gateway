@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RootNamespace>NetNet.Gateway</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\NetNet.Gateway.Application.Contracts\NetNet.Gateway.Application.Contracts.csproj" />
+      <ProjectReference Include="..\NetNet.Gateway.Domain\NetNet.Gateway.Domain.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Volo.Abp.Ddd.Application" Version="6.0.1" />
+    </ItemGroup>
+
+</Project>
