@@ -1,4 +1,5 @@
 using NetNet.Gateway.Extensions;
+using NetNet.Gateway.Ingress.YarpReverseProxy.Middlewares;
 using Volo.Abp;
 using Volo.Abp.AspNetCore.Mvc;
 using Volo.Abp.Autofac;
@@ -32,6 +33,7 @@ public class GatewayIngressModule : AbpModule
         {
             endpoints.MapReverseProxy(proxyPipeline =>
             {
+                proxyPipeline.UseMiddleware<GrayMiddleware>();
                 proxyPipeline.UseSessionAffinity();
                 proxyPipeline.UseLoadBalancing();
                 proxyPipeline.UsePassiveHealthChecks();

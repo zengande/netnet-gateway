@@ -1,10 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace NetNet.Gateway.Entities
+namespace NetNet.Gateway.Entities;
+
+public class Metadata : KeyValueEntity
 {
-    public class Metadata : KeyValueEntity
-    {
-        [Key]
-        public int Id { get; set; }
-    }
+    [Key]
+    public int Id { get; set; }
 }

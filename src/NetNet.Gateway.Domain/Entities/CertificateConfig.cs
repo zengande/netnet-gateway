@@ -1,31 +1,28 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Volo.Abp.Domain.Entities;
 
-namespace NetNet.Gateway.Entities
+namespace NetNet.Gateway.Entities;
+
+public class CertificateConfig : Entity<long>
 {
-    public class CertificateConfig
-    {
-        [Key]
-        public int Id { get; set; }
-        public string Path { get; set; }
+    public string Path { get; set; }
 
-        public string KeyPath { get; set; }
+    public string KeyPath { get; set; }
 
-        public string Password { get; set; }
+    public string Password { get; set; }
 
-        public string Subject { get; set; }
+    public string Subject { get; set; }
 
-        public string Store { get; set; }
+    public string Store { get; set; }
 
-        public string Location { get; set; }
+    public string Location { get; set; }
 
-        public bool? AllowInvalid { get; set; }
+    public bool? AllowInvalid { get; set; }
 
-        internal bool IsFileCert => !string.IsNullOrEmpty(Path);
+    internal bool IsFileCert => !string.IsNullOrEmpty(Path);
 
-        internal bool IsStoreCert => !string.IsNullOrEmpty(Subject);
+    internal bool IsStoreCert => !string.IsNullOrEmpty(Subject);
 
-        public int ProxyHttpClientOptionsId { get; set; }
+    public int ProxyHttpClientOptionsId { get; set; }
 
-        public virtual HttpClientConfig ProxyHttpClientOptions { get; set; }
-    }
+    public virtual HttpClientConfig ProxyHttpClientOptions { get; set; }
 }
