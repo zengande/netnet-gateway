@@ -1,27 +1,5 @@
 ﻿@page "/ServiceClusters"
 @using NetNet.Gateway.Dtos.ServiceClusters.Responses
 
-<PageHeader>服务管理</PageHeader>
 
-<Table TItem="QueryServiceClusterRes" @ref="@Table"
-       IsPagination="true" PageItemsSource="new[] { 10, 20 }"
-       IsStriped="true" IsBordered="true"
-       ShowDetailRow="row => row.Services.Any()"
-       ShowToolbar="true" ShowDefaultButtons="false" ShowRefresh="false"
-       OnDoubleClickRowCallback="OnDoubleClickRowCallback()!"
-       OnQueryAsync="@OnQueryAsync">
-    <TableColumns>
-        <TableColumn Text="名称" @bind-Field="@context.Name" Width="100"/>
-        <TableColumn Text="来源" @bind-Field="@context.Source"/>
-    </TableColumns>
-    <DetailRowTemplate>
-        <Table TItem="QueryServiceInfoRes" ShowToolbar="false"
-               Items="@GetDetailDataSource(context)">
-            <TableColumns Context="detail">
-                <TableColumn Text="版本" @bind-Field="@detail.Version"/>
-                <TableColumn Text="地址" @bind-Field="@detail.Address" Width="180"/>
-                <TableColumn Text="健康检查" @bind-Field="@detail.Health" Width="70"/>
-            </TableColumns>
-        </Table>
-    </DetailRowTemplate>
-</Table>
+

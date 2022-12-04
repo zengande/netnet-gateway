@@ -1,25 +1,15 @@
-﻿<div style="position: absolute; top: 0; left:0; right: 0; bottom: 0; overflow: auto; border-right: 1px solid rgba(0,0,0,.125); padding: 6px 0;">
-    <Menu Items="@IconSideMenuItems" IsVertical="true"></Menu>
-</div>
-
-@code
-{
-    private IEnumerable<MenuItem>? IconSideMenuItems;
-
-    protected override void OnInitialized()
-    {
-        IconSideMenuItems = new List<MenuItem>()
-        {
-            new ("仪表盘", "/", "fas fa-chart-line"),
-            new ("服务管理", "/ServiceClusters", "fas fa-diagram-project"),
-            new ("设置", null, "fa-solid fa-gears")
-            {
-                Items  = new List<MenuItem>()
-                {
-                    new ("用户", "/Setting/User"),
-                    new ("结点", "/Setting/Node"),
-                }
-            }
-        };
-    }
-}
+﻿
+<Menu Mode="MenuMode.Inline"
+      Theme=MenuTheme.Dark>
+    <MenuItem RouterLink="/">
+        <Icon Type="dashboard" Theme="outline" />
+        仪表板
+    </MenuItem>
+    <MenuItem RouterLink="/ServiceClusters">
+        <Icon Type="api" Theme="outline"/>
+        服务管理
+    </MenuItem>
+    <SubMenu Title="Sub Menu1">
+        <MenuItem RouterLink="/en-US/components/menu" RouterMatch="NavLinkMatch.All">English Menu Document</MenuItem>
+    </SubMenu>
+</Menu>
