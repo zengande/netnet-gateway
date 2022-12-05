@@ -1,0 +1,37 @@
+﻿@page "/ServiceClusters"
+@using NetNet.Gateway.Dtos.ServiceClusters.Responses
+
+<PageHeader>服务管理</PageHeader>
+
+<Table TItem="QueryServiceClusterRes" @ref="@Table"
+       IsPagination="true" PageItemsSource="new[] { 10, 20 }" IsStriped="true" IsBordered="true"
+       ShowDetailRow="row => row.DestinationCount > 0" ShowSkeleton="true"
+       ShowToolbar="true" ShowSearch="true" ShowDefaultButtons="false" ShowAdvancedSearch="false"
+       OnDoubleClickRowCallback="OnDoubleClickRowCallback()!" ShowEmpty="true"
+       ShowExtendButtons="true" ExtendButtonColumnWidth="240"
+       ShowExtendEditButton="false" ShowExtendDeleteButton="false"
+       OnQueryAsync="@OnQueryAsync">
+    <TableToolbarTemplate>
+        <TableToolbarButton Color="Color.Primary" Text="添加服务" OnClick="() => RedirectToEdit(null)"></TableToolbarButton>
+    </TableToolbarTemplate>
+    <RowButtonTemplate>
+        <TableCellButton Color="Color.Success" Icon="fa-solid fa-pen" Text="编辑" OnClick="() => RedirectToEdit(context)"/>
+        <TableCellButton Color="Color.Danger" Icon="fa-solid fa-pen" Text="删除" OnClick="() => DeleteClusterAsync(context)"/>
+    </RowButtonTemplate>
+    <TableColumns>
+        <TableColumn Text="名称" @bind-Field="@context.Name" Width="300"/>
+        <TableColumn Text="负载均衡策略" @bind-Field="@context.LoadBalancePolicy" Width="200"/>
+        <TableColumn Text="目的地数量" @bind-Field="@context.DestinationCount" Width="200"/>
+        <TableColumn Text="描述" @bind-Field="@context.Description"/>
+    </TableColumns>
+    <DetailRowTemplate>
+        <Table TItem="QueryServiceDestinationRes" ShowToolbar="false"
+               OnQueryAsync="options => OnQueryDetailAsync(context, options)">
+            <TableColumns Context="detail">
+                <TableColumn Text="版本" @bind-Field="@detail.Key"/>
+                <TableColumn Text="地址" @bind-Field="@detail.Address" Width="180"/>
+                <TableColumn Text="健康检查" @bind-Field="@detail.Health" Width="70"/>
+            </TableColumns>
+        </Table>
+    </DetailRowTemplate>
+</Table>

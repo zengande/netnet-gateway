@@ -3,6 +3,17 @@ html, body {
     width: 100%;
 }
 
+:root {
+    --bs-primary: #7838ca;
+    --bs-link-color: #7838ca;
+    --bs-link-hover-color: #58229c;
+    --bs-white: #ffffff;
+}
+
+.btn-primary {
+    --bs-btn-hover-bg: #642eaa;
+}
+
 #blazor-error-ui {
     background: lightyellow;
     bottom: 0;
@@ -77,7 +88,14 @@ html, body {
 }
 
 .menu .nav .dropdown-menu .nav-link:not(.disabled):hover, .menu .nav .dropdown-menu .nav-link.active, .menu .submenu .nav-link.active, .menu .submenu .nav-link:not(.disabled):hover, .cascade .dropdown-item:not(.disabled):hover, .cascade .dropdown-item.active, .cascade .nav .nav-link:not(.disabled):hover, .cascade .nav .nav-link.active {
-    --bb-bg-violet: #7a5cff;
-    background-color: var(--bb-bg-violet);
+    background-color: var(--bs-primary);
     color: var(--bs-white);
+}
+
+.left-unset{
+    left: unset;
+}
+
+.right-unset{
+    right: unset;
 }

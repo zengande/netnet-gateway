@@ -2,9 +2,9 @@
 
 namespace NetNet.Gateway.Dtos.ServiceClusters.Responses;
 
-public class QueryServiceInfoRes : EntityDto<long>
+public class QueryServiceDestinationRes : EntityDto<long>
 {
-    public string Version { get; set; }
+    public string Key { get; set; }
 
     public string Address { get; set; }
 

@@ -1,0 +1,51 @@
+@page "/ServiceClusters/Edit/{Id:long?}"
+
+<div style="position: relative">
+    <Breadcrumb Value="@BreadcrumbItems"/>
+
+    <ValidateForm Model="@_input" OnValidSubmit="@OnValidSubmit">
+        <div class="row pt-2">
+            <div class="col-12 col-sm-6">
+                <div class="section-header mb-3">基础信息</div>
+                <div class="row">
+                    <div class="col-12">
+                        <BootstrapInput @bind-Value="@_input.Name" DisplayText="服务名称" PlaceHolder="请填写服务名称"/>
+                    </div>
+
+                    <div class="col-12 mt-3">
+                        <Select @bind-Value="@_input.LoadBalancingPolicy"
+                                DisplayText="负载均衡策略" PlaceHolder="选择一个负载均衡策略">
+                            <Options>
+                                <SelectOption Text="请选择"/>
+                                <SelectOption Text="FirstAlphabetical" Value="FirstAlphabetical"/>
+                                <SelectOption Text="Random" Value="Random"/>
+                                <SelectOption Text="PowerOfTwoChoices" Value="PowerOfTwoChoices"/>
+                                <SelectOption Text="RoundRobin" Value="RoundRobin"/>
+                                <SelectOption Text="LeastRequests" Value="LeastRequests"/>
+                            </Options>
+                        </Select>
+                    </div>
+
+                    <div class="col-12 mt-3">
+                        <Textarea DisplayText="服务描述" rows="4" @bind-Value="@_input.Description" maxlength="500" placeholder="添加一些描述..."></Textarea>
+                    </div>
+
+                    <div class="col-12 mt-3">
+
+                    </div>
+                </div>
+
+                <div class="section-header mb-3">服务终点</div>
+                <div class="row">
+
+                </div>
+            </div>
+        </div>
+
+        <div class="row form-footer">
+            <div class="col-12">
+                <Button Color="Color.Primary" ButtonType="ButtonType.Submit" Icon="fa-fw fa-solid fa-floppy-disk" Text="保存" IsAsync="true"></Button>
+            </div>
+        </div>
+    </ValidateForm>
+</div>

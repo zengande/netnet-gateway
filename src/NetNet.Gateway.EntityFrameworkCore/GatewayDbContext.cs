@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using NetNet.Gateway.Entities;
+using Microsoft.Extensions.Logging;
+using NetNet.Gateway.AggregateModels.ServiceClusterAggregate;
+using NetNet.Gateway.EntityTypeConfigurations;
 using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
 
@@ -8,29 +10,28 @@ namespace NetNet.Gateway;
 [ConnectionStringName("Default")]
 public class GatewayDbContext : AbpDbContext<GatewayDbContext>
 {
-    public GatewayDbContext(DbContextOptions<GatewayDbContext> options) : base(options)
+    private readonly ILoggerFactory _loggerFactory;
+    public GatewayDbContext(DbContextOptions<GatewayDbContext> options, ILoggerFactory loggerFactory) : base(options)
     {
+        _loggerFactory = loggerFactory;
     }
 
-    public DbSet<Cluster> Clusters { get; set; }
-    public DbSet<ProxyRoute> ProxyRoutes { get; set; }
-    public DbSet<Destination> Destinations { get; set; }
-    public DbSet<ActiveHealthCheckOptions> ActiveHealthCheckOptions { get; set; }
-    public DbSet<HealthCheckOptions> HealthCheckOptions { get; set; }
-    public DbSet<Metadata> Metadatas { get; set; }
-    public DbSet<PassiveHealthCheckOptions> PassiveHealthCheckOptions { get; set; }
-    public DbSet<HttpClientConfig> ProxyHttpClientOptions { get; set; }
-    public DbSet<ProxyMatch> ProxyMatches { get; set; }
-    public DbSet<ForwarderRequest> RequestProxyOptions { get; set; }
-    public DbSet<RouteHeader> RouteHeaders { get; set; }
-    public DbSet<SessionAffinityConfig> SessionAffinityOptions { get; set; }
-    public DbSet<SessionAffinityOptionSetting> SessionAffinityOptionSettings { get; set; }
-    public DbSet<Transform> Transforms { get; set; }
+    #region ServiceCluster
+
+    public virtual DbSet<ServiceCluster> ServiceClusters { get; set; }
+    public virtual DbSet<ServiceDestination> ServiceDestinations { get; set; }
+
+    #endregion
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseLoggerFactory(_loggerFactory);
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
-
+        modelBuilder.ConfigureServiceClusterAggregate();
     }
 }

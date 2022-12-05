@@ -28,12 +28,11 @@ public class GatewayEntityFrameworkCoreModule : AbpModule
              * See also BMSMigrationsDbContextFactory for EF Core tooling. */
             options.Configure<GatewayDbContext>(opts =>
             {
-                opts.UseNpgsql();
+                // opts.UseNpgsql();
+                opts.UseSqlServer();
 #if DEBUG
-                opts.DbContextOptions.UseLoggerFactory(new LoggerFactory(new[] { new DebugLoggerProvider() }));
                 opts.DbContextOptions.EnableSensitiveDataLogging();
 #endif
-                //opts.DbContextOptions.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTrackingWithIdentityResolution);
             });
         });
     }
