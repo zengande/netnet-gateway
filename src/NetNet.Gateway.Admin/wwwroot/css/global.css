@@ -99,3 +99,21 @@ html, body {
 .right-unset{
     right: unset;
 }
+
+/*gw 自定义的类*/
+.gw-section-header {
+    position: relative;
+    padding: 0 8px;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.gw-section-header:before {
+    content: "";
+    position: absolute;
+    width: 3px;
+    background-color: var(--bs-primary);
+    left: 0;
+    top: 4px;
+    bottom: 4px;
+}

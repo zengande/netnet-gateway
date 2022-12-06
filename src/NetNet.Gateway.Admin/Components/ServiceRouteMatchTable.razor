@@ -1,0 +1,43 @@
+@using NetNet.Gateway.Dtos.ServiceRoutes
+@using System.Diagnostics.CodeAnalysis
+
+@typeparam TMatchMode where TMatchMode : Enum
+@typeparam TItem where TItem : ServiceRouteMatchBase<TMatchMode>, new()
+
+
+<div class="row justify-content-between">
+    <div class="col">
+        <BootstrapLabel Value="@Text"></BootstrapLabel>
+    </div>
+    <div class="col" style="text-align: right">
+        <Button Size="Size.ExtraSmall" OnClick="() => _table.AddAsync()"
+                Icon="fas fa-add" Text="添加">
+        </Button>
+    </div>
+</div>
+<Table TItem="TItem" @bind-Items="@Items"
+       EditMode="EditMode.EditForm" ShowExtendButtons="true"
+       ShowRefresh="false" ShowToastAfterSaveOrDeleteModel="false"
+       @ref="_table" IsTracking="true">
+    <TableColumns>
+        <TableColumn @bind-Field="@context.Mode" Text="模式" Width="150"></TableColumn>
+        <TableColumn @bind-Field="@context.Name" Text="名称" Width="200"></TableColumn>
+        <TableColumn @bind-Field="@context.Values" Text="值"></TableColumn>
+        <TableColumn @bind-Field="@context.IsCaseSensitive" Text="是否区分大小写" Width="100"></TableColumn>
+    </TableColumns>
+</Table>
+
+
+@code{
+
+    [Parameter]
+    public string Text { get; set; }
+
+    [Parameter]
+    public IEnumerable<TItem>? Items { get; set; }
+
+    [NotNull] private Table<TItem>? _table;
+
+
+
+}

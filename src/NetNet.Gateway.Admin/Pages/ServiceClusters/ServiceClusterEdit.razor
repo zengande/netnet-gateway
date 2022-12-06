@@ -7,7 +7,7 @@
     <ValidateForm Model="@_input" OnValidSubmit="@OnValidSubmit">
         <div class="row pt-2">
             <div class="col-12 col-sm-6">
-                <div class="section-header mb-3">基础信息</div>
+                <div class="gw-section-header mb-3">基础信息</div>
                 <div class="row">
                     <div class="col-12">
                         <BootstrapInput @bind-Value="@_input.Name" DisplayText="服务名称" PlaceHolder="请填写服务名称"/>
@@ -36,7 +36,7 @@
                     </div>
                 </div>
 
-                <div class="section-header mb-3">服务终点</div>
+                <div class="gw-section-header mb-3">服务终点</div>
                 <div class="mb-1" style="text-align: right">
                     <Button style="width: auto" Size="Size.ExtraSmall" OnClick="() => DestinationTable.AddAsync()"
                             Icon="fas fa-add" Text="添加">

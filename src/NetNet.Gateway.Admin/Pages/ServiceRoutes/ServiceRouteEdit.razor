@@ -1,0 +1,57 @@
+@page "/ServiceRoutes/Edit/{id:guid?}"
+@using NetNet.Gateway.Dtos.ServiceRoutes
+@using Yarp.ReverseProxy.Configuration
+
+<Breadcrumb Value="@BreadcrumbItems"/>
+
+<ValidateForm Model="@_input">
+    <div class="container-fluid pt-2">
+        <div class="row">
+            <div class="col-12 col-sm-6">
+                <div class="gw-section-header mb-3">基本信息</div>
+                <div class="row pb-4">
+                    <div class="col-12">
+                        <BootstrapInput @bind-Value="@_input.Name" DisplayText="路由名称" PlaceHolder="路由名称（要求唯一）"></BootstrapInput>
+                    </div>
+                </div>
+
+                <div class="gw-section-header mb-3">匹配规则</div>
+                <div class="row pb-4">
+                    <div class="col-12">
+                        <BootstrapInput @bind-Value="@_input.MatchHosts" DisplayText="请求主机" PlaceHolder="主机地址"></BootstrapInput>
+                    </div>
+                    <div class="col-12 mt-3">
+                        <MultiSelect DisplayText="请求方法" PlaceHolder="选择匹配的Http方法" Items="@HttpMethodSelectItems" @bind-Value="@_input.MatchMethods"/>
+                    </div>
+
+                    <div class="col-12 mt-3">
+                        <ServiceRouteMatchTable TItem="ServiceRouteMatchBase<HeaderMatchMode>" TMatchMode="HeaderMatchMode"
+                                                Text="请求头" Items="@_input.MatchHeaders">
+                        </ServiceRouteMatchTable>
+                    </div>
+                    <div class="col-12 mt-3">
+                        <BootstrapInput @bind-Value="@_input.MatchPath" DisplayText="请求路径" PlaceHolder="路由匹配规则 例如：/something/{**remainder}"></BootstrapInput>
+                    </div>
+                    <div class="col-12 mt-3">
+                        <ServiceRouteMatchTable TItem="ServiceRouteMatchBase<QueryParameterMatchMode>" TMatchMode="QueryParameterMatchMode"
+                                                Text="请求参数" Items="@_input.MatchQueryParameters">
+                        </ServiceRouteMatchTable>
+                    </div>
+                </div>
+
+                <div class="gw-section-header mb-3">请求转换</div>
+                <div class="row pb-4">
+                    <div class="col-12">
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <Button Color="Color.Primary" ButtonType="ButtonType.Submit" Icon="fa-fw fa-solid fa-floppy-disk" Text="保存" IsAsync="true"></Button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ValidateForm>

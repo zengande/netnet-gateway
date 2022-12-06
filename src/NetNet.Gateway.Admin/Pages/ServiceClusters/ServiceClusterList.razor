@@ -16,7 +16,7 @@
     </TableToolbarTemplate>
     <RowButtonTemplate>
         <TableCellButton Color="Color.Primary" Icon="fa-solid fa-pen" Text="编辑" OnClick="() => RedirectToEdit(context)"/>
-        <TableCellButton Color="Color.Danger" Icon="fa-solid fa-remove" Text="删除" OnClick="() => DeleteClusterAsync(context)"/>
+        <TableCellButton Color="Color.Danger" Icon="fa-solid fa-remove" Text="删除" IsAsync="true" OnClick="() => DeleteClusterAsync(context)"/>
     </RowButtonTemplate>
     <TableColumns>
         <TableColumn Text="名称" @bind-Field="@context.Name" Width="300"/>
