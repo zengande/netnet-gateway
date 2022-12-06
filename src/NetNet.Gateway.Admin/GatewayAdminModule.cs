@@ -16,13 +16,10 @@ public class GatewayAdminModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)
     {
-        var configuration = context.Services.GetConfiguration();
-
         context.Services.AddRazorPages();
         context.Services.AddServerSideBlazor();
         context.Services.AddSingleton<WeatherForecastService>();
-
-        context.Services.AddAntDesign();
+        context.Services.AddBootstrapBlazor();
     }
 
     public override void OnApplicationInitialization(ApplicationInitializationContext context)
