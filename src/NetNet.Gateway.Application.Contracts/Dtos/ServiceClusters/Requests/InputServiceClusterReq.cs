@@ -4,7 +4,11 @@ namespace NetNet.Gateway.Dtos.ServiceClusters.Requests;
 
 public class InputServiceClusterReq
 {
+    /// <summary>
+    /// 名称
+    /// </summary>
     [Required]
+    [MaxLength(200)]
     public string Name { get; set; }
 
     /// <summary>
@@ -12,5 +16,14 @@ public class InputServiceClusterReq
     /// </summary>
     public string LoadBalancingPolicy { get; set; }
 
+    /// <summary>
+    /// 描述
+    /// </summary>
+    [MaxLength(500)]
     public string Description { get; set; }
+
+    /// <summary>
+    /// 服务终点
+    /// </summary>
+    public IEnumerable<InputServiceDestinationReq> Destinations { get; set; } = new List<InputServiceDestinationReq>();
 }

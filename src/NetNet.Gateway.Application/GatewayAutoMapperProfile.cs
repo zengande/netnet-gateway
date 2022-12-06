@@ -9,5 +9,6 @@ public class GatewayAutoMapperProfile : Profile
     public GatewayAutoMapperProfile()
     {
         CreateMap<ServiceCluster, GetServiceClusterRes>();
+        CreateMap<ServiceDestination, ServiceDestinationRes>();
     }
 }

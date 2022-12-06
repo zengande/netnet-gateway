@@ -1,6 +1,16 @@
-.section-header{
-    padding: 0px 5px;
-    border-left: 3px solid var(--bs-primary);
+.section-header {
+    position: relative;
+    padding: 0 8px;
     font-size: 15px;
     font-weight: bold;
+}
+
+.section-header:before {
+    content: "";
+    position: absolute;
+    width: 3px;
+    background-color: var(--bs-primary);
+    left: 0;
+    top: 4px;
+    bottom: 4px;
 }

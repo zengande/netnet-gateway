@@ -2,22 +2,21 @@
 using NetNet.Gateway.Dtos.ServiceClusters.Requests;
 using NetNet.Gateway.Dtos.ServiceClusters.Responses;
 using Volo.Abp.Application.Dtos;
-using Volo.Abp.Domain.Repositories;
 
 namespace NetNet.Gateway.Services;
 
 public class ServiceClusterAppService : GatewayAppService, IServiceClusterAppService
 {
-    private readonly IRepository<ServiceCluster, long> _clusterRepository;
+    private readonly IServiceClusterRepository _clusterRepository;
 
-    public ServiceClusterAppService(IRepository<ServiceCluster, long> clusterRepository)
+    public ServiceClusterAppService(IServiceClusterRepository clusterRepository)
     {
         _clusterRepository = clusterRepository;
     }
 
     public async Task<PagedResultDto<QueryServiceClusterRes>> QueryAsync(QueryServiceClusterReq req)
     {
-        var clusterQueryable = await _clusterRepository.GetQueryableAsync();
+        var clusterQueryable = await _clusterRepository.WithDetailsAsync(x => x.Destinations);
         var queryable = from cluster in clusterQueryable
             orderby cluster.CreationTime descending
             select new QueryServiceClusterRes
@@ -26,7 +25,10 @@ public class ServiceClusterAppService : GatewayAppService, IServiceClusterAppSer
                 Name = cluster.Name,
                 Description = cluster.Description,
                 DestinationCount = cluster.Destinations.Count,
-                CreationTime = cluster.CreationTime
+                CreationTime = cluster.CreationTime,
+                Destinations = cluster.Destinations
+                    .Select(x => new ServiceDestinationRes { Key = x.Key, Address = x.Address, Health = x.Health })
+                    .ToList()
             };
         var queryableWrapper = QueryableWrapperFactory.CreateWrapper(queryable)
             .SearchByKey(req.SearchKey, x => x.Name)
@@ -53,7 +55,15 @@ public class ServiceClusterAppService : GatewayAppService, IServiceClusterAppSer
 
     public async Task<long> CreateAsync(InputServiceClusterReq req)
     {
-        return 0;
+        var cluster = new ServiceCluster(req.Name, req.Description, req.LoadBalancingPolicy, null, null);
+        foreach (var destination in req.Destinations)
+        {
+            cluster.AddDestination(destination.Key, destination.Address, destination.Health, destination.Metadata);
+        }
+
+        await _clusterRepository.InsertAsync(cluster);
+
+        return cluster.Id;
     }
 
     public async Task<bool> UpdateAsync(long id, InputServiceClusterReq req)

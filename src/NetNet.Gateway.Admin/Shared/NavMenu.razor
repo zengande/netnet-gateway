@@ -1,4 +1,8 @@
-﻿<div style="position: absolute; top: 0; left:0; right: 0; bottom: 0; overflow: auto; border-right: 1px solid rgba(0,0,0,.125); padding: 6px 0;">
+﻿<div class="nav-menu-container">
+    <div class="logo">
+        NETNET GATEWAY
+    </div>
+
     <Menu Items="@IconSideMenuItems" IsVertical="true"></Menu>
 </div>
 
@@ -11,12 +15,13 @@
         IconSideMenuItems = new List<MenuItem>()
         {
             new("仪表盘", "/", "fas fa-chart-line"),
-            new("服务管理", "/ServiceClusters", "fas fa-diagram-project"){Match = NavLinkMatch.Prefix},
-            new("路由管理", "Routes", "fas fa-route"),
+            new("服务管理", "/ServiceClusters", "fas fa-diagram-project") { Match = NavLinkMatch.Prefix },
+            new("路由管理", "/Routes", "fas fa-route") { Match = NavLinkMatch.Prefix },
             new("网关设置", null, "fa-solid fa-gears")
             {
                 Items = new List<MenuItem>()
                 {
+                    new("插件管理", "/Settings/Plugs", "fas fa-plug"),
                     new("用户", "/Setting/User"),
                     new("结点", "/Setting/Node"),
                 }

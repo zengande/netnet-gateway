@@ -28,4 +28,9 @@ public class QueryServiceClusterRes : EntityDto<long>
     /// 创建时间
     /// </summary>
     public DateTime CreationTime { get; set; }
+
+    /// <summary>
+    /// 终点
+    /// </summary>
+    public List<ServiceDestinationRes> Destinations { get; set; }
 }

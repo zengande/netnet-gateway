@@ -1,4 +1,5 @@
 @page "/ServiceClusters/Edit/{Id:long?}"
+@using NetNet.Gateway.Dtos.ServiceClusters.Requests
 
 <div style="position: relative">
     <Breadcrumb Value="@BreadcrumbItems"/>
@@ -36,8 +37,21 @@
                 </div>
 
                 <div class="section-header mb-3">服务终点</div>
+                <div class="mb-1" style="text-align: right">
+                    <Button style="width: auto" Size="Size.ExtraSmall" OnClick="() => DestinationTable.AddAsync()"
+                            Icon="fas fa-add" Text="添加">
+                    </Button>
+                </div>
                 <div class="row">
-
+                    <Table TItem="@InputServiceDestinationReq" @bind-Items="@_input.Destinations" EditMode="EditMode.EditForm"
+                           ShowExtendButtons="true" ShowRefresh="false" ShowToastAfterSaveOrDeleteModel="false"
+                           @ref="DestinationTable" ShowEmpty="true" EmptyText="请添加服务终点" IsTracking="true">
+                        <TableColumns>
+                            <TableColumn @bind-Field="context.Key" Text="终点名称"></TableColumn>
+                            <TableColumn @bind-Field="context.Address" Text="终点地址"></TableColumn>
+                            <TableColumn @bind-Field="context.Health" Text="健康检查地址"></TableColumn>
+                        </TableColumns>
+                    </Table>
                 </div>
             </div>
         </div>

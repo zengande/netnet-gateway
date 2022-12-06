@@ -46,9 +46,9 @@ public partial class ServiceClusterList
         NavigationManager.NavigateTo($"/ServiceClusters/Edit/{context?.Id}");
     }
 
-    private async Task<QueryData<QueryServiceDestinationRes>> OnQueryDetailAsync(QueryServiceClusterRes context, QueryPageOptions options)
+    private async Task<QueryData<ServiceDestinationRes>> OnQueryDetailAsync(QueryServiceClusterRes context, QueryPageOptions options)
     {
-        return default;
+        return new();
     }
 
     private Task DeleteClusterAsync(QueryServiceClusterRes row)

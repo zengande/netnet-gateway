@@ -6,4 +6,6 @@ public class GetServiceClusterRes : EntityDto<long>
 {
     public string Name { get; set; }
     public string Description { get; set; }
+    public string LoadBalancingPolicy { get; set; }
+    public List<ServiceDestinationRes> Destinations { get; set; }
 }
