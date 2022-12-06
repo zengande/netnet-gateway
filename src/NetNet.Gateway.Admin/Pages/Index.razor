@@ -5,5 +5,25 @@
         <div class="col-4">
             显示网关运行监控数据
         </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-4">
+            <DictionaryInput TKey="string" TValue="string"
+                             @bind-Data="@_dic">
+            </DictionaryInput>
+        </div>
     </div>
 </div>
+
+@code{
+
+    private Dictionary<string, string> _dic = new()
+    {
+        {"k1", "v1"},
+        {"k2", "v2"},
+        {"k3", "v3"},
+    };
+
+}

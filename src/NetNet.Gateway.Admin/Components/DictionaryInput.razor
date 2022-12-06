@@ -1,3 +1,83 @@
-@typeparam TKey
+@typeparam TKey        where TKey : notnull
 @typeparam TValue
 
+<div class="row">
+    <div class="col">
+        <div class="row">
+            <div class="col">Key</div>
+            <div class="col">Value</div>
+            <div class="gw-kv-operations align-self-end"></div>
+        </div>
+
+        @if (Data is not null)
+        {
+            foreach (var kv in Data)
+            {
+                <div class="row">
+                    <div class="col">@RenderKeyFragment(kv)</div>
+                    <div class="col">@RenderValueFragment(kv)</div>
+                    <div class="gw-kv-operations align-self-end">
+                        - +
+                    </div>
+                </div>
+            }
+        }
+    </div>
+
+</div>
+
+@code{
+
+    [Parameter]
+    public Dictionary<TKey, TValue>? Data { get; set; }
+
+    [Parameter]
+    public EventCallback<Dictionary<TKey, TValue>> DataChanged { get; set; }
+
+    [Parameter]
+    public RenderFragment<TKey>? KeyFragment { get; set; }
+
+    [Parameter]
+    public RenderFragment<TValue>? ValueFragment { get; set; }
+
+
+    RenderFragment<KeyValuePair<TKey, TValue>> RenderKeyFragment => kv =>
+        @<input class="form-control" value="@(kv.Key)" @onchange="@(e => OnKeyChange(kv.Key, e))"/>;
+
+    RenderFragment<KeyValuePair<TKey, TValue>> RenderValueFragment => kv =>
+        @<input class="form-control" value="@(kv.Value)" @onchange="@(e => OnValueChange(kv.Key, e))"/>;
+
+    private void OnKeyChange(TKey oldKey, ChangeEventArgs args)
+    {
+        if (Data == null || args.Value == null ) return;
+        var newKey = (TKey) args.Value;
+
+        if (Data.ContainsKey(newKey)) return;
+
+        var newData = new Dictionary<TKey, TValue>();
+        foreach (var kv in Data)
+        {
+            var key = kv.Key;
+            var value = kv.Value;
+
+            if (Equals(kv.Key, oldKey))
+            {
+                key = newKey;
+            }
+
+            newData[key] = value;
+        }
+
+        Data = newData;
+    }
+
+    private void OnValueChange(TKey key, ChangeEventArgs args)
+    {
+        if (Data == null || args.Value == null) return;
+        if (Data.ContainsKey(key))
+        {
+            Data[key] = (TValue) args.Value;
+        }
+    }
+
+}
