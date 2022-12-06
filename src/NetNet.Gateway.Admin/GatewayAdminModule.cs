@@ -1,4 +1,4 @@
-using NetNet.Gateway.Admin.Data;
+﻿using NetNet.Gateway.Admin.Data;
 using Volo.Abp;
 using Volo.Abp.AspNetCore.Mvc;
 using Volo.Abp.Autofac;
@@ -16,10 +16,13 @@ public class GatewayAdminModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)
     {
+        var configuration = context.Services.GetConfiguration();
+
         context.Services.AddRazorPages();
         context.Services.AddServerSideBlazor();
         context.Services.AddSingleton<WeatherForecastService>();
-        context.Services.AddBootstrapBlazor();
+
+        context.Services.AddAntDesign();
     }
 
     public override void OnApplicationInitialization(ApplicationInitializationContext context)

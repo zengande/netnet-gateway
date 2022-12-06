@@ -2,40 +2,16 @@
 
 <PageTitle>NetNet Gateway</PageTitle>
 
-<CascadingValue Value="this">
-    <div class="layout-container">
-        <Layout ShowFooter="true" SideWidth="240px" IsFullSide="true">
-            <Header>
-                @if (HeaderContent != null)
-                {
-                    <div class="header-container">
-                        @HeaderContent
-                    </div>
-                }
-            </Header>
 
-            <Side>
-                <NavMenu></NavMenu>
-            </Side>
-            <Main>
-                <div style="padding: 1rem;">
-                    @Body
-                </div>
-            </Main>
-        </Layout>
-    </div>
-</CascadingValue>
+<Layout>
+    <Sider Style="overflow: auto;height: 100vh;position: fixed;left: 0;">
+        <NavMenu />
+    </Sider>
+    <Layout Class="site-layout" Style=" margin-left: 200px">
+        <Content Style="margin: 24px 16px 0; overflow: initial; ">
+            @Body
+        </Content>
+        <Footer Style=" text-align: center;">Ant Design ©2018 Created by Ant UED</Footer>
+    </Layout>
+</Layout>
 
-
-@code
-{
-    RenderFragment? HeaderContent => _pageHeader?.ChildContent;
-    PageHeader? _pageHeader;
-
-    public void SetPageHeader(PageHeader? pageHeader)
-    {
-        _pageHeader = pageHeader;
-
-        StateHasChanged();
-    }
-}
