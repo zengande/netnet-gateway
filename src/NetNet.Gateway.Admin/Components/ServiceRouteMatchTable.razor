@@ -15,8 +15,8 @@
         </Button>
     </div>
 </div>
-<Table TItem="TItem" @bind-Items="@Items"
-       EditMode="EditMode.Popup" ShowExtendButtons="true"
+<Table TItem="TItem" @bind-Items="@Items" EditDialogSize="Size.Medium"
+       EditMode="EditMode.Popup" ShowExtendButtons="true" EditDialogItemsPerRow="1"
        ShowRefresh="false" ShowToastAfterSaveOrDeleteModel="false"
        @ref="_table" IsTracking="true">
     <TableColumns>

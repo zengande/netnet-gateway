@@ -24,11 +24,12 @@ public partial class ServiceRouteEdit
     private IEnumerable<BreadcrumbItem> _breadcrumbItems = Enumerable.Empty<BreadcrumbItem>();
     private IEnumerable<SelectedItem> _serviceClusterSelections = Enumerable.Empty<SelectedItem>();
     private InputServiceRouteReq _input = new();
-
+    private Dictionary<string, string> _selectedTransform = new();
     [Inject, NotNull] public IServiceRouteAppService? ServiceRouteAppService { get; set; }
     [Inject, NotNull] public IServiceClusterAppService? ServiceClusterAppService { get; set; }
     [Inject, NotNull] public NavigationManager? NavigationManager { get; set; }
     [Parameter] public Guid? Id { get; set; }
+    [NotNull] private Modal? EditTransformModel { get; set; }
 
     protected override async Task OnInitializedAsync()
     {

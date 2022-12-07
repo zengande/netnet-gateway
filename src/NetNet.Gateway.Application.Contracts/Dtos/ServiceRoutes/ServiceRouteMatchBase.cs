@@ -19,7 +19,7 @@ public class ServiceRouteMatchBase<TMatchMode> where TMatchMode : Enum
     /// <summary>
     /// 值（当 Mode = Exists 不可为空）
     /// </summary>
-    public List<string>? Values { get; set; }
+    public string? Values { get; set; }
 
     /// <summary>
     /// 大小写是否敏感

@@ -5,7 +5,7 @@ namespace NetNet.Gateway.AggregateModels.ServiceRouteAggregate;
 /// <summary>
 /// 服务路由
 /// </summary>
-public class ServiceRoute : AuditedAggregateRoot<Guid>
+public sealed class ServiceRoute : AuditedAggregateRoot<Guid>
 {
     /// <summary>
     /// 名称
@@ -37,13 +37,29 @@ public class ServiceRoute : AuditedAggregateRoot<Guid>
     /// </summary>
     public ServiceRouteMatch? Match { get; private set; }
 
-    /// <summary>
-    /// 请求转换
-    /// </summary>
-    public IReadOnlyList<IReadOnlyDictionary<string, string>> Transforms { get; private set; }
+    // /// <summary>
+    // /// 请求转换
+    // /// </summary>
+    // public IList<ServiceRouteTransform> Transforms { get; private set; }
 
     private ServiceRoute()
     {
-        Transforms = new List<Dictionary<string, string>>();
+        // Transforms = new List<ServiceRouteTransform>();
+    }
+
+    public ServiceRoute(string name, Guid serviceClusterId, string? authorizationPolicy, string? crosPolicy, int? order)
+        : this()
+    {
+        Name = name;
+        ServiceClusterId = serviceClusterId;
+        AuthorizationPolicy = authorizationPolicy;
+        CrosPolicy = crosPolicy;
+        Order = order;
+    }
+
+    public void SetMatchRule(string? hosts, string? methods, string? path)
+    {
+        Match ??= new(Id, hosts, methods, path);
+
     }
 }

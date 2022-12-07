@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NetNet.Gateway.AggregateModels.ServiceClusterAggregate;
+using NetNet.Gateway.AggregateModels.ServiceRouteAggregate;
 using NetNet.Gateway.EntityTypeConfigurations;
 using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
@@ -23,6 +24,13 @@ public class GatewayDbContext : AbpDbContext<GatewayDbContext>
 
     #endregion
 
+    #region ServiceRoute
+
+    public virtual DbSet<ServiceRoute> ServiceRoutes { get; set; }
+    public virtual DbSet<ServiceRouteMatch> ServiceRouteMatches { get; set; }
+
+    #endregion
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseLoggerFactory(_loggerFactory);
@@ -33,5 +41,6 @@ public class GatewayDbContext : AbpDbContext<GatewayDbContext>
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.ConfigureServiceClusterAggregate();
+        modelBuilder.ConfigureServiceRouteAggregate();
     }
 }

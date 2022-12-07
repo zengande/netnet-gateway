@@ -136,6 +136,103 @@ namespace NetNet.Gateway.Migrations
                     b.HasComment("服务目的地");
                 });
 
+            modelBuilder.Entity("NetNet.Gateway.AggregateModels.ServiceRouteAggregate.ServiceRoute", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("AuthorizationPolicy")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)")
+                        .HasComment("授权策略");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)")
+                        .HasColumnName("ConcurrencyStamp");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("CreationTime");
+
+                    b.Property<Guid?>("CreatorId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("CreatorId");
+
+                    b.Property<string>("CrosPolicy")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)")
+                        .HasComment("跨域策略");
+
+                    b.Property<string>("ExtraProperties")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("ExtraProperties");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("LastModificationTime");
+
+                    b.Property<Guid?>("LastModifierId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("LastModifierId");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)")
+                        .HasComment("路由名称");
+
+                    b.Property<int?>("Order")
+                        .HasColumnType("int")
+                        .HasComment("排序");
+
+                    b.Property<Guid>("ServiceClusterId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasComment("服务id");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("GW_ServiceRoutes", (string)null);
+
+                    b.HasComment("服务路由");
+                });
+
+            modelBuilder.Entity("NetNet.Gateway.AggregateModels.ServiceRouteAggregate.ServiceRouteMatch", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Hosts")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)")
+                        .HasComment("请求主机（逗号分隔）");
+
+                    b.Property<string>("Methods")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)")
+                        .HasComment("请求方法（逗号分隔）");
+
+                    b.Property<string>("Path")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)")
+                        .HasComment("请求路径");
+
+                    b.Property<Guid>("ServiceRouteId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ServiceRouteId")
+                        .IsUnique();
+
+                    b.ToTable("GW_ServiceRouteMatches", (string)null);
+
+                    b.HasComment("服务路由匹配规则");
+                });
+
             modelBuilder.Entity("NetNet.Gateway.AggregateModels.ServiceClusterAggregate.ServiceCluster", b =>
                 {
                     b.OwnsOne("NetNet.Gateway.AggregateModels.ServiceClusterAggregate.ServiceClusterHttpClientConfig", "HttpClientConfig", b1 =>
@@ -216,9 +313,23 @@ namespace NetNet.Gateway.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("NetNet.Gateway.AggregateModels.ServiceRouteAggregate.ServiceRouteMatch", b =>
+                {
+                    b.HasOne("NetNet.Gateway.AggregateModels.ServiceRouteAggregate.ServiceRoute", null)
+                        .WithOne("Match")
+                        .HasForeignKey("NetNet.Gateway.AggregateModels.ServiceRouteAggregate.ServiceRouteMatch", "ServiceRouteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("NetNet.Gateway.AggregateModels.ServiceClusterAggregate.ServiceCluster", b =>
                 {
                     b.Navigation("Destinations");
+                });
+
+            modelBuilder.Entity("NetNet.Gateway.AggregateModels.ServiceRouteAggregate.ServiceRoute", b =>
+                {
+                    b.Navigation("Match");
                 });
 #pragma warning restore 612, 618
         }

@@ -18,4 +18,9 @@ public class QueryServiceRouteRes : EntityDto<Guid>
     /// 匹配路径
     /// </summary>
     public string Path { get; set; }
+
+    /// <summary>
+    /// 创建时间
+    /// </summary>
+    public DateTime CreationTime { get; set; }
 }

@@ -7,7 +7,7 @@
 <ValidateForm Model="@_input" OnValidSubmit="@OnSubmit">
     <div class="container-fluid pt-2">
         <div class="row">
-            <div class="col-12 col-sm-6">
+            <div class="col-12 col-sm-8">
                 <div class="gw-section-header mb-3">基本信息</div>
                 <div class="row g-3 pb-4">
                     <div class="col-12 col-md-8">
@@ -54,7 +54,23 @@
                 <div class="gw-section-header mb-3">请求转换</div>
                 <div class="row pb-4">
                     <div class="col-12">
-
+                        <div class="row justify-content-end">
+                            <div class="col" style="text-align: right">
+                                <Button Size="Size.ExtraSmall" OnClick="() => EditTransformModel.Toggle()"
+                                        Icon="fas fa-add" Text="添加">
+                                </Button>
+                            </div>
+                        </div>
+                        @foreach (var transform in _input.Transforms)
+                        {
+                            <div class="row transform-group">
+                                @foreach (var kv in transform)
+                                {
+                                    <div class="col-6">@kv.Key</div>
+                                    <div class="col-6">@kv.Value</div>
+                                }
+                            </div>
+                        }
                     </div>
                 </div>
 
@@ -67,3 +83,11 @@
         </div>
     </div>
 </ValidateForm>
+
+<Modal @ref="EditTransformModel">
+    <ModalDialog IsCentered="true" Size="Size.Medium" Title="请求转换配置">
+        <BodyTemplate>
+            <DictionaryInput TKey="string" TValue="string" @bind-Data="@_selectedTransform"></DictionaryInput>
+        </BodyTemplate>
+    </ModalDialog>
+</Modal>
