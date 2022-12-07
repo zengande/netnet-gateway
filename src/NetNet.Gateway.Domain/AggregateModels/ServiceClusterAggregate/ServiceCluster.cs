@@ -7,7 +7,7 @@ namespace NetNet.Gateway.AggregateModels.ServiceClusterAggregate;
 /// <summary>
 /// 服务集群
 /// </summary>
-public sealed class ServiceCluster : AuditedAggregateRoot<long>
+public sealed class ServiceCluster : AuditedAggregateRoot<Guid>
 {
     /// <summary>
     /// 名称

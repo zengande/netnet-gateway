@@ -26,11 +26,9 @@ namespace NetNet.Gateway.Migrations
 
             modelBuilder.Entity("NetNet.Gateway.AggregateModels.ServiceClusterAggregate.ServiceCluster", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -83,18 +81,16 @@ namespace NetNet.Gateway.Migrations
                         .IsUnique()
                         .HasDatabaseName("IX_ServiceClusters_Name");
 
-                    b.ToTable("gw_ServiceClusters", (string)null);
+                    b.ToTable("GW_ServiceClusters", (string)null);
 
                     b.HasComment("服务集群");
                 });
 
             modelBuilder.Entity("NetNet.Gateway.AggregateModels.ServiceClusterAggregate.ServiceDestination", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -128,14 +124,14 @@ namespace NetNet.Gateway.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("ServiceClusterId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("ServiceClusterId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ServiceClusterId");
 
-                    b.ToTable("gw_ServiceDestinations", (string)null);
+                    b.ToTable("GW_ServiceDestinations", (string)null);
 
                     b.HasComment("服务目的地");
                 });
@@ -144,8 +140,8 @@ namespace NetNet.Gateway.Migrations
                 {
                     b.OwnsOne("NetNet.Gateway.AggregateModels.ServiceClusterAggregate.ServiceClusterHttpClientConfig", "HttpClientConfig", b1 =>
                         {
-                            b1.Property<long>("ServiceClusterId")
-                                .HasColumnType("bigint");
+                            b1.Property<Guid>("ServiceClusterId")
+                                .HasColumnType("uniqueidentifier");
 
                             b1.Property<bool?>("DangerousAcceptAnyServerCertificate")
                                 .HasColumnType("bit");
@@ -164,7 +160,7 @@ namespace NetNet.Gateway.Migrations
 
                             b1.HasKey("ServiceClusterId");
 
-                            b1.ToTable("gw_ServiceClusters");
+                            b1.ToTable("GW_ServiceClusters");
 
                             b1.WithOwner()
                                 .HasForeignKey("ServiceClusterId");
@@ -172,8 +168,8 @@ namespace NetNet.Gateway.Migrations
 
                     b.OwnsOne("NetNet.Gateway.AggregateModels.ServiceClusterAggregate.ServiceClusterHttpRequestConfig", "HttpRequestConfig", b1 =>
                         {
-                            b1.Property<long>("ServiceClusterId")
-                                .HasColumnType("bigint");
+                            b1.Property<Guid>("ServiceClusterId")
+                                .HasColumnType("uniqueidentifier");
 
                             b1.Property<long?>("ActivityTimeoutSeconds")
                                 .HasColumnType("bigint")
@@ -200,7 +196,7 @@ namespace NetNet.Gateway.Migrations
 
                             b1.HasKey("ServiceClusterId");
 
-                            b1.ToTable("gw_ServiceClusters");
+                            b1.ToTable("GW_ServiceClusters");
 
                             b1.WithOwner()
                                 .HasForeignKey("ServiceClusterId");

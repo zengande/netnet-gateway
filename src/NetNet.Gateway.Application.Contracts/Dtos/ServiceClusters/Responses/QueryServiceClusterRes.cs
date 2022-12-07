@@ -2,7 +2,7 @@
 
 namespace NetNet.Gateway.Dtos.ServiceClusters.Responses;
 
-public class QueryServiceClusterRes : EntityDto<long>
+public class QueryServiceClusterRes : EntityDto<Guid>
 {
     /// <summary>
     /// 名称

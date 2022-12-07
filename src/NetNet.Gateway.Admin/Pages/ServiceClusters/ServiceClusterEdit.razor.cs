@@ -14,7 +14,7 @@ public partial class ServiceClusterEdit
     [Inject] [NotNull] private IGuidGenerator? GuidGenerator { get; set; }
     [NotNull] private IEnumerable<BreadcrumbItem>? BreadcrumbItems { get; set; } = Enumerable.Empty<BreadcrumbItem>();
     [NotNull] private Table<InputServiceDestinationReq>? DestinationTable { get; set; }
-    [Parameter] public long? Id { get; set; }
+    [Parameter] public Guid? Id { get; set; }
 
     private InputServiceClusterReq _input = new();
 
@@ -31,7 +31,7 @@ public partial class ServiceClusterEdit
         BreadcrumbItems = new[] { new BreadcrumbItem("服务管理", "/ServiceClusters"), new BreadcrumbItem(currentText) };
     }
 
-    private async Task FetchServiceClusterEditDataAsync(long id)
+    private async Task FetchServiceClusterEditDataAsync(Guid id)
     {
         var serviceCluster = await ServiceClusterAppService.GetAsync(id);
         _input = new()
@@ -41,7 +41,7 @@ public partial class ServiceClusterEdit
             LoadBalancingPolicy = serviceCluster.LoadBalancingPolicy,
             Destinations = serviceCluster.Destinations.Select(x => new InputServiceDestinationReq
             {
-                Id = GuidGenerator.Create(),
+                Id = x.Id,
                 Key = x.Key,
                 Address = x.Address,
                 Health = x.Health,

@@ -45,7 +45,7 @@ public class ServiceClusterAppService : GatewayAppService, IServiceClusterAppSer
         return new(count, items);
     }
 
-    public async Task<GetServiceClusterRes> GetAsync(long id)
+    public async Task<GetServiceClusterRes> GetAsync(Guid id)
     {
         var queryable = await _clusterRepository.WithDetailsAsync(x => x.Destinations);
         var cluster = await AsyncExecuter.SingleAsync(queryable.Where(x => x.Id == id));
@@ -53,7 +53,7 @@ public class ServiceClusterAppService : GatewayAppService, IServiceClusterAppSer
         return ObjectMapper.Map<ServiceCluster, GetServiceClusterRes>(cluster);
     }
 
-    public async Task<long> CreateAsync(InputServiceClusterReq req)
+    public async Task<Guid> CreateAsync(InputServiceClusterReq req)
     {
         var cluster = new ServiceCluster(req.Name, req.Description, req.LoadBalancingPolicy, null, null);
         foreach (var destination in req.Destinations)
@@ -66,7 +66,7 @@ public class ServiceClusterAppService : GatewayAppService, IServiceClusterAppSer
         return cluster.Id;
     }
 
-    public async Task<bool> UpdateAsync(long id, InputServiceClusterReq req)
+    public async Task<bool> UpdateAsync(Guid id, InputServiceClusterReq req)
     {
         return true;
     }

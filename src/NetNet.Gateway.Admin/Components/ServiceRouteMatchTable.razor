@@ -16,7 +16,7 @@
     </div>
 </div>
 <Table TItem="TItem" @bind-Items="@Items"
-       EditMode="EditMode.EditForm" ShowExtendButtons="true"
+       EditMode="EditMode.Popup" ShowExtendButtons="true"
        ShowRefresh="false" ShowToastAfterSaveOrDeleteModel="false"
        @ref="_table" IsTracking="true">
     <TableColumns>
@@ -34,10 +34,27 @@
     public string Text { get; set; }
 
     [Parameter]
-    public IEnumerable<TItem>? Items { get; set; }
+    public IEnumerable<TItem>? Items
+    {
+        get => _items;
+        set
+        {
+            if (!Equals(_items, value))
+            {
+                _items = value;
+                ItemsChanged.InvokeAsync(value);
+            }
+        }
+    }
 
     [NotNull] private Table<TItem>? _table;
 
+    /// <summary>
+    /// 获得/设置 数据集合回调方法
+    /// </summary>
+    [Parameter]
+    public EventCallback<IEnumerable<TItem>> ItemsChanged { get; set; }
 
+    private IEnumerable<TItem>? _items;
 
 }

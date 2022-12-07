@@ -5,7 +5,7 @@ using Volo.Abp.EntityFrameworkCore;
 
 namespace NetNet.Gateway.Repositories;
 
-public class ServiceClusterRepository : EfCoreRepository<GatewayDbContext, ServiceCluster, long>, IServiceClusterRepository
+public class ServiceClusterRepository : EfCoreRepository<GatewayDbContext, ServiceCluster, Guid>, IServiceClusterRepository
 {
     public ServiceClusterRepository(IDbContextProvider<GatewayDbContext> dbContextProvider) : base(dbContextProvider)
     {

@@ -8,7 +8,7 @@ namespace NetNet.Gateway;
 public interface IServiceClusterAppService : IApplicationService
 {
     Task<PagedResultDto<QueryServiceClusterRes>> QueryAsync(QueryServiceClusterReq req);
-    Task<GetServiceClusterRes> GetAsync(long id);
-    Task<long> CreateAsync(InputServiceClusterReq req);
-    Task<bool> UpdateAsync(long id, InputServiceClusterReq req);
+    Task<GetServiceClusterRes> GetAsync(Guid id);
+    Task<Guid> CreateAsync(InputServiceClusterReq req);
+    Task<bool> UpdateAsync(Guid id, InputServiceClusterReq req);
 }

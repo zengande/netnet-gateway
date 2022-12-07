@@ -5,8 +5,31 @@ namespace NetNet.Gateway.Dtos.ServiceRoutes.Requests;
 
 public class InputServiceRouteReq
 {
+    /// <summary>
+    /// 路由名称
+    /// </summary>
+    [Required] public string Name { get; set; }
+
+    /// <summary>
+    /// 服务id
+    /// </summary>
     [Required]
-    public string Name { get; set; }
+    public Guid ServiceClusterId { get; set; }
+
+    /// <summary>
+    /// 排序
+    /// </summary>
+    public int? Order { get; set; }
+
+    /// <summary>
+    /// 授权策略 Default/Anonymous
+    /// </summary>
+    public string? AuthorizationPolicy { get; set; }
+
+    /// <summary>
+    /// 跨域策略 Default/Disable
+    /// </summary>
+    public string? CorsPolicy { get; set; }
 
     /// <summary>
     /// 匹配请求主机
@@ -35,5 +58,8 @@ public class InputServiceRouteReq
     public IEnumerable<ServiceRouteMatchBase<QueryParameterMatchMode>>? MatchQueryParameters { get; set; }
         = new List<ServiceRouteMatchBase<QueryParameterMatchMode>>();
 
-    public IEnumerable<ServiceRouteTransformDto> Transforms { get; set; } = new List<ServiceRouteTransformDto>();
+    /// <summary>
+    /// 请求转换
+    /// </summary>
+    public IEnumerable<Dictionary<string, string>> Transforms { get; set; } = new List<Dictionary<string, string>>();
 }

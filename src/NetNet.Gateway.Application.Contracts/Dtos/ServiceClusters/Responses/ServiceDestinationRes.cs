@@ -2,7 +2,7 @@
 
 namespace NetNet.Gateway.Dtos.ServiceClusters.Responses;
 
-public class ServiceDestinationRes : EntityDto<long>
+public class ServiceDestinationRes : EntityDto<Guid>
 {
     public string Key { get; set; }
 

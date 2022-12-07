@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.ValueGeneration;
 using NetNet.Gateway.AggregateModels.ServiceClusterAggregate;
 using NetNet.Gateway.ValueConversions;
 using System.Net;
@@ -22,6 +23,9 @@ internal static class ServiceClusterAggregateEntityTypeConfiguration
             .HasComment("服务集群");
         builder.ConfigureByConvention();
         builder.HasKey(x => x.Id);
+        builder.Property(x => x.Id)
+            .ValueGeneratedOnAdd()
+            .HasValueGenerator<SequentialGuidValueGenerator>();
         builder.Property(x => x.Name)
             .IsRequired()
             .HasMaxLength(200)
@@ -68,6 +72,9 @@ internal static class ServiceClusterAggregateEntityTypeConfiguration
             .HasComment("服务目的地");
         builder.ConfigureByConvention();
         builder.HasKey(x => x.Id);
+        builder.Property(x => x.Id)
+            .ValueGeneratedOnAdd()
+            .HasValueGenerator<SequentialGuidValueGenerator>();
         builder.Property(x => x.Metadata)
             .HasConversion<AbpJsonValueConverter<Dictionary<string, string>>>();
     }

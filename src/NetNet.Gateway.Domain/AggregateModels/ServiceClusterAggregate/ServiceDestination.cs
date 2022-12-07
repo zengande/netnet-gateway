@@ -5,12 +5,12 @@ namespace NetNet.Gateway.AggregateModels.ServiceClusterAggregate;
 /// <summary>
 /// 服务目的地
 /// </summary>
-public sealed class ServiceDestination : AuditedEntity<long>
+public sealed class ServiceDestination : AuditedEntity<Guid>
 {
     /// <summary>
     /// 服务集群id
     /// </summary>
-    public long ServiceClusterId { get; private set; }
+    public Guid ServiceClusterId { get; private set; }
 
     /// <summary>
     /// key
@@ -34,7 +34,7 @@ public sealed class ServiceDestination : AuditedEntity<long>
 
     private ServiceDestination() { }
 
-    public ServiceDestination(long serviceClusterId, string key, string address, string health, Dictionary<string, string> metadata)
+    public ServiceDestination(Guid serviceClusterId, string key, string address, string health, Dictionary<string, string> metadata)
         : this()
     {
         ServiceClusterId = serviceClusterId;

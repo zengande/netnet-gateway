@@ -2,5 +2,5 @@ namespace NetNet.Gateway;
 
 public static class GatewayEfConstant
 {
-    public const string TablePrefix = "gw_";
+    public const string TablePrefix = "GW_";
 }
