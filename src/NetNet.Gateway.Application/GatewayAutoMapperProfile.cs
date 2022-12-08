@@ -18,7 +18,7 @@ public class GatewayAutoMapperProfile : Profile
         CreateMap<ServiceRoute, GetServiceRouteRes>()
             .ForMember(dest => dest.MatchHosts,
                 opt => opt.MapFrom(src => src.Match.Hosts.SplitAs(GatewayConstant.Separator, StringSplitOptions.RemoveEmptyEntries)))
-            .ForMember(dest => dest.MatchHosts,
+            .ForMember(dest => dest.MatchMethods,
                 opt => opt.MapFrom(src => src.Match.Methods.SplitAs(GatewayConstant.Separator, StringSplitOptions.RemoveEmptyEntries)))
             .ForMember(opt => opt.Transforms,
                 dest => dest.MapFrom(opt => opt.Transforms.ToLookup(x => x.GroupIndex).ToDictionary(x => x.Key).ToList()));

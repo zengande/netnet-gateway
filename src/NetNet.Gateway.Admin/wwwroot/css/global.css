@@ -5,6 +5,9 @@ html, body {
 
 :root {
     --bs-primary: #7838ca;
+    --bs-primary-rgb: 120, 56, 202;
+    --bs-info: #0dcaf0;
+    --bs-info-rgb: 13, 202, 240;
     --bs-link-color: #7838ca;
     --bs-link-hover-color: #58229c;
     --bs-white: #ffffff;
@@ -92,11 +95,11 @@ html, body {
     color: var(--bs-white);
 }
 
-.left-unset{
+.left-unset {
     left: unset;
 }
 
-.right-unset{
+.right-unset {
     right: unset;
 }
 

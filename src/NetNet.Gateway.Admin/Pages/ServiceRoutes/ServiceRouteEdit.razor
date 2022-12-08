@@ -68,12 +68,11 @@
                             {
                                 <div class="transform-group p-2 mb-2">
                                     <div class="row g-0">
-                                        <div class="col-11">
+                                        <div class="col-11 justify-content-center">
                                             @foreach (var transform in transforms.Value)
                                             {
-                                                <div>
-                                                    <Badge>@transform.Key : @transform.Value</Badge>
-                                                </div>
+                                                <CapsuleBadge Size="Size.Small" LeftColor="Color.Success" AdditionalClass="m-1"
+                                                              LeftText="@transform.Key" RightText="@transform.Value"/>
                                             }
                                         </div>
                                         <div class="col-1 row g-0 justify-content-end align-items-center">
