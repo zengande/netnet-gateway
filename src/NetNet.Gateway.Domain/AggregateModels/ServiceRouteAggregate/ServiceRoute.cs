@@ -35,19 +35,20 @@ public sealed class ServiceRoute : AuditedAggregateRoot<Guid>
     /// <summary>
     /// 匹配规格
     /// </summary>
-    public ServiceRouteMatch? Match { get; private set; }
+    public ServiceRouteMatch Match { get; private set; }
 
-    // /// <summary>
-    // /// 请求转换
-    // /// </summary>
-    // public IList<ServiceRouteTransform> Transforms { get; private set; }
+    /// <summary>
+    /// 请求转换
+    /// </summary>
+    public IList<ServiceRouteTransform> Transforms { get; private set; }
 
     private ServiceRoute()
     {
-        // Transforms = new List<ServiceRouteTransform>();
+        Transforms = new List<ServiceRouteTransform>();
     }
 
-    public ServiceRoute(string name, Guid serviceClusterId, string? authorizationPolicy, string? crosPolicy, int? order)
+    public ServiceRoute(string name, Guid serviceClusterId, string? authorizationPolicy, string? crosPolicy, int? order,
+        ServiceRouteMatch match, List<ServiceRouteTransform> transforms)
         : this()
     {
         Name = name;
@@ -55,11 +56,7 @@ public sealed class ServiceRoute : AuditedAggregateRoot<Guid>
         AuthorizationPolicy = authorizationPolicy;
         CrosPolicy = crosPolicy;
         Order = order;
-    }
-
-    public void SetMatchRule(string? hosts, string? methods, string? path)
-    {
-        Match ??= new(Id, hosts, methods, path);
-
+        Match = match;
+        Transforms = transforms;
     }
 }

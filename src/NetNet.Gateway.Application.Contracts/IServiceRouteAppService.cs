@@ -11,4 +11,5 @@ public interface IServiceRouteAppService : IApplicationService
     Task<GetServiceRouteRes> GetAsync(Guid id);
     Task<Guid> CreateAsync(InputServiceRouteReq req);
     Task<bool> UpdateAsync(Guid id, InputServiceRouteReq req);
+    Task<bool> DeleteAsync(Guid id);
 }

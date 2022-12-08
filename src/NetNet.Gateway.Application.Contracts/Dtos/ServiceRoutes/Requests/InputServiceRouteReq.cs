@@ -61,5 +61,5 @@ public class InputServiceRouteReq
     /// <summary>
     /// 请求转换
     /// </summary>
-    public IEnumerable<Dictionary<string, string>> Transforms { get; set; } = new List<Dictionary<string, string>>();
+    public Dictionary<int, List<ServiceRouteTransformDto>> Transforms { get; set; } = new();
 }

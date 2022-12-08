@@ -53,7 +53,14 @@ public class ServiceRouteAppService : GatewayAppService, IServiceRouteAppService
 
     public async Task<Guid> CreateAsync(InputServiceRouteReq req)
     {
-        var route = new ServiceRoute(req.Name, req.ServiceClusterId, req.AuthorizationPolicy, req.CorsPolicy, req.Order);
+        var match = new ServiceRouteMatch(req.MatchHosts?.JoinAsString(GatewayConstant.Separator),
+            req.MatchMethods?.JoinAsString(GatewayConstant.Separator), req.MatchPath);
+
+        var transforms = req.Transforms
+            .SelectMany(x => x.Value
+                .Select(y => new ServiceRouteTransform() { GroupIndex = x.Key, Key = y.Key, Value = y.Value })).ToList();
+
+        var route = new ServiceRoute(req.Name, req.ServiceClusterId, req.AuthorizationPolicy, req.CorsPolicy, req.Order, match, transforms);
 
         await _routeRepository.InsertAsync(route);
 

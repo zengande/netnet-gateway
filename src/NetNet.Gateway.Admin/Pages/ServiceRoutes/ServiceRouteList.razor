@@ -8,9 +8,10 @@
        ShowToolbar="true" ShowSearch="true" ShowAdvancedSearch="false" ShowRefresh="false"
        ShowAddButton="false" ShowEditButton="false" ShowDeleteButton="false"
        ShowExtendButtons="true" ShowDefaultButtons="false"
-       ShowExtendEditButton="false" ShowExtendDeleteButton="false">
+       ShowExtendEditButton="false" ShowExtendDeleteButton="false"
+       @ref="RouteTable">
     <TableToolbarTemplate>
-            <TableToolbarButton Color="Color.Primary" Text="添加服务" OnClick="() => RedirectToEdit(null)"></TableToolbarButton>
+            <TableToolbarButton Color="Color.Primary" Text="添加路由" OnClick="() => RedirectToEdit(null)"></TableToolbarButton>
         </TableToolbarTemplate>
         <RowButtonTemplate>
             <TableCellButton Color="Color.Primary" Icon="fa-solid fa-pen" Text="编辑" OnClick="() => RedirectToEdit(context)"/>

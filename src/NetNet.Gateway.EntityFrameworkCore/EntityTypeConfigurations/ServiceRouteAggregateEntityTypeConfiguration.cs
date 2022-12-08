@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.ValueGeneration;
 using NetNet.Gateway.AggregateModels.ServiceRouteAggregate;
@@ -41,6 +42,28 @@ internal static class ServiceRouteAggregateEntityTypeConfiguration
         builder.Property(x => x.Order)
             .IsRequired(false)
             .HasComment("排序");
+
+        builder.OwnsMany(x => x.Transforms, transform =>
+        {
+            transform.ToTable(GatewayEfConstant.TablePrefix + "ServiceRouteTransforms")
+                .HasAnnotation(RelationalAnnotationNames.Comment, "服务路由请求转换配置");
+            transform.WithOwner().HasForeignKey("ServiceRouteId");
+            transform.Property<Guid>("Id")
+                .HasValueGenerator<SequentialGuidValueGenerator>()
+                .ValueGeneratedOnAdd();
+            transform.HasKey("Id");
+            transform.Property(x => x.GroupIndex)
+                .IsRequired()
+                .HasComment("分组索引");
+            transform.Property(x => x.Key)
+                .IsRequired()
+                .HasMaxLength(200)
+                .HasComment("Key");
+            transform.Property(x => x.Value)
+                .IsRequired()
+                .HasMaxLength(500)
+                .HasComment("Value");
+        });
 
         builder.HasOne(x => x.Match);
     }

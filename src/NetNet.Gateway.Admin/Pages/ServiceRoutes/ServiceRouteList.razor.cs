@@ -11,6 +11,8 @@ public partial class ServiceRouteList
     [Inject, NotNull] private NavigationManager? NavigationManager { get; set; }
     [Inject, NotNull] private IServiceRouteAppService? ServiceRouteAppService { get; set; }
 
+    [NotNull] private Table<QueryServiceRouteRes>? RouteTable { get; set; }
+
     private async Task<QueryData<QueryServiceRouteRes>> OnQueryAsync(QueryPageOptions arg)
     {
         var req = new QueryServiceRouteReq
@@ -28,8 +30,10 @@ public partial class ServiceRouteList
         NavigationManager.NavigateTo($"/ServiceRoutes/Edit/{row?.Id}");
     }
 
-    private Task DeleteAsync(QueryServiceRouteRes row)
+    private async Task DeleteAsync(QueryServiceRouteRes row)
     {
-        return Task.CompletedTask;
+        await ServiceRouteAppService.DeleteAsync(row.Id);
+
+        await RouteTable.QueryAsync();
     }
 }

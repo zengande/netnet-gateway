@@ -313,6 +313,48 @@ namespace NetNet.Gateway.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("NetNet.Gateway.AggregateModels.ServiceRouteAggregate.ServiceRoute", b =>
+                {
+                    b.OwnsMany("NetNet.Gateway.AggregateModels.ServiceRouteAggregate.ServiceRouteTransform", "Transforms", b1 =>
+                        {
+                            b1.Property<Guid>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<int>("GroupIndex")
+                                .HasColumnType("int")
+                                .HasComment("分组索引");
+
+                            b1.Property<string>("Key")
+                                .IsRequired()
+                                .HasMaxLength(200)
+                                .HasColumnType("nvarchar(200)")
+                                .HasComment("Key");
+
+                            b1.Property<Guid>("ServiceRouteId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasMaxLength(500)
+                                .HasColumnType("nvarchar(500)")
+                                .HasComment("Value");
+
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("ServiceRouteId");
+
+                            b1.ToTable("GW_ServiceRouteTransforms", (string)null);
+
+                            b1.HasComment("服务路由请求转换配置");
+
+                            b1.WithOwner()
+                                .HasForeignKey("ServiceRouteId");
+                        });
+
+                    b.Navigation("Transforms");
+                });
+
             modelBuilder.Entity("NetNet.Gateway.AggregateModels.ServiceRouteAggregate.ServiceRouteMatch", b =>
                 {
                     b.HasOne("NetNet.Gateway.AggregateModels.ServiceRouteAggregate.ServiceRoute", null)
@@ -329,7 +371,8 @@ namespace NetNet.Gateway.Migrations
 
             modelBuilder.Entity("NetNet.Gateway.AggregateModels.ServiceRouteAggregate.ServiceRoute", b =>
                 {
-                    b.Navigation("Match");
+                    b.Navigation("Match")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

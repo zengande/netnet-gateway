@@ -23,10 +23,9 @@ public class ServiceRouteMatch : Entity<Guid>
 
     private ServiceRouteMatch() { }
 
-    public ServiceRouteMatch(Guid serviceRouteId, string? hosts, string? methods, string? path)
+    public ServiceRouteMatch(string? hosts, string? methods, string? path)
         : this()
     {
-        ServiceRouteId = serviceRouteId;
         Hosts = hosts;
         Methods = methods;
         Path = path;

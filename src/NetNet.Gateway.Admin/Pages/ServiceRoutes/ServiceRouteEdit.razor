@@ -51,24 +51,35 @@
                     </div>
                 </div>
 
-                <div class="gw-section-header mb-3">请求转换</div>
+                <div class="row justify-content-between">
+                    <div class="gw-section-header mb-3 col">请求转换</div>
+
+                    <div class="col" style="text-align: right">
+                        <Button Size="Size.ExtraSmall" OnClick="() => OnEditTransform()"
+                                Icon="fas fa-add" Text="添加">
+                        </Button>
+                    </div>
+                </div>
                 <div class="row pb-4">
                     <div class="col-12">
-                        <div class="row justify-content-end">
-                            <div class="col" style="text-align: right">
-                                <Button Size="Size.ExtraSmall" OnClick="() => EditTransformModel.Toggle()"
-                                        Icon="fas fa-add" Text="添加">
-                                </Button>
-                            </div>
-                        </div>
-                        @foreach (var transform in _input.Transforms)
+                        @foreach (var transforms in _input.Transforms)
                         {
-                            <div class="row transform-group">
-                                @foreach (var kv in transform)
-                                {
-                                    <div class="col-6">@kv.Key</div>
-                                    <div class="col-6">@kv.Value</div>
-                                }
+                            <div class="transform-group p-2 mb-2">
+                                <div class="row g-0">
+                                    <div class="col-11">
+                                        @foreach (var transform in transforms.Value)
+                                        {
+                                            <div>
+                                                <Badge>@transform.Key : @transform.Value</Badge>
+                                            </div>
+                                        }
+                                    </div>
+                                    <div class="col-1 row g-0 justify-content-end align-items-center">
+                                        <Button Size="Size.Small" Color="Color.None" IsAsync="true"
+                                                IsOutline="true" Icon="fas fa-pen" OnClick="() => OnEditTransform(transforms.Key)">
+                                        </Button>
+                                    </div>
+                                </div>
                             </div>
                         }
                     </div>
@@ -84,10 +95,26 @@
     </div>
 </ValidateForm>
 
-<Modal @ref="EditTransformModel">
-    <ModalDialog IsCentered="true" Size="Size.Medium" Title="请求转换配置">
+<Modal @ref="EditTransformModal" OnCloseAsync="@OnEditTransformModalCloseAsync">
+    <ModalDialog IsCentered="true" ShowSaveButton="true" Size="Size.Large"
+                 Title="请求转换配置" OnSaveAsync="@OnSaveTransform">
         <BodyTemplate>
-            <DictionaryInput TKey="string" TValue="string" @bind-Data="@_selectedTransform"></DictionaryInput>
+            <div class="row justify-content-between">
+                <div class="col">
+                </div>
+                <div class="col" style="text-align: right">
+                    <Button Size="Size.ExtraSmall" OnClick="() => TransformTable.AddAsync()"
+                            Icon="fas fa-add" Text="添加项">
+                    </Button>
+                </div>
+            </div>
+            <Table @ref="TransformTable" TItem="ServiceRouteTransformDto" @bind-Items="@_selectedTransforms" IsTracking="true"
+                   EditMode="EditMode.InCell" ShowExtendButtons="true" ShowToastAfterSaveOrDeleteModel="false">
+                <TableColumns>
+                    <TableColumn @bind-Field="context.Key"></TableColumn>
+                    <TableColumn @bind-Field="context.Value"></TableColumn>
+                </TableColumns>
+            </Table>
         </BodyTemplate>
     </ModalDialog>
 </Modal>
