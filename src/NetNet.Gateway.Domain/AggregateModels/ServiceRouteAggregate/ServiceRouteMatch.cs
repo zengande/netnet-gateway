@@ -30,4 +30,11 @@ public class ServiceRouteMatch : Entity<Guid>
         Methods = methods;
         Path = path;
     }
+
+    public void Update(string? hosts, string? methods, string? path)
+    {
+        Hosts = hosts;
+        Methods = methods;
+        Path = path;
+    }
 }

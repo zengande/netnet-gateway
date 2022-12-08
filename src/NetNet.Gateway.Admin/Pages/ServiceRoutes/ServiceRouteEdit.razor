@@ -62,25 +62,32 @@
                 </div>
                 <div class="row pb-4">
                     <div class="col-12">
-                        @foreach (var transforms in _input.Transforms)
+                        @if (_input.Transforms.Any())
                         {
-                            <div class="transform-group p-2 mb-2">
-                                <div class="row g-0">
-                                    <div class="col-11">
-                                        @foreach (var transform in transforms.Value)
-                                        {
-                                            <div>
-                                                <Badge>@transform.Key : @transform.Value</Badge>
-                                            </div>
-                                        }
-                                    </div>
-                                    <div class="col-1 row g-0 justify-content-end align-items-center">
-                                        <Button Size="Size.Small" Color="Color.None" IsAsync="true"
-                                                IsOutline="true" Icon="fas fa-pen" OnClick="() => OnEditTransform(transforms.Key)">
-                                        </Button>
+                            foreach (var transforms in _input.Transforms)
+                            {
+                                <div class="transform-group p-2 mb-2">
+                                    <div class="row g-0">
+                                        <div class="col-11">
+                                            @foreach (var transform in transforms.Value)
+                                            {
+                                                <div>
+                                                    <Badge>@transform.Key : @transform.Value</Badge>
+                                                </div>
+                                            }
+                                        </div>
+                                        <div class="col-1 row g-0 justify-content-end align-items-center">
+                                            <Button Size="Size.Small" Color="Color.None" IsAsync="true"
+                                                    IsOutline="true" Icon="fas fa-pen" OnClick="() => OnEditTransform(transforms.Key)">
+                                            </Button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="text-center">无数据</div>
                         }
                     </div>
                 </div>

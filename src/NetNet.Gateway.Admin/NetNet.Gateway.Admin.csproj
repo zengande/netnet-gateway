@@ -21,6 +21,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\NetNet.Gateway.Application\NetNet.Gateway.Application.csproj" />
+      <ProjectReference Include="..\NetNet.Gateway.Distributed\NetNet.Gateway.Distributed.csproj" />
       <ProjectReference Include="..\NetNet.Gateway.EntityFrameworkCore\NetNet.Gateway.EntityFrameworkCore.csproj" />
     </ItemGroup>
 

@@ -69,8 +69,15 @@ public class ServiceRouteAppService : GatewayAppService, IServiceRouteAppService
 
     public async Task<bool> UpdateAsync(Guid id, InputServiceRouteReq req)
     {
+        var match = new ServiceRouteMatch(req.MatchHosts?.JoinAsString(GatewayConstant.Separator),
+            req.MatchMethods?.JoinAsString(GatewayConstant.Separator), req.MatchPath);
+
+        var transforms = req.Transforms
+            .SelectMany(x => x.Value
+                .Select(y => new ServiceRouteTransform() { GroupIndex = x.Key, Key = y.Key, Value = y.Value })).ToList();
+
         var route = await _routeRepository.GetAsync(id);
-        // TODO update
+        route.Update(req.Name, req.ServiceClusterId, req.AuthorizationPolicy, req.CorsPolicy, req.Order, match, transforms);
 
         await _routeRepository.UpdateAsync(route);
 

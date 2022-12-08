@@ -1,3 +1,4 @@
+using NetNet.Gateway.Events.ServiceClusters;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Yarp.ReverseProxy.Configuration;
@@ -55,6 +56,9 @@ public sealed class ServiceCluster : AuditedAggregateRoot<Guid>
         LoadBalancingPolicy = loadBalancingPolicy;
         HttpRequestConfig = httpRequestConfig;
         HttpClientConfig = httpClientConfig;
+
+        // 新增服务后通知配置改变
+        AddLocalEvent(new ServiceClusterChangedDomainEvent());
     }
 
     public void AddDestination(string key, string address, string health, Dictionary<string, string> metadata)

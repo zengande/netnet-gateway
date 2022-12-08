@@ -1,3 +1,4 @@
+using NetNet.Gateway.Events.ServiceRoutes;
 using Volo.Abp.Domain.Entities.Auditing;
 
 namespace NetNet.Gateway.AggregateModels.ServiceRouteAggregate;
@@ -58,5 +59,24 @@ public sealed class ServiceRoute : AuditedAggregateRoot<Guid>
         Order = order;
         Match = match;
         Transforms = transforms;
+
+        // 新增服务后通知配置改变
+        AddLocalEvent(new ServiceRouteChangedDomainEvent());
+    }
+
+    public void Update(string name, Guid serviceClusterId, string? authorizationPolicy, string? crosPolicy, int? order,
+        ServiceRouteMatch match, List<ServiceRouteTransform> transforms)
+    {
+        Name = name;
+        ServiceClusterId = serviceClusterId;
+        AuthorizationPolicy = authorizationPolicy;
+        CrosPolicy = crosPolicy;
+        Order = order;
+        Transforms = transforms;
+
+        Match.Update(match.Hosts, match.Methods, match.Path);
+
+        // 通知配置改变
+        AddLocalEvent(new ServiceRouteChangedDomainEvent());
     }
 }

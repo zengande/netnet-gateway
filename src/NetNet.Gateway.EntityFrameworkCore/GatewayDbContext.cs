@@ -43,4 +43,9 @@ public class GatewayDbContext : AbpDbContext<GatewayDbContext>
         modelBuilder.ConfigureServiceClusterAggregate();
         modelBuilder.ConfigureServiceRouteAggregate();
     }
+
+    public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = new CancellationToken())
+    {
+        return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+    }
 }
