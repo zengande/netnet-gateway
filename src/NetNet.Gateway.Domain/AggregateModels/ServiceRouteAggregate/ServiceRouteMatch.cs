@@ -1,4 +1,6 @@
+using NetNet.Gateway.Extensions;
 using Volo.Abp.Domain.Entities;
+using Yarp.ReverseProxy.Configuration;
 
 namespace NetNet.Gateway.AggregateModels.ServiceRouteAggregate;
 
@@ -37,4 +39,9 @@ public class ServiceRouteMatch : Entity<Guid>
         Methods = methods;
         Path = path;
     }
+
+    public RouteMatch ToYarpRouteMatch() => new()
+    {
+        Hosts = Hosts.SplitAs(GatewayConstant.Separator)?.ToList(), Methods = Methods.SplitAs(GatewayConstant.Separator)?.ToList(), Path = Path
+    };
 }

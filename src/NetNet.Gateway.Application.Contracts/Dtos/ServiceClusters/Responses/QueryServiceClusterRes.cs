@@ -20,11 +20,6 @@ public class QueryServiceClusterRes : EntityDto<Guid>
     public int DestinationCount { get; set; }
 
     /// <summary>
-    /// 描述
-    /// </summary>
-    public string Description { get; set; }
-
-    /// <summary>
     /// 创建时间
     /// </summary>
     public DateTime CreationTime { get; set; }

@@ -46,7 +46,7 @@ internal static class ServiceRouteAggregateEntityTypeConfiguration
         builder.OwnsMany(x => x.Transforms, transform =>
         {
             transform.ToTable(GatewayEfConstant.TablePrefix + "ServiceRouteTransforms")
-                .HasAnnotation(RelationalAnnotationNames.Comment, "服务路由请求转换配置");
+                .HasComment("服务路由请求转换配置");
             transform.WithOwner().HasForeignKey("ServiceRouteId");
             transform.Property<Guid>("Id")
                 .HasValueGenerator<SequentialGuidValueGenerator>()

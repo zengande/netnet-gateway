@@ -3,12 +3,22 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using NetNet.Gateway.Dtos.ServiceClusters.Requests;
 using System.Diagnostics.CodeAnalysis;
+using System.Net;
 using Volo.Abp.Guids;
 
 namespace NetNet.Gateway.Admin.Pages.ServiceClusters;
 
 public partial class ServiceClusterEdit
 {
+    private static readonly IEnumerable<SelectedItem> HttpVersionSelections = new List<SelectedItem>()
+    {
+        new("", "请选择"),
+        new(HttpVersion.Version10.ToString(), "HTTP " + HttpVersion.Version10),
+        new(HttpVersion.Version11.ToString(), "HTTP " + HttpVersion.Version11),
+        new(HttpVersion.Version20.ToString(), "HTTP " + HttpVersion.Version20),
+        new(HttpVersion.Version30.ToString(), "HTTP " + HttpVersion.Version30),
+    };
+
     [Inject] [NotNull] private IServiceClusterAppService? ServiceClusterAppService { get; set; }
     [Inject] [NotNull] private NavigationManager? NavigationManager { get; set; }
     [Inject] [NotNull] private IGuidGenerator? GuidGenerator { get; set; }
@@ -37,8 +47,10 @@ public partial class ServiceClusterEdit
         _input = new()
         {
             Name = serviceCluster.Name,
-            Description = serviceCluster.Description,
             LoadBalancingPolicy = serviceCluster.LoadBalancingPolicy,
+            HttpClientConfig = serviceCluster.HttpClientConfig ?? new(),
+            HttpRequestConfig = serviceCluster.HttpRequestConfig ?? new(),
+            HealthCheckConfig = serviceCluster.HealthCheckConfig ?? new(),
             Destinations = serviceCluster.Destinations.Select(x => new InputServiceDestinationReq
             {
                 Id = x.Id,

@@ -1,5 +1,7 @@
 using NetNet.Gateway.Events.ServiceRoutes;
+using NetNet.Gateway.Extensions;
 using Volo.Abp.Domain.Entities.Auditing;
+using Yarp.ReverseProxy.Configuration;
 
 namespace NetNet.Gateway.AggregateModels.ServiceRouteAggregate;
 
@@ -79,4 +81,19 @@ public sealed class ServiceRoute : AuditedAggregateRoot<Guid>
         // 通知配置改变
         AddLocalEvent(new ServiceRouteChangedDomainEvent());
     }
+
+    public RouteConfig ToYarpRouteConfig() => new()
+    {
+        RouteId = Id.ToString(),
+        AuthorizationPolicy = AuthorizationPolicy,
+        CorsPolicy = CrosPolicy,
+        ClusterId = ServiceClusterId.ToString(),
+        Order = Order,
+        Match = Match.ToYarpRouteMatch(),
+        Transforms = Transforms
+            .GroupBy(x => x.GroupIndex)
+            .OrderBy(x => x.Key)
+            .Select(x => x.ToDictionary(y => y.Key, y => y.Value))
+            .ToList()
+    };
 }

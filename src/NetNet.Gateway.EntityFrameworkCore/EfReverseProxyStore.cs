@@ -74,6 +74,7 @@ public class EfReverseProxyStore : IReverseProxyStore, ISingletonDependency
 
         var clusters = dbContext.ServiceClusters
             .Include(x => x.Destinations)
+            .Include(x => x.HealthCheckConfig)
             .AsNoTracking()
             .ToList();
         var routes = dbContext.ServiceRoutes
@@ -86,50 +87,9 @@ public class EfReverseProxyStore : IReverseProxyStore, ISingletonDependency
 
     private GatewayProxyConfig ConstructConfigFromEntity(List<ServiceCluster> clusters, List<ServiceRoute> routes)
     {
-        var clusterConfigs = clusters.Select(cluster => new ClusterConfig()
-        {
-            ClusterId = cluster.Id.ToString(),
-            LoadBalancingPolicy = cluster.LoadBalancingPolicy,
-            Destinations = cluster.Destinations
-                .ToDictionary(x => x.Key, x => new DestinationConfig { Address = x.Address, Health = x.Health, Metadata = x.Metadata }),
-            HttpClient = new()
-            {
-                DangerousAcceptAnyServerCertificate = cluster.HttpClientConfig?.DangerousAcceptAnyServerCertificate,
-                EnableMultipleHttp2Connections = cluster.HttpClientConfig?.EnableMultipleHttp2Connections,
-                MaxConnectionsPerServer = cluster.HttpClientConfig?.MaxConnectionsPerServer,
-                RequestHeaderEncoding = cluster.HttpClientConfig?.RequestHeaderEncoding,
-                SslProtocols = cluster.HttpClientConfig?.SslProtocols
-            },
-            HttpRequest = new()
-            {
-                ActivityTimeout = cluster.HttpRequestConfig?.ActivityTimeoutSeconds.HasValue == true
-                    ? TimeSpan.FromSeconds(cluster.HttpRequestConfig!.ActivityTimeoutSeconds.Value)
-                    : null,
-                AllowResponseBuffering = cluster.HttpRequestConfig?.AllowResponseBuffering,
-                Version = cluster.HttpRequestConfig?.Version,
-                VersionPolicy = cluster.HttpRequestConfig?.VersionPolicy
-            }
-        }).ToList();
+        var clusterConfigs = clusters.Select(cluster => cluster.ToYarpClusterConfig()).ToList();
 
-        var routeConfigs = routes.Select(route => new RouteConfig
-        {
-            RouteId = route.Id.ToString(),
-            AuthorizationPolicy = route.AuthorizationPolicy,
-            CorsPolicy = route.CrosPolicy,
-            ClusterId = route.ServiceClusterId.ToString(),
-            Order = route.Order,
-            Match = new()
-            {
-                Hosts = route.Match.Hosts.SplitAs(GatewayConstant.Separator)?.ToList(),
-                Methods = route.Match.Methods.SplitAs(GatewayConstant.Separator)?.ToList(),
-                Path = route.Match.Path
-            },
-            Transforms = route.Transforms
-                .GroupBy(x => x.GroupIndex)
-                .OrderBy(x => x.Key)
-                .Select(x => x.ToDictionary(y => y.Key, y => y.Value))
-                .ToList()
-        }).ToList();
+        var routeConfigs = routes.Select(route => route.ToYarpRouteConfig()).ToList();
 
         return new(routeConfigs, clusterConfigs);
     }

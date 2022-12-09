@@ -1,6 +1,8 @@
 using AutoMapper;
 using NetNet.Gateway.AggregateModels.ServiceClusterAggregate;
 using NetNet.Gateway.AggregateModels.ServiceRouteAggregate;
+using NetNet.Gateway.Dtos.ServiceClusters;
+using NetNet.Gateway.Dtos.ServiceClusters.Requests;
 using NetNet.Gateway.Dtos.ServiceClusters.Responses;
 using NetNet.Gateway.Dtos.ServiceRoutes;
 using NetNet.Gateway.Dtos.ServiceRoutes.Responses;
@@ -14,6 +16,17 @@ public class GatewayAutoMapperProfile : Profile
     {
         CreateMap<ServiceCluster, GetServiceClusterRes>();
         CreateMap<ServiceDestination, ServiceDestinationRes>();
+        CreateMap<InputServiceDestinationReq, ServiceDestination>();
+        CreateMap<ServiceClusterHttpRequestConfig, ServiceClusterHttpRequestConfigDto>()
+            .ReverseMap();
+        CreateMap<ServiceClusterHttpClientConfig, ServiceClusterHttpClientConfigDto>()
+            .ReverseMap();
+        CreateMap<ServiceClusterHealthCheckConfig, ServiceClusterHealthCheckConfigDto>()
+            .ReverseMap();
+        CreateMap<ServiceClusterActiveHealthCheckConfig, ServiceClusterActiveHealthCheckConfigDto>()
+            .ReverseMap();
+        CreateMap<ServiceClusterPassiveHealthCheckConfig, ServiceClusterPassiveHealthCheckConfigDto>()
+            .ReverseMap();
 
         CreateMap<ServiceRoute, GetServiceRouteRes>()
             .ForMember(dest => dest.MatchHosts,

@@ -17,13 +17,22 @@ public class InputServiceClusterReq
     public string LoadBalancingPolicy { get; set; }
 
     /// <summary>
-    /// 描述
-    /// </summary>
-    [MaxLength(500)]
-    public string Description { get; set; }
-
-    /// <summary>
     /// 服务终点
     /// </summary>
     public IEnumerable<InputServiceDestinationReq> Destinations { get; set; } = new List<InputServiceDestinationReq>();
+
+    /// <summary>
+    /// 健康检测配置
+    /// </summary>
+    public ServiceClusterHealthCheckConfigDto HealthCheckConfig { get; set; } = new();
+
+    /// <summary>
+    /// http 请求配置
+    /// </summary>
+    public ServiceClusterHttpRequestConfigDto HttpRequestConfig { get; set; } = new();
+
+    /// <summary>
+    /// httpclient 配置
+    /// </summary>
+    public ServiceClusterHttpClientConfigDto HttpClientConfig { get; set; } = new();
 }

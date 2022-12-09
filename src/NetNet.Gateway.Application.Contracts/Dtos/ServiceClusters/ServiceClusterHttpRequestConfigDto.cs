@@ -1,11 +1,8 @@
-using NetNet.Gateway.Extensions;
 using System.Net;
-using Volo.Abp.Domain.Values;
-using Yarp.ReverseProxy.Forwarder;
 
-namespace NetNet.Gateway.AggregateModels.ServiceClusterAggregate;
+namespace NetNet.Gateway.Dtos.ServiceClusters;
 
-public class ServiceClusterHttpRequestConfig : ValueObject
+public class ServiceClusterHttpRequestConfigDto
 {
     /// <summary>
     /// 超时秒数 <br/>
@@ -24,26 +21,10 @@ public class ServiceClusterHttpRequestConfig : ValueObject
     /// <summary>
     /// Preferred version of the outgoing request. The default is HTTP/2.0.
     /// </summary>
-    public Version? Version { get; set; } = HttpVersion.Version20;
+    public string? Version { get; set; }
 
     /// <summary>
     /// The policy applied to version selection, e.g. whether to prefer downgrades, upgrades or request an exact version. The default is RequestVersionOrLower.
     /// </summary>
-    public HttpVersionPolicy? VersionPolicy { get; set; } = HttpVersionPolicy.RequestVersionOrLower;
-
-    protected override IEnumerable<object> GetAtomicValues()
-    {
-        yield return ActivityTimeoutSeconds;
-        yield return AllowResponseBuffering;
-        yield return Version;
-        yield return VersionPolicy;
-    }
-
-    public ForwarderRequestConfig ToYarpForwarderRequestConfig() => new()
-    {
-        ActivityTimeout = ActivityTimeoutSeconds.ToTimeSpan(),
-        AllowResponseBuffering = AllowResponseBuffering,
-        Version = Version,
-        VersionPolicy = VersionPolicy
-    };
+    public HttpVersionPolicy? VersionPolicy { get; set; }
 }

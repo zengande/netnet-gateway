@@ -34,10 +34,17 @@ public sealed class ServiceDestination : AuditedEntity<Guid>
 
     private ServiceDestination() { }
 
-    public ServiceDestination(Guid serviceClusterId, string key, string address, string health, Dictionary<string, string> metadata)
+    public ServiceDestination(string key, string address, string health, Dictionary<string, string> metadata)
         : this()
     {
-        ServiceClusterId = serviceClusterId;
+        Key = key;
+        Address = address;
+        Health = health;
+        Metadata = metadata;
+    }
+
+    public void Update(string key, string address, string health, Dictionary<string, string> metadata)
+    {
         Key = key;
         Address = address;
         Health = health;
