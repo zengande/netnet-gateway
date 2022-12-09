@@ -55,7 +55,7 @@ public partial class ServiceRouteEdit
                 Order = route.Order,
                 AuthorizationPolicy = route.AuthorizationPolicy,
                 CorsPolicy = route.CorsPolicy,
-                MatchHosts = route.MatchHosts,
+                MatchHosts = route.MatchHosts ?? new(),
                 MatchMethods = route.MatchMethods,
                 MatchHeaders = route.MatchHeaders,
                 MatchPath = route.MatchPath,

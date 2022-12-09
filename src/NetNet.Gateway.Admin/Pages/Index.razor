@@ -12,6 +12,10 @@
         <div class="col-4">
             <CapsuleBadge Size="Size.Small" LeftText="Hello" RightText="World"/>
         </div>
+
+        <div class="col-4">
+            <NetNetInputList @bind-Items="@_strings"></NetNetInputList>
+        </div>
     </div>
 </div>
 
@@ -19,9 +23,14 @@
 
     private Dictionary<string, string> _dic = new()
     {
-        {"k1", "v1"},
-        {"k2", "v2"},
-        {"k3", "v3"},
+        { "k1", "v1" },
+        { "k2", "v2" },
+        { "k3", "v3" },
+    };
+
+    private IEnumerable<string> _strings = new List<string>()
+    {
+        "1", "2", "3"
     };
 
 }

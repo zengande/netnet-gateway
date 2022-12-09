@@ -34,7 +34,7 @@ public class InputServiceRouteReq
     /// <summary>
     /// 匹配请求主机
     /// </summary>
-    public List<string>? MatchHosts { get; set; }
+    public IEnumerable<string>? MatchHosts { get; set; }
 
     /// <summary>
     /// 匹配请求方法

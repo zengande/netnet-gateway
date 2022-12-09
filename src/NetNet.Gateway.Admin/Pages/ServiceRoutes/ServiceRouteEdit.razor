@@ -36,7 +36,7 @@
                         </ServiceRouteMatchTable>
                     </div>
                     <div class="col-12">
-                        <BootstrapInput @bind-Value="@_input.MatchHosts" DisplayText="请求主机" PlaceHolder="主机地址"></BootstrapInput>
+                        <NetNetInputList @bind-Items="@_input.MatchHosts" DisplayText="请求主机"></NetNetInputList>
                     </div>
                     <div class="col-12">
                         <MultiSelect DisplayText="请求方法" PlaceHolder="选择匹配的Http方法" Items="@HttpMethodSelectItems" @bind-Value="@_input.MatchMethods"/>
@@ -54,7 +54,7 @@
                 <div class="row justify-content-between m-0">
                     <div class="gw-section-header mb-3 col">请求转换</div>
 
-                    <div class="col" style="text-align: right">
+                    <div class="col-auto p-0" style="text-align: right">
                         <Button Size="Size.ExtraSmall" OnClick="() => OnEditTransform()"
                                 Icon="fas fa-add" Text="添加">
                         </Button>
