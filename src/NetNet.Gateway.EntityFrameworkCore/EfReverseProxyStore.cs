@@ -51,11 +51,15 @@ public class EfReverseProxyStore : IReverseProxyStore, ISingletonDependency
 
     public void RaiseConfigChanged()
     {
+        _logger.LogInformation("【YARP】配置发生已改变：{0}", nameof(RaiseConfigChanged));
+
         OnConfigChanged.Invoke();
     }
 
     public void ReloadConfig()
     {
+        _logger.LogInformation("【YARP】重新从数据加载配置");
+
         // 重新从数据库获取
         LoadFromDataBaseToCache();
 
@@ -69,6 +73,8 @@ public class EfReverseProxyStore : IReverseProxyStore, ISingletonDependency
     {
         var config = GetFromDataBase();
         SetToCache(config);
+
+        _logger.LogInformation("【YARP】配置重新加载完成，当前版本：{0}", config.Version);
     }
 
     private GatewayProxyConfig GetFromDataBase()
@@ -109,7 +115,7 @@ public class EfReverseProxyStore : IReverseProxyStore, ISingletonDependency
         }
         catch (Exception e)
         {
-            _logger.LogWarning(e, "Deserialize ProxyConfig error");
+            _logger.LogWarning(e, "【YARP】反序列化错误");
         }
 
         return default;

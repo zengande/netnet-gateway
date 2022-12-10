@@ -30,7 +30,7 @@ public class ServiceClusterOrRouteChangedDomainEventHandler
 
     private Task RaiseConfigChanged()
     {
-        _logger.LogInformation("通知 YARP 配置发生改变");
+        _logger.LogInformation("通知 Ingress 节点 YARP 配置发生改变");
 
         return Task.Run(_store.RaiseConfigChanged);
     }
