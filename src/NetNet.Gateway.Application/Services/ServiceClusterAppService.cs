@@ -1,4 +1,5 @@
 ﻿using NetNet.Gateway.AggregateModels.ServiceClusterAggregate;
+using NetNet.Gateway.AggregateModels.ServiceRouteAggregate;
 using NetNet.Gateway.Dtos.ServiceClusters;
 using NetNet.Gateway.Dtos.ServiceClusters.Requests;
 using NetNet.Gateway.Dtos.ServiceClusters.Responses;
@@ -9,22 +10,28 @@ namespace NetNet.Gateway.Services;
 public class ServiceClusterAppService : GatewayAppService, IServiceClusterAppService
 {
     private readonly IServiceClusterRepository _clusterRepository;
+    private readonly IServiceRouteRepository _routeRepository;
 
-    public ServiceClusterAppService(IServiceClusterRepository clusterRepository)
+    public ServiceClusterAppService(IServiceClusterRepository clusterRepository, IServiceRouteRepository routeRepository)
     {
         _clusterRepository = clusterRepository;
+        _routeRepository = routeRepository;
     }
 
     public async Task<PagedResultDto<QueryServiceClusterRes>> QueryAsync(QueryServiceClusterReq req)
     {
+        var routeQueryable = await _routeRepository.GetQueryableAsync();
         var clusterQueryable = await _clusterRepository.WithDetailsAsync(x => x.Destinations, x => x.HealthCheckConfig);
         var queryable = from cluster in clusterQueryable
+            let routeCount = routeQueryable.Count(route => route.ServiceClusterId == cluster.Id)
             orderby cluster.CreationTime descending
             select new QueryServiceClusterRes
             {
                 Id = cluster.Id,
                 Name = cluster.Name,
+                LoadBalancePolicy = cluster.LoadBalancingPolicy,
                 DestinationCount = cluster.Destinations.Count,
+                RouteCount = routeCount,
                 CreationTime = cluster.CreationTime,
                 Destinations = cluster.Destinations
                     .Select(x => new ServiceDestinationRes { Key = x.Key, Address = x.Address, Health = x.Health })
@@ -81,6 +88,13 @@ public class ServiceClusterAppService : GatewayAppService, IServiceClusterAppSer
 
         cluster.Update(req.Name, req.LoadBalancingPolicy, httpRequestConfig, httpClientConfig, healthCheckConfig, destinations);
         await _clusterRepository.UpdateAsync(cluster);
+
+        return true;
+    }
+
+    public async Task<bool> DeleteAsync(Guid id)
+    {
+        await _clusterRepository.DeleteAsync(id);
 
         return true;
     }

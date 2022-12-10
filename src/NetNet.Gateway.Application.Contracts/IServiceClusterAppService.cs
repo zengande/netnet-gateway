@@ -11,4 +11,5 @@ public interface IServiceClusterAppService : IApplicationService
     Task<GetServiceClusterRes> GetAsync(Guid id);
     Task<Guid> CreateAsync(InputServiceClusterReq req);
     Task<bool> UpdateAsync(Guid id, InputServiceClusterReq req);
+    Task<bool> DeleteAsync(Guid id);
 }

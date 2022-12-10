@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col form-label mb-3">@(DisplayText ?? "Values")</div>
         <div class="col-auto">
-            <Button Size="Size.ExtraSmall" Icon="fas fa-add" Text="添加项" OnClick="@OnAddClick"></Button>
+            <Button Size="Size.ExtraSmall" Icon="fas fa-add" Text="添加项" OnClick="@OnAddClick" IsDisabled="_showTemporary"></Button>
         </div>
     </div>
     <div class="row g-3">
@@ -13,8 +13,14 @@
             {
                 var index = i;
                 <div class="row g-3 mt-0">
+                    @if (ShowRowNumber)
+                    {
+                        <div class="col-auto d-flex align-items-center">
+                            <div class="row-number">@(index + 1)</div>
+                        </div>
+                    }
                     <div class="col">
-                        <input required="required" class="form-control @(_invalidIndexSet.Contains(index) ? "is-invalid" : "")"
+                        <input data-list-input-index="@index" required="required" class="form-control @(_invalidIndexSet.Contains(index) ? "is-invalid" : "")"
                                value="@items[i]" @onchange="@((e) => OnItemChange(index, e))"/>
                     </div>
                     <div class="col-auto d-flex justify-content-between align-items-center p-0">
@@ -31,6 +37,12 @@
         }
         <Block Condition="@_showTemporary">
             <div class="row g-3 mt-0">
+                @if (ShowRowNumber)
+                {
+                    <div class="col-auto d-flex align-items-center">
+                        <div class="row-number temporary">@((Items?.Count() ?? 0) + 1)</div>
+                    </div>
+                }
                 <div class="col">
                     <input required="required" class="form-control @(string.IsNullOrWhiteSpace(_temporaryValue) ? "is-invalid" : "")"
                            value="@_temporaryValue" @onchange="OnTemporaryValueChange"/>
@@ -61,6 +73,11 @@
      */
     [Parameter]
     public bool ShowEmpty { get; set; } = true;
+
+    /**
+     * 是否显示行号
+     */
+    public bool ShowRowNumber { get; set; } = true;
 
     [Parameter]
     public EventCallback<IEnumerable<string>> ItemsChanged { get; set; }

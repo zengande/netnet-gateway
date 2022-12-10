@@ -15,9 +15,14 @@ public class QueryServiceClusterRes : EntityDto<Guid>
     public string? LoadBalancePolicy { get; set; }
 
     /// <summary>
-    /// 目的地数量
+    /// 终点数量
     /// </summary>
     public int DestinationCount { get; set; }
+
+    /// <summary>
+    /// 路由数量
+    /// </summary>
+    public int RouteCount { get; set; }
 
     /// <summary>
     /// 创建时间

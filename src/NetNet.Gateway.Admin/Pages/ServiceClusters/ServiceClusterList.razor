@@ -4,7 +4,7 @@
 <PageHeader>服务管理</PageHeader>
 
 <Table TItem="QueryServiceClusterRes" @ref="@Table"
-       IsPagination="true" PageItemsSource="new[] { 10, 20 }" IsStriped="true" IsBordered="true"
+       IsPagination="true" PageItemsSource="new[] {10, 20}" IsStriped="true" IsBordered="true"
        ShowDetailRow="row => row.DestinationCount > 0" ShowSkeleton="true"
        ShowToolbar="true" ShowSearch="true" ShowDefaultButtons="false" ShowAdvancedSearch="false"
        OnDoubleClickRowCallback="OnDoubleClickRowCallback()!" ShowEmpty="true"
@@ -19,10 +19,11 @@
         <TableCellButton Color="Color.Danger" Icon="fa-solid fa-remove" Text="删除" IsAsync="true" OnClick="() => DeleteClusterAsync(context)"/>
     </RowButtonTemplate>
     <TableColumns>
-        <TableColumn Text="名称" @bind-Field="@context.Name" Width="300"/>
+        <TableColumn Text="名称" @bind-Field="@context.Name"/>
         <TableColumn Text="负载均衡策略" @bind-Field="@context.LoadBalancePolicy" Width="200"/>
         <TableColumn Text="终点数量" @bind-Field="@context.DestinationCount" Width="200"/>
-        <TableColumn Text="创建时间" @bind-Field="@context.CreationTime"/>
+        <TableColumn Text="路由数量" @bind-Field="@context.RouteCount" Width="200"/>
+        <TableColumn Text="创建时间" @bind-Field="@context.CreationTime" Width="200"/>
     </TableColumns>
     <DetailRowTemplate>
         <Table TItem="ServiceDestinationRes" ShowToolbar="false"

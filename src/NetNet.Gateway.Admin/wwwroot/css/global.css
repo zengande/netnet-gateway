@@ -4,8 +4,8 @@ html, body {
 }
 
 :root {
-    --bs-primary: #7838ca;
-    --bs-primary-rgb: 120, 56, 202;
+    --bs-primary: #512bd4;
+    --bs-primary-rgb: 81,43,212;
     --bs-info: #0dcaf0;
     --bs-info-rgb: 13, 202, 240;
     --bs-link-color: #7838ca;
@@ -14,7 +14,7 @@ html, body {
 }
 
 .btn-primary {
-    --bs-btn-hover-bg: #642eaa;
+    --bs-btn-hover-bg: #4624bb;
 }
 
 
