@@ -1,4 +1,4 @@
-﻿using NetNet.Gateway.Admin.Data;
+﻿using NetNet.Gateway.Admin.Configurations;
 using Volo.Abp;
 using Volo.Abp.AspNetCore.Mvc;
 using Volo.Abp.Autofac;
@@ -20,12 +20,13 @@ public class GatewayAdminModule : AbpModule
 
         context.Services.AddRazorPages();
         context.Services.AddServerSideBlazor();
-        context.Services.AddSingleton<WeatherForecastService>();
         context.Services.AddBootstrapBlazor();
 
         context.Services
             .AddYarpDistributedRedis(configuration.GetValue<string>("Redis:Configuration"))
             .AddYarpRedisDistributedEventDispatcher();
+
+        Configure<GatewayAdminConfig>(configuration.GetSection("Gateway:Admin"));
     }
 
     public override void OnApplicationInitialization(ApplicationInitializationContext context)

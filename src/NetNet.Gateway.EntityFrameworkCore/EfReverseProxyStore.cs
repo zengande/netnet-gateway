@@ -8,6 +8,7 @@ using NetNet.Gateway.AggregateModels.ServiceRouteAggregate;
 using NetNet.Gateway.Extensions;
 using System.Text.Json;
 using Volo.Abp.DependencyInjection;
+using Volo.Abp.Timing;
 using Yarp.ReverseProxy.Configuration;
 
 namespace NetNet.Gateway;
@@ -23,12 +24,15 @@ public class EfReverseProxyStore : IReverseProxyStore, ISingletonDependency
     private readonly IDistributedCache _distributedCache;
     private readonly ILogger<EfReverseProxyStore> _logger;
     private readonly IServiceProvider _serviceProvider;
+    private readonly IClock _clock;
 
-    public EfReverseProxyStore(IDistributedCache distributedCache, ILogger<EfReverseProxyStore> logger, IServiceProvider serviceProvider)
+    public EfReverseProxyStore(IDistributedCache distributedCache, ILogger<EfReverseProxyStore> logger,
+        IServiceProvider serviceProvider, IClock clock)
     {
         _distributedCache = distributedCache;
         _logger = logger;
         _serviceProvider = serviceProvider;
+        _clock = clock;
 
         OnConfigChanged += ReloadConfig;
     }
@@ -87,11 +91,13 @@ public class EfReverseProxyStore : IReverseProxyStore, ISingletonDependency
 
     private GatewayProxyConfig ConstructConfigFromEntity(List<ServiceCluster> clusters, List<ServiceRoute> routes)
     {
+        var version = $"v{_clock.Now:yyMMddHHmmssfff}";
+
         var clusterConfigs = clusters.Select(cluster => cluster.ToYarpClusterConfig()).ToList();
 
         var routeConfigs = routes.Select(route => route.ToYarpRouteConfig()).ToList();
 
-        return new(routeConfigs, clusterConfigs);
+        return new(version, routeConfigs, clusterConfigs);
     }
 
     private GatewayProxyConfig? TryGetFromCache()

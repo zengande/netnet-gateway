@@ -53,7 +53,7 @@ public class EfCoreProxyConfigProvider : IProxyConfigProvider, IDisposable
 
             var oldToken = _changeToken;
             _changeToken = new CancellationTokenSource();
-            config.ChangeToken = new CancellationChangeToken(_changeToken.Token);
+            config.SetChangeToken(new CancellationChangeToken(_changeToken.Token));
             _config = config;
 
             try
