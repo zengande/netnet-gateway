@@ -1,4 +1,6 @@
-using NetNet.Gateway.Ingress.YarpReverseProxy;
+using NetNet.Gateway.Distributed;
+using NetNet.Gateway.Distributed.Configurations;
+using NetNet.Gateway.Distributed.Extensions;
 using NetNet.Gateway.Ingress.YarpReverseProxy.Middlewares;
 using Volo.Abp;
 using Volo.Abp.AspNetCore.Mvc;
@@ -12,6 +14,7 @@ namespace NetNet.Gateway.Ingress;
     typeof(AbpAspNetCoreMvcModule),
     typeof(AbpAutofacModule),
     typeof(AbpCachingStackExchangeRedisModule),
+    typeof(GatewayDistributedModule),
     typeof(GatewayEntityFrameworkCoreModule),
     typeof(GatewayApplicationModule)
 )]
@@ -21,10 +24,13 @@ public class GatewayIngressModule : AbpModule
     {
         var configuration = context.Services.GetConfiguration();
 
-        context.Services.AddYarpDistributedRedis(configuration.GetValue<string>("Redis:Configuration"));
+        context.Services
+            .AddYarpDistributedRedis(configuration.GetValue<string>("Redis:Configuration"))
+            .AddRedisEventSubscriber()
+            .ConfigureCurrentNode(YarpNodeType.Ingress);
+
         context.Services.AddReverseProxy()
-            .LoadFromEfCore()
-            .AddRedisEventSubscriber();
+            .LoadFromEfCore();
     }
 
     public override void OnApplicationInitialization(ApplicationInitializationContext context)

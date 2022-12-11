@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Hosting;
 using StackExchange.Redis;
 
-namespace NetNet.Gateway;
+namespace NetNet.Gateway.Distributed.BackgroundTasks;
 
 public class RegisterReverseProxyConfigEventSubscriber : BackgroundService
 {

@@ -1,4 +1,7 @@
 ﻿using NetNet.Gateway.Admin.Configurations;
+using NetNet.Gateway.Distributed;
+using NetNet.Gateway.Distributed.Configurations;
+using NetNet.Gateway.Distributed.Extensions;
 using Volo.Abp;
 using Volo.Abp.AspNetCore.Mvc;
 using Volo.Abp.Autofac;
@@ -9,6 +12,7 @@ namespace NetNet.Gateway.Admin;
 [DependsOn(
     typeof(AbpAspNetCoreMvcModule),
     typeof(AbpAutofacModule),
+    typeof(GatewayDistributedModule),
     typeof(GatewayEntityFrameworkCoreModule),
     typeof(GatewayApplicationModule)
 )]
@@ -24,7 +28,8 @@ public class GatewayAdminModule : AbpModule
 
         context.Services
             .AddYarpDistributedRedis(configuration.GetValue<string>("Redis:Configuration"))
-            .AddYarpRedisDistributedEventDispatcher();
+            .AddYarpRedisDistributedEventDispatcher()
+            .ConfigureCurrentNode(YarpNodeType.Admin);
 
         Configure<GatewayAdminConfig>(configuration.GetSection("Gateway:Admin"));
     }
