@@ -5,7 +5,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
 using NetNet.Gateway.AggregateModels.ServiceClusterAggregate;
 using NetNet.Gateway.AggregateModels.ServiceRouteAggregate;
-using NetNet.Gateway.Extensions;
 using System.Text.Json;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Timing;

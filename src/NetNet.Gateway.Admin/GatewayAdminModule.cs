@@ -27,9 +27,12 @@ public class GatewayAdminModule : AbpModule
         context.Services.AddBootstrapBlazor();
 
         context.Services
-            .AddYarpDistributedRedis(configuration.GetValue<string>("Redis:Configuration"))
+            .AddYarpDistributedRedis(config =>
+            {
+                config.RedisConnectionString = configuration.GetValue<string>("Redis:Configuration");
+            })
             .AddYarpRedisDistributedEventDispatcher()
-            .ConfigureCurrentNode(YarpNodeType.Admin);
+            .AddServerNode(YarpNodeType.Admin);
 
         Configure<GatewayAdminConfig>(configuration.GetSection("Gateway:Admin"));
     }

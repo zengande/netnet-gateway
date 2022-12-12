@@ -25,9 +25,12 @@ public class GatewayIngressModule : AbpModule
         var configuration = context.Services.GetConfiguration();
 
         context.Services
-            .AddYarpDistributedRedis(configuration.GetValue<string>("Redis:Configuration"))
+            .AddYarpDistributedRedis(config =>
+            {
+                config.RedisConnectionString = configuration.GetValue<string>("Redis:Configuration");
+            })
             .AddRedisEventSubscriber()
-            .ConfigureCurrentNode(YarpNodeType.Ingress);
+            .AddServerNode(YarpNodeType.Ingress);
 
         context.Services.AddReverseProxy()
             .LoadFromEfCore();

@@ -1,17 +1,18 @@
 using Microsoft.Extensions.DependencyInjection;
 using NetNet.Gateway.Distributed.BackgroundTasks;
 using NetNet.Gateway.Distributed.Configurations;
-using NetNet.Gateway.Distributed.Interfaces;
-using StackExchange.Redis;
 
 namespace NetNet.Gateway.Distributed.Extensions;
 
 public static class ServiceCollectionExtensions
 {
-    public static IYarpDistributedBuilder AddYarpDistributedRedis(this IServiceCollection services,
-        string connectionString)
+    public static IYarpDistributedBuilder AddYarpDistributedRedis(this IServiceCollection services, Action<YarpDistributedConfig> action)
     {
-        services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(connectionString));
+        services.Configure(action);
+
+        var config = new YarpDistributedConfig();
+        action(config);
+        RedisHelper.Initialization(new(config.RedisConnectionString));
 
         return new YarpDistributedBuilder(services);
     }
@@ -46,10 +47,10 @@ public static class ServiceCollectionExtensions
     /// <param name="builder"></param>
     /// <param name="nodeType"></param>
     /// <returns></returns>
-    public static IYarpDistributedBuilder ConfigureCurrentNode(this IYarpDistributedBuilder builder,
+    public static IYarpDistributedBuilder AddServerNode(this IYarpDistributedBuilder builder,
         YarpNodeType nodeType)
     {
-        return ConfigureCurrentNode(builder, config => config.NodeType = nodeType);
+        return AddServerNode(builder, config => config.NodeType = nodeType);
     }
 
     /// <summary>
@@ -58,13 +59,15 @@ public static class ServiceCollectionExtensions
     /// <param name="builder"></param>
     /// <param name="action"></param>
     /// <returns></returns>
-    public static IYarpDistributedBuilder ConfigureCurrentNode(this IYarpDistributedBuilder builder,
+    public static IYarpDistributedBuilder AddServerNode(this IYarpDistributedBuilder builder,
         Action<CurrentNodeConfig> action)
     {
         var config = new CurrentNodeConfig();
         action(config);
 
         builder.Services.AddSingleton(config);
+        builder.Services.AddHostedService<RegisterReverseProxyServerNode>();
+        builder.Services.AddHostedService<RemoveDeadReverseProxyServerNode>();
 
         return builder;
     }

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace NetNet.Gateway.Distributed.Interfaces;
+namespace NetNet.Gateway.Distributed;
 
 public interface IYarpDistributedBuilder
 {

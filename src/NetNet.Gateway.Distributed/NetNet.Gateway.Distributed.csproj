@@ -7,8 +7,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="StackExchange.Redis" Version="2.6.80" />
+      <PackageReference Include="CSRedisCore" Version="3.8.670" />
       <PackageReference Include="Volo.Abp.Core" Version="6.0.2" />
+      <PackageReference Include="Volo.Abp.Timing" Version="6.0.2" />
     </ItemGroup>
 
     <ItemGroup>

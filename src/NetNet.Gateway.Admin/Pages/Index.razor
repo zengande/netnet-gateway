@@ -16,21 +16,11 @@
         <div class="col-4">
             <NetNetListInput @bind-Items="@_strings"></NetNetListInput>
         </div>
+        <div class="col-4">
+            @foreach (var node in Nodes)
+            {
+                <div>@node.NodeId <Badge>@node.NodeType.ToString()</Badge></div>
+            }
+        </div>
     </div>
 </div>
-
-@code{
-
-    private Dictionary<string, string> _dic = new()
-    {
-        { "k1", "v1" },
-        { "k2", "v2" },
-        { "k3", "v3" },
-    };
-
-    private IEnumerable<string> _strings = new List<string>()
-    {
-        "1", "2", "3"
-    };
-
-}
