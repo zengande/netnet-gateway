@@ -35,4 +35,9 @@ public class InputServiceClusterReq
     /// httpclient 配置
     /// </summary>
     public ServiceClusterHttpClientConfigDto HttpClientConfig { get; set; } = new();
+
+    /// <summary>
+    /// Swagger 配置
+    /// </summary>
+    public ServiceClusterSwaggerConfig SwaggerConfig { get; set; } = new();
 }

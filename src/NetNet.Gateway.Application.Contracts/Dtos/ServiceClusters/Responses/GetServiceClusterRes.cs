@@ -17,4 +17,6 @@ public class GetServiceClusterRes : EntityDto<Guid>
     public ServiceClusterHttpClientConfigDto? HttpClientConfig { get; set; } = new();
 
     public ServiceClusterHttpRequestConfigDto? HttpRequestConfig { get; set; } = new();
+
+    public ServiceClusterSwaggerConfig SwaggerConfig { get; set; } = new();
 }

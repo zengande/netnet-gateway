@@ -1,16 +1,17 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using NetNet.Gateway.Distributed.Configurations;
+using NetNet.Gateway.Distributed.Models;
 
 namespace NetNet.Gateway.Distributed.BackgroundTasks;
 
 public class RegisterReverseProxyServerNode : BackgroundService
 {
     private readonly IYarpNodeManager _nodeManager;
-    private readonly CurrentNodeConfig _currentNodeConfig;
+    private readonly CurrentNodeInfo _currentNodeConfig;
     private readonly YarpDistributedConfig _distributedConfig;
 
-    public RegisterReverseProxyServerNode(IYarpNodeManager nodeManager, CurrentNodeConfig currentNodeConfig, IOptions<YarpDistributedConfig> options)
+    public RegisterReverseProxyServerNode(IYarpNodeManager nodeManager, CurrentNodeInfo currentNodeConfig, IOptions<YarpDistributedConfig> options)
     {
         _nodeManager = nodeManager;
         _currentNodeConfig = currentNodeConfig;

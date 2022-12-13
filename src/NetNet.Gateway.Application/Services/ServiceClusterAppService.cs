@@ -3,6 +3,7 @@ using NetNet.Gateway.AggregateModels.ServiceRouteAggregate;
 using NetNet.Gateway.Dtos.ServiceClusters;
 using NetNet.Gateway.Dtos.ServiceClusters.Requests;
 using NetNet.Gateway.Dtos.ServiceClusters.Responses;
+using NetNet.Gateway.SeedWork;
 using Volo.Abp.Application.Dtos;
 
 namespace NetNet.Gateway.Services;
@@ -55,8 +56,15 @@ public class ServiceClusterAppService : GatewayAppService, IServiceClusterAppSer
     public async Task<GetServiceClusterRes> GetAsync(Guid id)
     {
         var cluster = await _clusterRepository.GetAsync(id);
+        var result = ObjectMapper.Map<ServiceCluster, GetServiceClusterRes>(cluster);
+        result.SwaggerConfig = new()
+        {
+            Enabled = cluster.Metadata.GetValueOrDefault(YarpConstant.MetadataKeys.SwaggerEnabled, false),
+            DocName = cluster.Metadata.GetValueOrDefault(YarpConstant.MetadataKeys.SwaggerDocName, string.Empty),
+            JsonUrl = cluster.Metadata.GetValueOrDefault(YarpConstant.MetadataKeys.SwaggerJsonUrl, string.Empty)
+        };
 
-        return ObjectMapper.Map<ServiceCluster, GetServiceClusterRes>(cluster);
+        return result;
     }
 
     public async Task<Guid> CreateAsync(InputServiceClusterReq req)
@@ -67,8 +75,15 @@ public class ServiceClusterAppService : GatewayAppService, IServiceClusterAppSer
         var destinations = req.Destinations
             .Select(x => new ServiceDestination(x.Key, x.Address, x.Health, x.Metadata))
             .ToList();
+        var metadata = new Dictionary<string, string?>()
+        {
+            { YarpConstant.MetadataKeys.SwaggerEnabled, req.SwaggerConfig.Enabled.ToString() },
+            { YarpConstant.MetadataKeys.SwaggerDocName, req.SwaggerConfig.DocName },
+            { YarpConstant.MetadataKeys.SwaggerJsonUrl, req.SwaggerConfig.JsonUrl }
+        };
 
-        var cluster = new ServiceCluster(req.Name, req.LoadBalancingPolicy, httpRequestConfig, httpClientConfig, healthCheckConfig, destinations);
+        var cluster = new ServiceCluster(req.Name, req.LoadBalancingPolicy, httpRequestConfig, httpClientConfig, healthCheckConfig, destinations,
+            (Metadata)metadata);
 
         await _clusterRepository.InsertAsync(cluster);
 
@@ -83,10 +98,16 @@ public class ServiceClusterAppService : GatewayAppService, IServiceClusterAppSer
         var destinations = req.Destinations
             .Select(x => ObjectMapper.Map<InputServiceDestinationReq, ServiceDestination>(x))
             .ToList();
+        var metadata = new Dictionary<string, string?>()
+        {
+            { YarpConstant.MetadataKeys.SwaggerEnabled, req.SwaggerConfig.Enabled.ToString() },
+            { YarpConstant.MetadataKeys.SwaggerDocName, req.SwaggerConfig.DocName },
+            { YarpConstant.MetadataKeys.SwaggerJsonUrl, req.SwaggerConfig.JsonUrl }
+        };
 
         var cluster = await _clusterRepository.GetAsync(id);
 
-        cluster.Update(req.Name, req.LoadBalancingPolicy, httpRequestConfig, httpClientConfig, healthCheckConfig, destinations);
+        cluster.Update(req.Name, req.LoadBalancingPolicy, httpRequestConfig, httpClientConfig, healthCheckConfig, destinations, (Metadata)metadata);
         await _clusterRepository.UpdateAsync(cluster);
 
         return true;

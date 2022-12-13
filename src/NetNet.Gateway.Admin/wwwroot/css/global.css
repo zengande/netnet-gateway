@@ -80,6 +80,7 @@ html, body {
     padding: 0 8px;
     font-size: 15px;
     font-weight: bold;
+    cursor: default;
 }
 
 .gw-section-header:before {

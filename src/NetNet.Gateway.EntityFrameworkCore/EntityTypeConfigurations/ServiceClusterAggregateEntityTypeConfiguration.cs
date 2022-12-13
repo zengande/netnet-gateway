@@ -89,6 +89,24 @@ internal static class ServiceClusterAggregateEntityTypeConfiguration
                 .IsRequired(false)
                 .HasComment("是否忽略HTTPS证书错误");
         });
+        builder.OwnsMany(x => x.Metadata, metadata =>
+        {
+            metadata.ToTable(GatewayEfConstant.TablePrefix + "ServiceClusterMetadata")
+                .HasComment("服务元数据");
+            metadata.WithOwner().HasForeignKey("ServiceClusterId");
+            metadata.Property<Guid>("Id")
+                .HasValueGenerator<SequentialGuidValueGenerator>()
+                .ValueGeneratedOnAdd();
+            metadata.HasKey("Id");
+            metadata.Property(x => x.Key)
+                .IsRequired()
+                .HasMaxLength(200)
+                .HasComment("Key");
+            metadata.Property(x => x.Value)
+                .IsRequired(false)
+                .HasMaxLength(500)
+                .HasComment("Value");
+        });
 
         builder.HasIndex(x => x.Name)
             .IsUnique()

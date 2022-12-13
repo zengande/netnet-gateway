@@ -1,15 +1,13 @@
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Debug;
 using Volo.Abp.EntityFrameworkCore;
-using Volo.Abp.EntityFrameworkCore.PostgreSql;
+using Volo.Abp.EntityFrameworkCore.SqlServer;
 using Volo.Abp.Modularity;
 
 namespace NetNet.Gateway;
 
 [DependsOn(
     typeof(GatewayDomainModule),
-    typeof(AbpEntityFrameworkCorePostgreSqlModule)
+    typeof(AbpEntityFrameworkCoreSqlServerModule)
 )]
 public class GatewayEntityFrameworkCoreModule : AbpModule
 {

@@ -5,7 +5,7 @@
 
 <ValidateForm Model="@_input" OnValidSubmit="@OnValidSubmit">
     <div class="container-fluid pt-2">
-        <div class="row">
+        <div class="row pb-3">
             <div class="col-12 col-sm-8">
                 <div class="gw-section-header mb-3">基础信息</div>
                 <div class="row g-3 pb-4">
@@ -151,6 +151,35 @@
                                     DisplayText="是否忽略HTTPS证书错误">
                         </NullSwitch>
                     </div>
+                </div>
+
+                <div class="row justify-content-between m-0">
+                    <div class="gw-section-header mb-3 col">Swagger</div>
+
+                    <div class="col" style="text-align: right">
+                        <Switch AdditionalAttributes="@(new Dictionary<string, object> { { "class", "w-auto p-0" } })"
+                                @bind-Value="@_input.SwaggerConfig.Enabled"
+                                ShowLabel="false" OnColor="Color.Primary">
+                        </Switch>
+                    </div>
+                </div>
+                <div class="row pb-4 g-3">
+                    <Block Condition="_input.SwaggerConfig.Enabled">
+                        <Authorized>
+                            <div class="col-12">
+                                <BootstrapInput @bind-Value="_input.SwaggerConfig.DocName" DisplayText="文档显示名"
+                                                PlaceHolder="服务在 Swagger 中显示的名称"></BootstrapInput>
+                            </div>
+                            <div class="col-12">
+                                <BootstrapInput @bind-Value="_input.SwaggerConfig.JsonUrl" DisplayText="Swagger Json路径"
+                                                PlaceHolder="自动生成的 Swagger Json 文件地址（完整路径）"></BootstrapInput>
+                            </div>
+                        </Authorized>
+
+                        <NotAuthorized>
+                            <p class="text-center secondary"><small>不启用Swagger文档</small></p>
+                        </NotAuthorized>
+                    </Block>
                 </div>
             </div>
         </div>

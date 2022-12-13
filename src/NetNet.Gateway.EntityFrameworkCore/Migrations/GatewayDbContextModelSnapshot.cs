@@ -254,6 +254,38 @@ namespace NetNet.Gateway.Migrations
 
             modelBuilder.Entity("NetNet.Gateway.AggregateModels.ServiceClusterAggregate.ServiceCluster", b =>
                 {
+                    b.OwnsMany("NetNet.Gateway.SeedWork.MetadataKeyValuePair", "Metadata", b1 =>
+                        {
+                            b1.Property<Guid>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("Key")
+                                .IsRequired()
+                                .HasMaxLength(200)
+                                .HasColumnType("nvarchar(200)")
+                                .HasComment("Key");
+
+                            b1.Property<Guid>("ServiceClusterId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("Value")
+                                .HasMaxLength(500)
+                                .HasColumnType("nvarchar(500)")
+                                .HasComment("Value");
+
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("ServiceClusterId");
+
+                            b1.ToTable("GW_ServiceClusterMetadata", (string)null);
+
+                            b1.HasComment("服务元数据");
+
+                            b1.WithOwner()
+                                .HasForeignKey("ServiceClusterId");
+                        });
+
                     b.OwnsOne("NetNet.Gateway.AggregateModels.ServiceClusterAggregate.ServiceClusterHttpClientConfig", "HttpClientConfig", b1 =>
                         {
                             b1.Property<Guid>("Id")
@@ -342,11 +374,11 @@ namespace NetNet.Gateway.Migrations
                                 .HasForeignKey("ServiceClusterId");
                         });
 
-                    b.Navigation("HttpClientConfig")
-                        .IsRequired();
+                    b.Navigation("HttpClientConfig");
 
-                    b.Navigation("HttpRequestConfig")
-                        .IsRequired();
+                    b.Navigation("HttpRequestConfig");
+
+                    b.Navigation("Metadata");
                 });
 
             modelBuilder.Entity("NetNet.Gateway.AggregateModels.ServiceClusterAggregate.ServiceClusterHealthCheckConfig", b =>
@@ -425,6 +457,38 @@ namespace NetNet.Gateway.Migrations
 
             modelBuilder.Entity("NetNet.Gateway.AggregateModels.ServiceRouteAggregate.ServiceRoute", b =>
                 {
+                    b.OwnsMany("NetNet.Gateway.SeedWork.MetadataKeyValuePair", "Metadata", b1 =>
+                        {
+                            b1.Property<Guid>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("Key")
+                                .IsRequired()
+                                .HasMaxLength(200)
+                                .HasColumnType("nvarchar(200)")
+                                .HasComment("Key");
+
+                            b1.Property<Guid>("ServiceRouteId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("Value")
+                                .HasMaxLength(500)
+                                .HasColumnType("nvarchar(500)")
+                                .HasComment("Value");
+
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("ServiceRouteId");
+
+                            b1.ToTable("GW_ServiceRouteMetadata", (string)null);
+
+                            b1.HasComment("服务路由元数据");
+
+                            b1.WithOwner()
+                                .HasForeignKey("ServiceRouteId");
+                        });
+
                     b.OwnsMany("NetNet.Gateway.AggregateModels.ServiceRouteAggregate.ServiceRouteTransform", "Transforms", b1 =>
                         {
                             b1.Property<Guid>("Id")
@@ -462,6 +526,8 @@ namespace NetNet.Gateway.Migrations
                                 .HasForeignKey("ServiceRouteId");
                         });
 
+                    b.Navigation("Metadata");
+
                     b.Navigation("Transforms");
                 });
 
@@ -478,8 +544,7 @@ namespace NetNet.Gateway.Migrations
                 {
                     b.Navigation("Destinations");
 
-                    b.Navigation("HealthCheckConfig")
-                        .IsRequired();
+                    b.Navigation("HealthCheckConfig");
                 });
 
             modelBuilder.Entity("NetNet.Gateway.AggregateModels.ServiceRouteAggregate.ServiceRoute", b =>

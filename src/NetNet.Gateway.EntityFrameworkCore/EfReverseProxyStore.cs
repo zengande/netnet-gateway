@@ -8,7 +8,6 @@ using NetNet.Gateway.AggregateModels.ServiceRouteAggregate;
 using System.Text.Json;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Timing;
-using Yarp.ReverseProxy.Configuration;
 
 namespace NetNet.Gateway;
 
@@ -36,9 +35,9 @@ public class EfReverseProxyStore : IReverseProxyStore, ISingletonDependency
         OnConfigChanged += ReloadConfig;
     }
 
-    public IProxyConfig GetConfig()
+    public GatewayProxyConfig GetConfig(bool useCaching = true)
     {
-        var config = TryGetFromCache();
+        var config = useCaching ? TryGetFromCache() : null;
         if (config is null)
         {
             config = GetFromDataBase();
@@ -110,6 +109,7 @@ public class EfReverseProxyStore : IReverseProxyStore, ISingletonDependency
         try
         {
             var bytes = _distributedCache.Get(CacheKey);
+            if (bytes is null) return default;
             return JsonSerializer.Deserialize<GatewayProxyConfig>(bytes);
         }
         catch (Exception e)

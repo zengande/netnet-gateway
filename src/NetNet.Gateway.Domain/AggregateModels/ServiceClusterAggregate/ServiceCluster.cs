@@ -1,5 +1,5 @@
 using NetNet.Gateway.Events.ServiceClusters;
-using Volo.Abp;
+using NetNet.Gateway.SeedWork;
 using Volo.Abp.Domain.Entities.Auditing;
 using Yarp.ReverseProxy.Configuration;
 
@@ -36,6 +36,11 @@ public sealed class ServiceCluster : AuditedAggregateRoot<Guid>
     public ServiceClusterHealthCheckConfig? HealthCheckConfig { get; private set; }
 
     /// <summary>
+    /// 元数据
+    /// </summary>
+    public Metadata Metadata { get; private set; }
+
+    /// <summary>
     /// 服务目的地
     /// </summary>
     public IReadOnlyCollection<ServiceDestination> Destinations => _destinations;
@@ -45,10 +50,12 @@ public sealed class ServiceCluster : AuditedAggregateRoot<Guid>
     private ServiceCluster()
     {
         _destinations = new();
+        Metadata = new();
     }
 
     public ServiceCluster(string name, string? loadBalancingPolicy, ServiceClusterHttpRequestConfig httpRequestConfig,
-        ServiceClusterHttpClientConfig httpClientConfig, ServiceClusterHealthCheckConfig healthCheckConfig, List<ServiceDestination> destinations)
+        ServiceClusterHttpClientConfig httpClientConfig, ServiceClusterHealthCheckConfig healthCheckConfig, List<ServiceDestination> destinations,
+        Metadata metadata)
         : this()
     {
         Name = name;
@@ -56,6 +63,7 @@ public sealed class ServiceCluster : AuditedAggregateRoot<Guid>
         HttpRequestConfig = httpRequestConfig;
         HttpClientConfig = httpClientConfig;
         HealthCheckConfig = healthCheckConfig;
+        Metadata = metadata;
         _destinations = destinations;
 
         // 新增服务后通知配置改变
@@ -64,12 +72,14 @@ public sealed class ServiceCluster : AuditedAggregateRoot<Guid>
 
 
     public void Update(string name, string? loadBalancingPolicy, ServiceClusterHttpRequestConfig httpRequestConfig,
-        ServiceClusterHttpClientConfig httpClientConfig, ServiceClusterHealthCheckConfig healthCheckConfig, List<ServiceDestination> destinations)
+        ServiceClusterHttpClientConfig httpClientConfig, ServiceClusterHealthCheckConfig healthCheckConfig, List<ServiceDestination> destinations,
+        Metadata metadata)
     {
         Name = name;
         LoadBalancingPolicy = loadBalancingPolicy;
         HttpRequestConfig = httpRequestConfig;
         HttpClientConfig = httpClientConfig;
+        Metadata = metadata;
         if (HealthCheckConfig is null)
         {
             HealthCheckConfig = new(healthCheckConfig.AvailableDestinationsPolicy, healthCheckConfig.Active, healthCheckConfig.Passive);
@@ -108,6 +118,7 @@ public sealed class ServiceCluster : AuditedAggregateRoot<Guid>
             x => new DestinationConfig { Address = x.Address, Health = x.Health, Metadata = x.Metadata }),
         HttpClient = HttpClientConfig?.ToYarpHttpClientConfig(),
         HttpRequest = HttpRequestConfig?.ToYarpForwarderRequestConfig(),
-        HealthCheck = HealthCheckConfig?.ToYarpHealthCheckConfig()
+        HealthCheck = HealthCheckConfig?.ToYarpHealthCheckConfig(),
+        Metadata = (Dictionary<string, string>)Metadata
     };
 }

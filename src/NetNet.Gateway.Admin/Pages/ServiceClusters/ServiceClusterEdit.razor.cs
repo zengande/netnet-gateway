@@ -51,6 +51,7 @@ public partial class ServiceClusterEdit
             HttpClientConfig = serviceCluster.HttpClientConfig ?? new(),
             HttpRequestConfig = serviceCluster.HttpRequestConfig ?? new(),
             HealthCheckConfig = serviceCluster.HealthCheckConfig ?? new(),
+            SwaggerConfig = serviceCluster.SwaggerConfig,
             Destinations = serviceCluster.Destinations.Select(x => new InputServiceDestinationReq
             {
                 Id = x.Id,

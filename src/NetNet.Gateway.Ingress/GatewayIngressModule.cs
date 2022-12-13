@@ -1,6 +1,7 @@
 using NetNet.Gateway.Distributed;
 using NetNet.Gateway.Distributed.Configurations;
 using NetNet.Gateway.Distributed.Extensions;
+using NetNet.Gateway.Distributed.Models;
 using NetNet.Gateway.Ingress.YarpReverseProxy.Middlewares;
 using Volo.Abp;
 using Volo.Abp.AspNetCore.Mvc;

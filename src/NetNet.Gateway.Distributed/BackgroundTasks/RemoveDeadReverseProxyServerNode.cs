@@ -19,13 +19,20 @@ public class RemoveDeadReverseProxyServerNode : BackgroundService
         _yarpNodeManager = yarpNodeManager;
         _clock = clock;
         _logger = logger;
-        _distributedConfig = options?.Value ?? throw new ArgumentNullException(nameof(options));
+        _distributedConfig = options.Value ?? throw new ArgumentNullException(nameof(options));
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         while (!stoppingToken.IsCancellationRequested)
         {
+            using var csRedisClientLock = RedisHelper.Lock(nameof(RemoveDeadReverseProxyServerNode), 2);
+            if (csRedisClientLock is null)
+            {
+                _logger.LogInformation("任务已被占用");
+                continue;
+            }
+
             var now = _clock.Now;
             await foreach (var node in _yarpNodeManager.GetAllServerNodesAsync(stoppingToken))
             {
@@ -36,7 +43,9 @@ public class RemoveDeadReverseProxyServerNode : BackgroundService
                 }
             }
 
-            await Task.Delay(TimeSpan.FromSeconds(2), stoppingToken);
+            await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken);
+
+            csRedisClientLock.Unlock();
         }
     }
 }

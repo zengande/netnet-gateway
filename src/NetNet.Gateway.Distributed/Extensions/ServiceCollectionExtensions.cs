@@ -1,6 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using NetNet.Gateway.Distributed.BackgroundTasks;
 using NetNet.Gateway.Distributed.Configurations;
+using NetNet.Gateway.Distributed.Models;
 
 namespace NetNet.Gateway.Distributed.Extensions;
 
@@ -18,19 +19,20 @@ public static class ServiceCollectionExtensions
     }
 
     /// <summary>
-    /// 管理节点分发配置修改通知
+    /// 分发配置修改通知(管理节点)
     /// </summary>
     /// <param name="builder"></param>
     /// <returns></returns>
     public static IYarpDistributedBuilder AddYarpRedisDistributedEventDispatcher(this IYarpDistributedBuilder builder)
     {
         builder.Services.AddHostedService<RegisterReverseProxyConfigEventDispatcher>();
+        builder.Services.AddHostedService<RemoveDeadReverseProxyServerNode>();
 
         return builder;
     }
 
     /// <summary>
-    /// 当前节点做为入口节点时接收配置变更通知
+    /// 接收配置变更通知
     /// </summary>
     /// <param name="builder"></param>
     /// <returns></returns>
@@ -60,14 +62,13 @@ public static class ServiceCollectionExtensions
     /// <param name="action"></param>
     /// <returns></returns>
     public static IYarpDistributedBuilder AddServerNode(this IYarpDistributedBuilder builder,
-        Action<CurrentNodeConfig> action)
+        Action<CurrentNodeInfo> action)
     {
-        var config = new CurrentNodeConfig();
+        var config = new CurrentNodeInfo();
         action(config);
 
         builder.Services.AddSingleton(config);
         builder.Services.AddHostedService<RegisterReverseProxyServerNode>();
-        builder.Services.AddHostedService<RemoveDeadReverseProxyServerNode>();
 
         return builder;
     }

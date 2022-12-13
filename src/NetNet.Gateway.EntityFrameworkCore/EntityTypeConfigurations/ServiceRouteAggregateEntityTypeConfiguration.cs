@@ -42,7 +42,6 @@ internal static class ServiceRouteAggregateEntityTypeConfiguration
         builder.Property(x => x.Order)
             .IsRequired(false)
             .HasComment("排序");
-
         builder.OwnsMany(x => x.Transforms, transform =>
         {
             transform.ToTable(GatewayEfConstant.TablePrefix + "ServiceRouteTransforms")
@@ -61,6 +60,24 @@ internal static class ServiceRouteAggregateEntityTypeConfiguration
                 .HasComment("Key");
             transform.Property(x => x.Value)
                 .IsRequired()
+                .HasMaxLength(500)
+                .HasComment("Value");
+        });
+        builder.OwnsMany(x => x.Metadata, metadata =>
+        {
+            metadata.ToTable(GatewayEfConstant.TablePrefix + "ServiceRouteMetadata")
+                .HasComment("服务路由元数据");
+            metadata.WithOwner().HasForeignKey("ServiceRouteId");
+            metadata.Property<Guid>("Id")
+                .HasValueGenerator<SequentialGuidValueGenerator>()
+                .ValueGeneratedOnAdd();
+            metadata.HasKey("Id");
+            metadata.Property(x => x.Key)
+                .IsRequired()
+                .HasMaxLength(200)
+                .HasComment("Key");
+            metadata.Property(x => x.Value)
+                .IsRequired(false)
                 .HasMaxLength(500)
                 .HasComment("Value");
         });

@@ -1,5 +1,6 @@
 using NetNet.Gateway.Events.ServiceRoutes;
 using NetNet.Gateway.Extensions;
+using NetNet.Gateway.SeedWork;
 using Volo.Abp.Domain.Entities.Auditing;
 using Yarp.ReverseProxy.Configuration;
 
@@ -45,9 +46,12 @@ public sealed class ServiceRoute : AuditedAggregateRoot<Guid>
     /// </summary>
     public IList<ServiceRouteTransform> Transforms { get; private set; }
 
+    public Metadata Metadata { get; private set; }
+
     private ServiceRoute()
     {
         Transforms = new List<ServiceRouteTransform>();
+        Metadata = new();
     }
 
     public ServiceRoute(string name, Guid serviceClusterId, string? authorizationPolicy, string? crosPolicy, int? order,
@@ -94,6 +98,7 @@ public sealed class ServiceRoute : AuditedAggregateRoot<Guid>
             .GroupBy(x => x.GroupIndex)
             .OrderBy(x => x.Key)
             .Select(x => x.ToDictionary(y => y.Key, y => y.Value))
-            .ToList()
+            .ToList(),
+        Metadata = (Dictionary<string, string>)Metadata
     };
 }

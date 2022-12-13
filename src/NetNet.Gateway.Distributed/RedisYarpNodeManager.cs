@@ -1,5 +1,4 @@
 using Microsoft.Extensions.Logging;
-using NetNet.Gateway.Distributed.Configurations;
 using NetNet.Gateway.Distributed.Models;
 using System.Runtime.CompilerServices;
 using Volo.Abp;
@@ -37,11 +36,11 @@ public class RedisYarpNodeManager : IYarpNodeManager, IScopedDependency
         var key = CreateHashKey(nodeId);
         if (!await RedisHelper.ExistsAsync(key))
         {
-            throw new UserFriendlyException($"节点{nodeId}不存在");
+            _logger.LogWarning($"节点{nodeId}不存在");
         }
 
         var now = _clock.Now;
-        _logger.LogInformation("Node {0} heartbeat", key);
+        _logger.LogDebug("Node {0} heartbeat", key);
 
         await RedisHelper.HSetAsync(key, "Heartbeat", now);
     }

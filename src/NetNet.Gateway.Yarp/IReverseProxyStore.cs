@@ -13,7 +13,7 @@ public interface IReverseProxyStore
     /// 获取配置
     /// </summary>
     /// <returns></returns>
-    IProxyConfig GetConfig();
+    GatewayProxyConfig GetConfig(bool useCaching = true);
 
     /// <summary>
     /// 配置已变更 invoke ChangeConfig

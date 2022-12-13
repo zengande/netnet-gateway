@@ -1,9 +1,10 @@
 using Microsoft.Extensions.Primitives;
+using Volo.Abp.DependencyInjection;
 using Yarp.ReverseProxy.Configuration;
 
 namespace NetNet.Gateway;
 
-public class EfCoreProxyConfigProvider : IProxyConfigProvider, IDisposable
+public class EfCoreProxyConfigProvider : IProxyConfigProvider, IDisposable, ISingletonDependency
 {
     private static readonly object LockObject = new();
     private IProxyConfig? _config;
@@ -38,7 +39,7 @@ public class EfCoreProxyConfigProvider : IProxyConfigProvider, IDisposable
             GatewayProxyConfig? config;
             try
             {
-                config = (_store.GetConfig() as GatewayProxyConfig)!;
+                config = _store.GetConfig()!;
             }
             catch (Exception ex)
             {

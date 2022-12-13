@@ -1,10 +1,13 @@
-﻿using NetNet.Gateway.Admin.Configurations;
+﻿using Microsoft.OpenApi.Models;
+using NetNet.Gateway.Admin.Configurations;
 using NetNet.Gateway.Distributed;
-using NetNet.Gateway.Distributed.Configurations;
 using NetNet.Gateway.Distributed.Extensions;
+using NetNet.Gateway.Distributed.Models;
+using NetNet.Gateway.Swagger;
 using Volo.Abp;
 using Volo.Abp.AspNetCore.Mvc;
 using Volo.Abp.Autofac;
+using Volo.Abp.Caching.StackExchangeRedis;
 using Volo.Abp.Modularity;
 
 namespace NetNet.Gateway.Admin;
@@ -12,6 +15,8 @@ namespace NetNet.Gateway.Admin;
 [DependsOn(
     typeof(AbpAspNetCoreMvcModule),
     typeof(AbpAutofacModule),
+    typeof(AbpCachingStackExchangeRedisModule),
+    typeof(GatewaySwaggerModule),
     typeof(GatewayDistributedModule),
     typeof(GatewayEntityFrameworkCoreModule),
     typeof(GatewayApplicationModule)
@@ -32,9 +37,20 @@ public class GatewayAdminModule : AbpModule
                 config.RedisConnectionString = configuration.GetValue<string>("Redis:Configuration");
             })
             .AddYarpRedisDistributedEventDispatcher()
+            .AddRedisEventSubscriber()
             .AddServerNode(YarpNodeType.Admin);
 
         Configure<GatewayAdminConfig>(configuration.GetSection("Gateway:Admin"));
+
+        context.Services.AddSwaggerGen(options =>
+        {
+            options.SwaggerDoc("gateway", new OpenApiInfo
+            {
+                Title = "YaYa External Gateway", Version = "v1"
+            });
+            options.DocInclusionPredicate((docName, description) => true);
+            options.CustomSchemaIds(type => type.FullName);
+        });
     }
 
     public override void OnApplicationInitialization(ApplicationInitializationContext context)
@@ -42,6 +58,15 @@ public class GatewayAdminModule : AbpModule
         var app = context.GetApplicationBuilder();
 
         app.UseStaticFiles();
+
+        // 添加内部服务的Swagger终点
+        app.UseSwaggerUIWithYarp(options =>
+        {
+            options.DocumentTitle = "NetNet Gateway Admin";
+
+            // 网关自己的 swagger
+            options.SwaggerEndpoint("/gateway/swagger.json", "NetNet Gateway Admin");
+        });
 
         app.UseRouting();
 
