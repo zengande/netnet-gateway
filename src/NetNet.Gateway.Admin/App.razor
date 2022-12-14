@@ -1,5 +1,11 @@
-﻿<BootstrapBlazorRoot>
-    <Router AppAssembly="@typeof(App).Assembly">
+﻿@using Microsoft.Extensions.Options
+@using NetNet.Gateway.BuildingBlock.Configurations
+
+@inject IOptions<GatewayRouterOptions> Options
+
+<BootstrapBlazorRoot>
+    <Router AppAssembly="@Options.Value.AppAssembly"
+            AdditionalAssemblies="@Options.Value.AdditionalAssemblies">
         <Found Context="routeData">
             <PageTitle>Title</PageTitle>
             <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)"/>

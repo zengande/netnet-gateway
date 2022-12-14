@@ -1,9 +1,11 @@
 ﻿using Microsoft.OpenApi.Models;
 using NetNet.Gateway.Admin.Configurations;
+using NetNet.Gateway.BuildingBlock.Configurations;
 using NetNet.Gateway.Distributed;
 using NetNet.Gateway.Distributed.Extensions;
 using NetNet.Gateway.Distributed.Models;
 using NetNet.Gateway.Swagger;
+using NetNet.Gateway.SwaggerUI.Blazor;
 using Volo.Abp;
 using Volo.Abp.AspNetCore.Mvc;
 using Volo.Abp.Autofac;
@@ -17,6 +19,7 @@ namespace NetNet.Gateway.Admin;
     typeof(AbpAutofacModule),
     typeof(AbpCachingStackExchangeRedisModule),
     typeof(GatewaySwaggerModule),
+    typeof(GatewaySwaggerUIBlazorModule),
     typeof(GatewayDistributedModule),
     typeof(GatewayEntityFrameworkCoreModule),
     typeof(GatewayApplicationModule)
@@ -25,6 +28,11 @@ public class GatewayAdminModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)
     {
+        Configure<GatewayRouterOptions>(options =>
+        {
+            options.AppAssembly = typeof(App).Assembly;
+        });
+
         var configuration = context.Services.GetConfiguration();
 
         context.Services.AddRazorPages();
@@ -42,15 +50,13 @@ public class GatewayAdminModule : AbpModule
 
         Configure<GatewayAdminConfig>(configuration.GetSection("Gateway:Admin"));
 
-        context.Services.AddSwaggerGen(options =>
-        {
-            options.SwaggerDoc("gateway", new OpenApiInfo
+        context.Services
+            .AddSwaggerForYarpGen(options =>
             {
-                Title = "YaYa External Gateway", Version = "v1"
+                options.SwaggerDoc("gateway", new OpenApiInfo { Title = "YaYa External Gateway", Version = "v1" });
+                options.DocInclusionPredicate((docName, description) => true);
+                options.CustomSchemaIds(type => type.FullName);
             });
-            options.DocInclusionPredicate((docName, description) => true);
-            options.CustomSchemaIds(type => type.FullName);
-        });
     }
 
     public override void OnApplicationInitialization(ApplicationInitializationContext context)

@@ -1,18 +1,20 @@
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using System.Collections;
 
-namespace NetNet.Gateway.Swagger;
+namespace NetNet.Gateway.Swagger.SwaggerForYarp;
 
 public class YarpSwaggerEndpointEnumerator : IEnumerable<UrlDescriptor>
 {
     private readonly IConfiguration _configuration;
     private readonly IReverseProxyStore _proxyConfigStore;
 
-    public YarpSwaggerEndpointEnumerator(IConfiguration configuration, IReverseProxyStore proxyConfigStore)
+    public YarpSwaggerEndpointEnumerator(IServiceProvider serviceProvider)
     {
-        _configuration = configuration;
-        _proxyConfigStore = proxyConfigStore;
+
+        _configuration = serviceProvider.GetRequiredService<IConfiguration>();
+        _proxyConfigStore = serviceProvider.GetRequiredService<IReverseProxyStore>();
     }
 
     public IEnumerator<UrlDescriptor> GetEnumerator()

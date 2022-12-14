@@ -26,6 +26,7 @@
       <ProjectReference Include="..\NetNet.Gateway.Application\NetNet.Gateway.Application.csproj" />
       <ProjectReference Include="..\NetNet.Gateway.Distributed\NetNet.Gateway.Distributed.csproj" />
       <ProjectReference Include="..\NetNet.Gateway.EntityFrameworkCore\NetNet.Gateway.EntityFrameworkCore.csproj" />
+      <ProjectReference Include="..\NetNet.Gateway.SwaggerUI.Blazor\NetNet.Gateway.SwaggerUI.Blazor.csproj" />
       <ProjectReference Include="..\NetNet.Gateway.Swagger\NetNet.Gateway.Swagger.csproj" />
     </ItemGroup>
 

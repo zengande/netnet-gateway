@@ -2,7 +2,7 @@ using Microsoft.Extensions.Logging;
 using Volo.Abp.DependencyInjection;
 using Yarp.ReverseProxy.Configuration;
 
-namespace NetNet.Gateway.Swagger;
+namespace NetNet.Gateway.Swagger.SwaggerForYarp;
 
 public class DefaultDownstreamSwaggerDocsDownloader : IDownstreamSwaggerDocsDownloader, IScopedDependency
 {

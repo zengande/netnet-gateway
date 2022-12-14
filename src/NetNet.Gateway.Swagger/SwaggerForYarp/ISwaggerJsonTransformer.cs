@@ -1,6 +1,6 @@
 using Yarp.ReverseProxy.Configuration;
 
-namespace NetNet.Gateway.Swagger;
+namespace NetNet.Gateway.Swagger.SwaggerForYarp;
 
 /// <summary>
 /// swagger json 转换器
