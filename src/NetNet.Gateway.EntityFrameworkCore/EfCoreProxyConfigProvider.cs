@@ -4,7 +4,7 @@ using Yarp.ReverseProxy.Configuration;
 
 namespace NetNet.Gateway;
 
-public class EfCoreProxyConfigProvider : IProxyConfigProvider, IDisposable, ISingletonDependency
+public class EfCoreProxyConfigProvider : IProxyConfigProvider, IDisposable
 {
     private static readonly object LockObject = new();
     private IProxyConfig? _config;

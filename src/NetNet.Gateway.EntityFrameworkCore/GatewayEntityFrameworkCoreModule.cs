@@ -1,13 +1,13 @@
 using Microsoft.Extensions.DependencyInjection;
 using Volo.Abp.EntityFrameworkCore;
-using Volo.Abp.EntityFrameworkCore.SqlServer;
+using Volo.Abp.EntityFrameworkCore.PostgreSql;
 using Volo.Abp.Modularity;
 
 namespace NetNet.Gateway;
 
 [DependsOn(
     typeof(GatewayDomainModule),
-    typeof(AbpEntityFrameworkCoreSqlServerModule)
+    typeof(AbpEntityFrameworkCorePostgreSqlModule)
 )]
 public class GatewayEntityFrameworkCoreModule : AbpModule
 {
@@ -27,7 +27,7 @@ public class GatewayEntityFrameworkCoreModule : AbpModule
             options.Configure<GatewayDbContext>(opts =>
             {
                 // opts.UseNpgsql();
-                opts.UseSqlServer();
+                opts.UseNpgsql();
 #if DEBUG
                 opts.DbContextOptions.EnableSensitiveDataLogging();
 #endif

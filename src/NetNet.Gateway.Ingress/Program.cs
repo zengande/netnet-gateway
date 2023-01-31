@@ -29,6 +29,7 @@ public class Program
                 .UseSerilog();
             await builder.AddApplicationAsync<GatewayIngressModule>();
             var app = builder.Build();
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
             await app.InitializeApplicationAsync();
             await app.RunAsync();
         }

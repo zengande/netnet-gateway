@@ -12,7 +12,7 @@ public class GatewayDbContextFactory : IDesignTimeDbContextFactory<GatewayDbCont
         var configuration = BuildConfiguration();
 
         var builder = new DbContextOptionsBuilder<GatewayDbContext>()
-            .UseSqlServer(configuration.GetConnectionString("Default"));
+            .UseNpgsql(configuration.GetConnectionString("Default"));
 
         return new GatewayDbContext(builder.Options, NullLoggerFactory.Instance);
     }
@@ -22,7 +22,7 @@ public class GatewayDbContextFactory : IDesignTimeDbContextFactory<GatewayDbCont
         var builder = new ConfigurationBuilder()
             .SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), "../NetNet.Gateway.Admin/"))
             .AddJsonFile("appsettings.json", optional: false)
-            .AddUserSecrets("06a24603-e499-4408-8ad9-921653317675");
+            .AddUserSecrets("28d2f441-4c8d-495f-91de-b2197aaf0914");
 
         return builder.Build();
     }

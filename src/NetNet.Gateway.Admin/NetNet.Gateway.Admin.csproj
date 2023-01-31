@@ -1,10 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-    </PropertyGroup>
+      <UserSecretsId>28d2f441-4c8d-495f-91de-b2197aaf0914</UserSecretsId>
+  </PropertyGroup>
 
     <ItemGroup>
       <PackageReference Include="BootstrapBlazor" Version="7.1.0" />

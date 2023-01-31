@@ -45,7 +45,6 @@ public class GatewayAdminModule : AbpModule
                 config.RedisConnectionString = configuration.GetValue<string>("Redis:Configuration");
             })
             .AddYarpRedisDistributedEventDispatcher()
-            .AddRedisEventSubscriber()
             .AddServerNode(YarpNodeType.Admin);
 
         Configure<GatewayAdminConfig>(configuration.GetSection("Gateway:Admin"));
