@@ -6,6 +6,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
       <UserSecretsId>5680d283-54e1-4b8b-b7eb-61e3e969d366</UserSecretsId>
+      <LangVersion>default</LangVersion>
   </PropertyGroup>
 
     <ItemGroup>
@@ -19,6 +20,12 @@
       <ProjectReference Include="..\NetNet.Gateway.Application\NetNet.Gateway.Application.csproj" />
       <ProjectReference Include="..\NetNet.Gateway.Distributed\NetNet.Gateway.Distributed.csproj" />
       <ProjectReference Include="..\NetNet.Gateway.EntityFrameworkCore\NetNet.Gateway.EntityFrameworkCore.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\..\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
     </ItemGroup>
 
 </Project>

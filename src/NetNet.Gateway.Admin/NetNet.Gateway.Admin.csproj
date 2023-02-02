@@ -5,6 +5,8 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
       <UserSecretsId>28d2f441-4c8d-495f-91de-b2197aaf0914</UserSecretsId>
+      <LangVersion>default</LangVersion>
+      <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
     <ItemGroup>
@@ -29,6 +31,12 @@
       <ProjectReference Include="..\NetNet.Gateway.EntityFrameworkCore\NetNet.Gateway.EntityFrameworkCore.csproj" />
       <ProjectReference Include="..\NetNet.Gateway.SwaggerUI.Blazor\NetNet.Gateway.SwaggerUI.Blazor.csproj" />
       <ProjectReference Include="..\NetNet.Gateway.Swagger\NetNet.Gateway.Swagger.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\..\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
     </ItemGroup>
 
 </Project>
