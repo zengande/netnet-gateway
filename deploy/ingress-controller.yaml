@@ -1,4 +1,4 @@
-# 事例来自 https://github.com/microsoft/reverse-proxy/blob/main/samples/KubernetesIngress.Sample/Combined/ingress-controller.yaml
+# 示例来自 https://github.com/microsoft/reverse-proxy/blob/main/samples/KubernetesIngress.Sample/Combined/ingress-controller.yaml
 
 kind: Namespace
 apiVersion: v1
@@ -145,7 +145,7 @@ spec:
       containers:
         - name: yarp-controller
           imagePullPolicy: IfNotPresent
-          image: <REGISTRY_NAME>/yarp-combined:<TAG>
+          image: zengande/netnet-gateway-ingress:2023020201
           ports:
             - containerPort: 8000
               name: proxy
@@ -153,9 +153,9 @@ spec:
             - containerPort: 8443
               name: proxy-ssl
               protocol: TCP
-          env:
-            - name: ASPNETCORE_URLS
-              value: http://*:8000;https://*:8443
+#          env:
+#            - name: ASPNETCORE_URLS
+#              value: http://*:8000;https://*:8443
           volumeMounts:
             - name: config
               readOnly: true

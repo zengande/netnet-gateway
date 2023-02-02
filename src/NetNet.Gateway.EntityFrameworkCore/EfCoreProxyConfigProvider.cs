@@ -1,5 +1,4 @@
 using Microsoft.Extensions.Primitives;
-using Volo.Abp.DependencyInjection;
 using Yarp.ReverseProxy.Configuration;
 
 namespace NetNet.Gateway;
