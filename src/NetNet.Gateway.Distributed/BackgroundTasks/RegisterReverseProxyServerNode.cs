@@ -27,7 +27,7 @@ public class RegisterReverseProxyServerNode : BackgroundService
             await Task.Delay(_distributedConfig.HeartRate, stoppingToken);
 
             // 心跳
-            await _nodeManager.HeartbeatAsync(_currentNodeConfig.NodeId);
+            await _nodeManager.HeartbeatAsync(_currentNodeConfig.NodeId, _currentNodeConfig.NodeType, _distributedConfig.HeartRate);
         }
 
         await _nodeManager.UnRegisterAsync(_currentNodeConfig.NodeId);

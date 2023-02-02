@@ -7,6 +7,6 @@ public interface IYarpNodeManager
 {
     Task RegisterAsync(string nodeId, YarpNodeType nodeType, TimeSpan heartbeat);
     Task UnRegisterAsync(string nodeId);
-    Task HeartbeatAsync(string nodeId);
+    Task HeartbeatAsync(string nodeId, YarpNodeType nodeType, TimeSpan heartbeat);
     IAsyncEnumerable<ServerNode> GetAllServerNodesAsync(CancellationToken cancellationToken = default);
 }

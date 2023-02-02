@@ -20,6 +20,8 @@ public class RedisYarpNodeManager : IYarpNodeManager, IScopedDependency
 
     public async Task RegisterAsync(string nodeId, YarpNodeType nodeType, TimeSpan heartbeat)
     {
+        Check.NotNullOrWhiteSpace(nodeId, nameof(nodeId));
+
         var key = CreateHashKey(nodeId);
         var now = _clock.Now;
         await RedisHelper.HMSetAsync(key, "NodeId", nodeId, "NodeType", nodeType.ToString(), "StartedAt", now, "Heartbeat", now.Add(heartbeat));
@@ -31,12 +33,15 @@ public class RedisYarpNodeManager : IYarpNodeManager, IScopedDependency
         await RedisHelper.DelAsync(key);
     }
 
-    public async Task HeartbeatAsync(string nodeId)
+    public async Task HeartbeatAsync(string nodeId, YarpNodeType nodeType, TimeSpan heartbeat)
     {
         var key = CreateHashKey(nodeId);
         if (!await RedisHelper.ExistsAsync(key))
         {
             _logger.LogWarning($"节点{nodeId}不存在");
+
+            await RegisterAsync(nodeId, nodeType, heartbeat);
+            return;
         }
 
         var now = _clock.Now;
@@ -47,18 +52,20 @@ public class RedisYarpNodeManager : IYarpNodeManager, IScopedDependency
 
     public async IAsyncEnumerable<ServerNode> GetAllServerNodesAsync([EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
-        var nodeIds = await RedisHelper.KeysAsync("netnet:servernodes:*");
-        foreach (var nodeId in nodeIds)
+        var nodes = await RedisHelper.KeysAsync("netnet:servernodes:*");
+        foreach (var node in nodes)
         {
-            var dictionary = await RedisHelper.HGetAllAsync(nodeId);
+            var dictionary = await RedisHelper.HGetAllAsync(node);
 
             Enum.TryParse<YarpNodeType>(dictionary.GetValueOrDefault("NodeType", string.Empty), out var nodeType);
             DateTime.TryParse(dictionary.GetValueOrDefault("StartedAt", string.Empty), out var startedAt);
             DateTime.TryParse(dictionary.GetValueOrDefault("Heartbeat", string.Empty), out var heartbeat);
+            var nodeId = dictionary.GetValueOrDefault("NodeId", string.Empty);
+            if (string.IsNullOrWhiteSpace(nodeId)) continue;
 
             yield return new ServerNode
             {
-                NodeId = dictionary.GetValueOrDefault("NodeId", string.Empty), NodeType = nodeType, StartedAt = startedAt, Heartbeat = heartbeat,
+                NodeId = nodeId, NodeType = nodeType, StartedAt = startedAt, Heartbeat = heartbeat,
             };
         }
     }

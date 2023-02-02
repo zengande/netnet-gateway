@@ -43,7 +43,7 @@ public class RemoveDeadReverseProxyServerNode : BackgroundService
                 }
             }
 
-            await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken);
+            await Task.Delay(_distributedConfig.HeartRate.Add(TimeSpan.FromSeconds(3)), stoppingToken);
 
             csRedisClientLock.Unlock();
         }
