@@ -1,7 +1,6 @@
 ﻿FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
 EXPOSE 80
-EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
@@ -12,7 +11,7 @@ COPY ["src/NetNet.Gateway.Application.Contracts/NetNet.Gateway.Application.Contr
 COPY ["src/NetNet.Gateway.Domain.Shared/NetNet.Gateway.Domain.Shared.csproj", "NetNet.Gateway.Domain.Shared/"]
 COPY ["src/NetNet.Gateway.Domain/NetNet.Gateway.Domain.csproj", "NetNet.Gateway.Domain/"]
 COPY ["src/NetNet.Gateway.EntityFrameworkCore/NetNet.Gateway.EntityFrameworkCore.csproj", "NetNet.Gateway.EntityFrameworkCore/"]
-RUN dotnet restore "src/NetNet.Gateway.Ingress/NetNet.Gateway.Ingress.csproj"
+RUN dotnet restore "NetNet.Gateway.Ingress/NetNet.Gateway.Ingress.csproj"
 COPY . .
 WORKDIR "/src/NetNet.Gateway.Ingress"
 RUN dotnet build "NetNet.Gateway.Ingress.csproj" -c Release -o /app/build
