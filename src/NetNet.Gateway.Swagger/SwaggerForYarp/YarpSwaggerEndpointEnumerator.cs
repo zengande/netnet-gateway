@@ -12,14 +12,13 @@ public class YarpSwaggerEndpointEnumerator : IEnumerable<UrlDescriptor>
 
     public YarpSwaggerEndpointEnumerator(IServiceProvider serviceProvider)
     {
-
         _configuration = serviceProvider.GetRequiredService<IConfiguration>();
         _proxyConfigStore = serviceProvider.GetRequiredService<IReverseProxyStore>();
     }
 
     public IEnumerator<UrlDescriptor> GetEnumerator()
     {
-        var proxyConfig = _proxyConfigStore.GetConfig();
+        var proxyConfig = _proxyConfigStore.GetConfig(false);
         var enabledSwaggerClusters = proxyConfig.Clusters
             .Where(x => x.Metadata.GetValueOrDefault(YarpConstant.MetadataKeys.SwaggerEnabled, false));
 

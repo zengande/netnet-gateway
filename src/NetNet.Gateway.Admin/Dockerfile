@@ -27,4 +27,6 @@ RUN dotnet publish "NetNet.Gateway.Admin.csproj" -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+RUN echo 'Asia/Shanghai' >/etc/timezone
 ENTRYPOINT ["dotnet", "NetNet.Gateway.Admin.dll"]
