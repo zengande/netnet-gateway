@@ -24,7 +24,9 @@ public class Program
         {
             Log.Information("Starting web host.");
             var builder = WebApplication.CreateBuilder(args);
-            builder.Host.AddAppSettingsSecretsJson()
+            builder.Host
+                .UseAgileConfig(e => Log.Logger.Debug($"configs {e.Action}"))
+                .AddAppSettingsSecretsJson()
                 .UseAutofac()
                 .UseSerilog();
             await builder.AddApplicationAsync<GatewayIngressModule>();

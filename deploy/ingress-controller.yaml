@@ -3,13 +3,13 @@
 kind: Namespace
 apiVersion: v1
 metadata:
-  name: yarp
+  name: linkmore-ka-yarn
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: yarp-config
-  namespace: yarp
+  namespace: agileconfig
 data:
   yarp.json: |
     {
@@ -24,13 +24,13 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: yarp-serviceaccount
-  namespace: yarp
+  namespace: agileconfig
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: yarp-ingress-clusterrole
-  namespace: yarp
+  namespace: agileconfig
 rules:
   - apiGroups:
       - ""
@@ -95,7 +95,7 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: yarp-serviceaccount
-    namespace: yarp
+    namespace: agileconfig
 ---
 apiVersion: networking.k8s.io/v1
 kind: IngressClass
@@ -109,8 +109,8 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: ingress-yarp-controller
-  namespace: yarp
+  name: netnet-gateway-ingress-controller
+  namespace: agileconfig
 spec:
   ports:
     - name: proxy
@@ -122,28 +122,28 @@ spec:
       protocol: TCP
       targetPort: 8443
   selector:
-    app: ingress-yarp-controller
+    app: netnet-gateway-ingress-controller
   type: LoadBalancer
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: ingress-yarp-controller
+    app: netnet-gateway-ingress-controller
   name: ingress-yarp
-  namespace: yarp
+  namespace: agileconfig
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: ingress-yarp-controller
+      app: netnet-gateway-ingress-controller
   template:
     metadata:
       labels:
-        app: ingress-yarp-controller
+        app: netnet-gateway-ingress-controller
     spec:
       containers:
-        - name: yarp-controller
+        - name: netnet-gateway-ingress
           imagePullPolicy: IfNotPresent
           image: zengande/netnet-gateway-ingress:2023020201
           ports:

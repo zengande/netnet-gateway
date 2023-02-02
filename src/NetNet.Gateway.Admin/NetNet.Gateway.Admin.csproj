@@ -10,6 +10,7 @@
   </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="AgileConfig.Client" Version="1.6.11" />
       <PackageReference Include="BootstrapBlazor" Version="7.1.0" />
       <PackageReference Include="BootstrapBlazor.FontAwesome" Version="7.0.0" />
       <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.5" />
