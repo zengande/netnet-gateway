@@ -5,6 +5,7 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
+COPY ["NuGet.config", "NuGet.config"]
 COPY ["src/NetNet.Gateway.Ingress/NetNet.Gateway.Ingress.csproj", "NetNet.Gateway.Ingress/"]
 COPY ["src/NetNet.Gateway.Application/NetNet.Gateway.Application.csproj", "NetNet.Gateway.Application/"]
 COPY ["src/NetNet.Gateway.Application.Contracts/NetNet.Gateway.Application.Contracts.csproj", "NetNet.Gateway.Application.Contracts/"]
