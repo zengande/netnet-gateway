@@ -50,7 +50,7 @@ public class GatewayIngressModule : AbpModule
             endpoints.MapDefaultControllerRoute();
             endpoints.MapReverseProxy(proxyPipeline =>
             {
-                proxyPipeline.UseMiddleware<GrayMiddleware>();
+                // proxyPipeline.UseMiddleware<GrayMiddleware>();
                 proxyPipeline.UseSessionAffinity();
                 proxyPipeline.UseLoadBalancing();
                 proxyPipeline.UsePassiveHealthChecks();
