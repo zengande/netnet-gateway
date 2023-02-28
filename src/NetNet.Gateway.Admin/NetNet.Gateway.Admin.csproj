@@ -13,6 +13,7 @@
       <PackageReference Include="AgileConfig.Client" Version="1.6.11" />
       <PackageReference Include="BootstrapBlazor" Version="7.1.0" />
       <PackageReference Include="BootstrapBlazor.FontAwesome" Version="7.0.0" />
+      <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="6.0.14" />
       <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.5" />
       <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.5" />
       <PackageReference Include="Serilog.AspNetCore" Version="6.1.0" />

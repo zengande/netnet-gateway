@@ -1,4 +1,7 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using NetNet.Gateway.Admin.Configurations;
 using NetNet.Gateway.BuildingBlock.Configurations;
 using NetNet.Gateway.Distributed;
@@ -56,6 +59,41 @@ public class GatewayAdminModule : AbpModule
                 options.DocInclusionPredicate((docName, description) => true);
                 options.CustomSchemaIds(type => type.FullName);
             });
+
+        context.Services
+            .AddAuthentication(options =>
+            {
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+            })
+            .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
+            .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
+            {
+                options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.SignOutScheme = OpenIdConnectDefaults.AuthenticationScheme;
+
+                options.Authority = configuration.GetValue<string>("Oidc:Authority");
+                options.ClientId = configuration.GetValue<string>("Oidc:ClientId");
+                options.ClientSecret = configuration.GetValue<string>("Oidc:ClientSecret");
+                options.ResponseType = "code";
+                options.SaveTokens = true;
+                options.GetClaimsFromUserInfoEndpoint = false;
+                options.UseTokenLifetime = false;
+                options.Scope.Add("openid");
+                options.Scope.Add("profile");
+                options.RequireHttpsMetadata = false;
+                options.TokenValidationParameters = new TokenValidationParameters { NameClaimType = "name" };
+
+                options.Events = new OpenIdConnectEvents
+                {
+                    OnAccessDenied = context =>
+                    {
+                        context.HandleResponse();
+                        context.Response.Redirect("/");
+                        return Task.CompletedTask;
+                    }
+                };
+            });
     }
 
     public override void OnApplicationInitialization(ApplicationInitializationContext context)
@@ -63,6 +101,8 @@ public class GatewayAdminModule : AbpModule
         var app = context.GetApplicationBuilder();
 
         app.UseStaticFiles();
+
+        app.UseCookiePolicy(new CookiePolicyOptions { Secure = CookieSecurePolicy.Always });
 
         // 添加内部服务的Swagger终点
         app.UseSwaggerUIWithYarp(options =>
@@ -74,6 +114,9 @@ public class GatewayAdminModule : AbpModule
         });
 
         app.UseRouting();
+
+        app.UseAuthentication();
+        app.UseAuthorization();
 
         app.UseEndpoints(route =>
         {

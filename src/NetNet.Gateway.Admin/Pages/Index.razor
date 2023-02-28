@@ -1,4 +1,6 @@
 ﻿@page "/"
+@attribute [Authorize]
+@inject IHttpContextAccessor HttpContextAccessor
 
 <div class="container-fluid">
     <div class="row justify-content-between m-0">
@@ -25,7 +27,7 @@
             <NetNetListInput @bind-Items="@_strings"></NetNetListInput>
         </div>
         <div class="col-4">
-
+            IsAuthenticated: @HttpContextAccessor.HttpContext?.User.Identity?.IsAuthenticated
         </div>
     </div>
 

@@ -1,29 +1,38 @@
 ﻿@inherits LayoutComponentBase
+@inject NavigationManager Navigation
 
 <PageTitle>NetNet Gateway</PageTitle>
 
-<CascadingValue Value="this">
-    <div class="layout-container">
-        <Layout ShowFooter="true" SideWidth="220px" IsFullSide="true">
-            <Header>
-                @if (HeaderContent != null)
-                {
-                    <div class="header-container">
-                        @HeaderContent
-                    </div>
-                }
-            </Header>
 
-            <Side>
-                <NavMenu></NavMenu>
-            </Side>
-            <Main>
-                <div style="padding: 1rem;">
-                    @Body
-                </div>
-            </Main>
-        </Layout>
-    </div>
+<CascadingValue Value="this">
+    <AuthorizeView>
+        <Authorized>
+            <div class="layout-container">
+                <Layout ShowFooter="true" SideWidth="220px" IsFullSide="true">
+                    <Header>
+                        @if (HeaderContent != null)
+                        {
+                            <div class="header-container">
+                                @HeaderContent
+                            </div>
+                        }
+                    </Header>
+
+                    <Side>
+                        <NavMenu></NavMenu>
+                    </Side>
+                    <Main>
+                        <div style="padding: 1rem;">
+                            @Body
+                        </div>
+                    </Main>
+                </Layout>
+            </div>
+        </Authorized>
+        <NotAuthorized>
+            <div>请重新<a href="/login?redirect_uri=">登录</a></div>
+        </NotAuthorized>
+    </AuthorizeView>
 </CascadingValue>
 
 
