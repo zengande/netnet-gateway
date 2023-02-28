@@ -1,13 +1,8 @@
-﻿@using Microsoft.Extensions.Options
-@using NetNet.Gateway.BuildingBlock.Configurations
-
-@inject IOptions<GatewayRouterOptions> Options
-@inject NavigationManager Navigation
+﻿@inject NavigationManager Navigation
 
 <BootstrapBlazorRoot>
     <CascadingAuthenticationState>
-        <Router AppAssembly="@Options.Value.AppAssembly"
-                AdditionalAssemblies="@Options.Value.AdditionalAssemblies">
+        <Router AppAssembly="@typeof(Program).Assembly">
             <Found Context="routeData">
                 <PageTitle>Title</PageTitle>
                 <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)"/>

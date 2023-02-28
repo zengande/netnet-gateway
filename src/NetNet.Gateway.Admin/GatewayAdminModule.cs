@@ -3,12 +3,10 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using NetNet.Gateway.Admin.Configurations;
-using NetNet.Gateway.BuildingBlock.Configurations;
 using NetNet.Gateway.Distributed;
 using NetNet.Gateway.Distributed.Extensions;
 using NetNet.Gateway.Distributed.Models;
 using NetNet.Gateway.Swagger;
-using NetNet.Gateway.SwaggerUI.Blazor;
 using Volo.Abp;
 using Volo.Abp.AspNetCore.Mvc;
 using Volo.Abp.Autofac;
@@ -22,7 +20,6 @@ namespace NetNet.Gateway.Admin;
     typeof(AbpAutofacModule),
     typeof(AbpCachingStackExchangeRedisModule),
     typeof(GatewaySwaggerModule),
-    typeof(GatewaySwaggerUIBlazorModule),
     typeof(GatewayDistributedModule),
     typeof(GatewayEntityFrameworkCoreModule),
     typeof(GatewayApplicationModule)
@@ -31,11 +28,6 @@ public class GatewayAdminModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)
     {
-        Configure<GatewayRouterOptions>(options =>
-        {
-            options.AppAssembly = typeof(App).Assembly;
-        });
-
         var configuration = context.Services.GetConfiguration();
 
         context.Services.AddRazorPages();
