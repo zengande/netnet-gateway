@@ -58,7 +58,7 @@ public class GatewayAdminModule : AbpModule
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
             })
-            .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
+            .AddCookie()
             .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
             {
                 options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -78,10 +78,10 @@ public class GatewayAdminModule : AbpModule
 
                 options.Events = new OpenIdConnectEvents
                 {
-                    OnAccessDenied = context =>
+                    OnAccessDenied = ctx =>
                     {
-                        context.HandleResponse();
-                        context.Response.Redirect("/");
+                        ctx.HandleResponse();
+                        ctx.Response.Redirect("/");
                         return Task.CompletedTask;
                     }
                 };
