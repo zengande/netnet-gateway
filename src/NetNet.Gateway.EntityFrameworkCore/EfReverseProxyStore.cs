@@ -33,9 +33,9 @@ public class EfReverseProxyStore : IReverseProxyStore, ISingletonDependency
         OnConfigChanged += ReloadConfig;
     }
 
-    public IProxyConfig GetConfig()
+    public IProxyConfig GetConfig(bool forceReload = false)
     {
-        var config = TryGetFromCache();
+        GatewayProxyConfig? config = forceReload ? null : TryGetFromCache();
         if (config is null)
         {
             config = GetFromDataBase();
@@ -99,7 +99,10 @@ public class EfReverseProxyStore : IReverseProxyStore, ISingletonDependency
         try
         {
             var bytes = _distributedCache.Get(CacheKey);
-            return JsonSerializer.Deserialize<GatewayProxyConfig>(bytes);
+            if (bytes is not null)
+            {
+                return JsonSerializer.Deserialize<GatewayProxyConfig>(bytes);
+            }
         }
         catch (Exception e)
         {

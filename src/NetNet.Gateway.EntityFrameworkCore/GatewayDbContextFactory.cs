@@ -10,9 +10,9 @@ public class GatewayDbContextFactory : IDesignTimeDbContextFactory<GatewayDbCont
     public GatewayDbContext CreateDbContext(string[] args)
     {
         var configuration = BuildConfiguration();
-
+        var connectionString = configuration.GetConnectionString("Default");
         var builder = new DbContextOptionsBuilder<GatewayDbContext>()
-            .UseSqlServer(configuration.GetConnectionString("Default"));
+            .UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 
         return new GatewayDbContext(builder.Options, NullLoggerFactory.Instance);
     }
@@ -20,9 +20,9 @@ public class GatewayDbContextFactory : IDesignTimeDbContextFactory<GatewayDbCont
     private static IConfigurationRoot BuildConfiguration()
     {
         var builder = new ConfigurationBuilder()
-            .SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), "../NetNet.Gateway.Admin/"))
+            .SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), "../NetNet.Gateway.Ingress/"))
             .AddJsonFile("appsettings.json", optional: false)
-            .AddUserSecrets("06a24603-e499-4408-8ad9-921653317675");
+            .AddUserSecrets("bfb2502b-78b6-487d-bebc-20d9a472bfcb");
 
         return builder.Build();
     }

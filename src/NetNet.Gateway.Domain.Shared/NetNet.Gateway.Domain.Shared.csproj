@@ -9,7 +9,7 @@
 
     <ItemGroup>
       <PackageReference Include="Volo.Abp.Core" Version="6.0.1" />
-      <PackageReference Include="Yarp.ReverseProxy" Version="1.1.1" />
+      <PackageReference Include="Yarp.ReverseProxy" Version="2.1.0" />
     </ItemGroup>
 
 </Project>

@@ -2,7 +2,6 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetNet.Gateway;
 using Volo.Abp.EntityFrameworkCore;
@@ -18,62 +17,62 @@ namespace NetNet.Gateway.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("_Abp_DatabaseProvider", EfCoreDatabaseProvider.SqlServer)
+                .HasAnnotation("_Abp_DatabaseProvider", EfCoreDatabaseProvider.MySql)
                 .HasAnnotation("ProductVersion", "6.0.5")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
-
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+                .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("NetNet.Gateway.AggregateModels.ServiceClusterAggregate.ServiceCluster", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)")
+                        .HasColumnName("id");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasMaxLength(40)
-                        .HasColumnType("nvarchar(40)")
+                        .HasColumnType("varchar(40)")
                         .HasColumnName("ConcurrencyStamp");
 
                     b.Property<DateTime>("CreationTime")
-                        .HasColumnType("datetime2")
+                        .HasColumnType("datetime(6)")
                         .HasColumnName("CreationTime");
 
                     b.Property<Guid?>("CreatorId")
-                        .HasColumnType("uniqueidentifier")
+                        .HasColumnType("char(36)")
                         .HasColumnName("CreatorId");
 
                     b.Property<string>("ExtraProperties")
-                        .HasColumnType("nvarchar(max)")
+                        .HasColumnType("longtext")
                         .HasColumnName("ExtraProperties");
 
                     b.Property<DateTime?>("LastModificationTime")
-                        .HasColumnType("datetime2")
+                        .HasColumnType("datetime(6)")
                         .HasColumnName("LastModificationTime");
 
                     b.Property<Guid?>("LastModifierId")
-                        .HasColumnType("uniqueidentifier")
+                        .HasColumnType("char(36)")
                         .HasColumnName("LastModifierId");
 
                     b.Property<string>("LoadBalancingPolicy")
                         .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)")
+                        .HasColumnType("varchar(200)")
+                        .HasColumnName("load_balancing_policy")
                         .HasComment("负载均衡策略");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)")
+                        .HasColumnType("varchar(200)")
+                        .HasColumnName("name")
                         .HasComment("名称");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Name")
-                        .IsUnique()
-                        .HasDatabaseName("IX_ServiceClusters_Name");
+                        .IsUnique();
 
-                    b.ToTable("GW_ServiceClusters", (string)null);
+                    b.ToTable("gw_service_clusters", (string)null);
 
                     b.HasComment("服务集群");
                 });
@@ -82,75 +81,83 @@ namespace NetNet.Gateway.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)")
+                        .HasColumnName("id");
 
                     b.Property<string>("AvailableDestinationsPolicy")
                         .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)")
+                        .HasColumnType("varchar(200)")
+                        .HasColumnName("available_destinations_policy")
                         .HasComment("可用终点策略");
 
                     b.Property<Guid>("ServiceClusterId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)")
+                        .HasColumnName("service_cluster_id");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ServiceClusterId")
                         .IsUnique();
 
-                    b.ToTable("GW_ServiceClusterHealthCheckConfig", (string)null);
+                    b.ToTable("gw_service_cluster_health_checks", (string)null);
                 });
 
             modelBuilder.Entity("NetNet.Gateway.AggregateModels.ServiceClusterAggregate.ServiceDestination", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)")
+                        .HasColumnName("id");
 
                     b.Property<string>("Address")
                         .IsRequired()
                         .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)")
+                        .HasColumnType("varchar(500)")
+                        .HasColumnName("address")
                         .HasComment("地址");
 
                     b.Property<DateTime>("CreationTime")
-                        .HasColumnType("datetime2")
+                        .HasColumnType("datetime(6)")
                         .HasColumnName("CreationTime");
 
                     b.Property<Guid?>("CreatorId")
-                        .HasColumnType("uniqueidentifier")
+                        .HasColumnType("char(36)")
                         .HasColumnName("CreatorId");
 
                     b.Property<string>("Health")
                         .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)")
+                        .HasColumnType("varchar(500)")
+                        .HasColumnName("health")
                         .HasComment("健康检查地址");
 
                     b.Property<string>("Key")
                         .IsRequired()
                         .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)")
+                        .HasColumnType("varchar(200)")
+                        .HasColumnName("key")
                         .HasComment("key");
 
                     b.Property<DateTime?>("LastModificationTime")
-                        .HasColumnType("datetime2")
+                        .HasColumnType("datetime(6)")
                         .HasColumnName("LastModificationTime");
 
                     b.Property<Guid?>("LastModifierId")
-                        .HasColumnType("uniqueidentifier")
+                        .HasColumnType("char(36)")
                         .HasColumnName("LastModifierId");
 
                     b.Property<string>("Metadata")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext")
+                        .HasColumnName("metadata");
 
                     b.Property<Guid>("ServiceClusterId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ServiceClusterId");
 
-                    b.ToTable("GW_ServiceDestinations", (string)null);
+                    b.ToTable("gw_service_destinations", (string)null);
 
                     b.HasComment("服务目的地");
                 });
@@ -159,61 +166,67 @@ namespace NetNet.Gateway.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)")
+                        .HasColumnName("id");
 
                     b.Property<string>("AuthorizationPolicy")
                         .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)")
+                        .HasColumnType("varchar(200)")
+                        .HasColumnName("authorization_policy")
                         .HasComment("授权策略");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasMaxLength(40)
-                        .HasColumnType("nvarchar(40)")
+                        .HasColumnType("varchar(40)")
                         .HasColumnName("ConcurrencyStamp");
 
                     b.Property<DateTime>("CreationTime")
-                        .HasColumnType("datetime2")
+                        .HasColumnType("datetime(6)")
                         .HasColumnName("CreationTime");
 
                     b.Property<Guid?>("CreatorId")
-                        .HasColumnType("uniqueidentifier")
+                        .HasColumnType("char(36)")
                         .HasColumnName("CreatorId");
 
                     b.Property<string>("CrosPolicy")
                         .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)")
+                        .HasColumnType("varchar(200)")
+                        .HasColumnName("cros_policy")
                         .HasComment("跨域策略");
 
                     b.Property<string>("ExtraProperties")
-                        .HasColumnType("nvarchar(max)")
+                        .HasColumnType("longtext")
                         .HasColumnName("ExtraProperties");
 
                     b.Property<DateTime?>("LastModificationTime")
-                        .HasColumnType("datetime2")
+                        .HasColumnType("datetime(6)")
                         .HasColumnName("LastModificationTime");
 
                     b.Property<Guid?>("LastModifierId")
-                        .HasColumnType("uniqueidentifier")
+                        .HasColumnType("char(36)")
                         .HasColumnName("LastModifierId");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)")
+                        .HasColumnType("varchar(200)")
+                        .HasColumnName("name")
                         .HasComment("路由名称");
 
                     b.Property<int?>("Order")
                         .HasColumnType("int")
+                        .HasColumnName("order")
                         .HasComment("排序");
 
                     b.Property<Guid>("ServiceClusterId")
-                        .HasColumnType("uniqueidentifier")
+                        .HasColumnType("char(36)")
+                        .HasColumnName("service_cluster_id")
                         .HasComment("服务id");
 
                     b.HasKey("Id");
 
-                    b.ToTable("GW_ServiceRoutes", (string)null);
+                    b.ToTable("gw_routes", (string)null);
 
                     b.HasComment("服务路由");
                 });
@@ -222,32 +235,32 @@ namespace NetNet.Gateway.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Hosts")
                         .HasMaxLength(2000)
-                        .HasColumnType("nvarchar(2000)")
+                        .HasColumnType("varchar(2000)")
                         .HasComment("请求主机（逗号分隔）");
 
                     b.Property<string>("Methods")
                         .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)")
+                        .HasColumnType("varchar(500)")
                         .HasComment("请求方法（逗号分隔）");
 
                     b.Property<string>("Path")
                         .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)")
+                        .HasColumnType("varchar(500)")
                         .HasComment("请求路径");
 
                     b.Property<Guid>("ServiceRouteId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ServiceRouteId")
                         .IsUnique();
 
-                    b.ToTable("GW_ServiceRouteMatches", (string)null);
+                    b.ToTable("gw_ServiceRouteMatches", (string)null);
 
                     b.HasComment("服务路由匹配规则");
                 });
@@ -256,97 +269,102 @@ namespace NetNet.Gateway.Migrations
                 {
                     b.OwnsOne("NetNet.Gateway.AggregateModels.ServiceClusterAggregate.ServiceClusterHttpClientConfig", "HttpClientConfig", b1 =>
                         {
-                            b1.Property<Guid>("Id")
+                            b1.Property<Guid>("id")
                                 .ValueGeneratedOnAdd()
-                                .HasColumnType("uniqueidentifier");
+                                .HasColumnType("char(36)");
 
                             b1.Property<bool?>("DangerousAcceptAnyServerCertificate")
-                                .HasColumnType("bit")
+                                .HasColumnType("tinyint(1)")
+                                .HasColumnName("dangerous_accept_any_server_certificate")
                                 .HasComment("是否忽略HTTPS证书错误");
 
                             b1.Property<bool?>("EnableMultipleHttp2Connections")
-                                .HasColumnType("bit")
+                                .HasColumnType("tinyint(1)")
+                                .HasColumnName("enable_multiple_http2_connections")
                                 .HasComment("是否建立HTTP/2连接");
 
                             b1.Property<int?>("MaxConnectionsPerServer")
                                 .HasColumnType("int")
+                                .HasColumnName("max_connections_per_server")
                                 .HasComment("最大连接数");
 
                             b1.Property<string>("RequestHeaderEncoding")
                                 .HasMaxLength(200)
-                                .HasColumnType("nvarchar(200)")
+                                .HasColumnType("varchar(200)")
+                                .HasColumnName("request_header_encoding")
                                 .HasComment("请求头编码");
-
-                            b1.Property<Guid>("ServiceClusterId")
-                                .HasColumnType("uniqueidentifier");
 
                             b1.Property<int?>("SslProtocols")
                                 .HasColumnType("int")
+                                .HasColumnName("ssl_protocols")
                                 .HasComment("TLS协议");
 
-                            b1.HasKey("Id");
+                            b1.Property<Guid>("service_cluster_id")
+                                .HasColumnType("char(36)");
 
-                            b1.HasIndex("ServiceClusterId")
+                            b1.HasKey("id");
+
+                            b1.HasIndex("service_cluster_id")
                                 .IsUnique();
 
-                            b1.ToTable("GW_ServiceClusterHttpClientConfigs", (string)null);
+                            b1.ToTable("gw_service_cluster_http_client_configs", (string)null);
 
                             b1.HasComment("服务HTTP客户端配置");
 
                             b1.WithOwner()
-                                .HasForeignKey("ServiceClusterId");
+                                .HasForeignKey("service_cluster_id");
                         });
 
                     b.OwnsOne("NetNet.Gateway.AggregateModels.ServiceClusterAggregate.ServiceClusterHttpRequestConfig", "HttpRequestConfig", b1 =>
                         {
-                            b1.Property<Guid>("Id")
+                            b1.Property<Guid>("id")
                                 .ValueGeneratedOnAdd()
-                                .HasColumnType("uniqueidentifier");
+                                .HasColumnType("char(36)");
 
                             b1.Property<int?>("ActivityTimeoutSeconds")
                                 .HasColumnType("int")
+                                .HasColumnName("activity_timeout_seconds")
                                 .HasComment("超时秒数");
 
                             b1.Property<bool?>("AllowResponseBuffering")
-                                .HasColumnType("bit")
+                                .HasColumnType("tinyint(1)")
+                                .HasColumnName("allow_response_buffering")
                                 .HasComment("是否允许相应缓冲");
-
-                            b1.Property<Guid>("ServiceClusterId")
-                                .HasColumnType("uniqueidentifier");
 
                             b1.Property<string>("Version")
                                 .ValueGeneratedOnAdd()
                                 .HasMaxLength(200)
-                                .HasColumnType("nvarchar(200)")
+                                .HasColumnType("varchar(200)")
                                 .HasDefaultValue("2.0")
-                                .HasColumnName("HttpVersion")
+                                .HasColumnName("http_version")
                                 .HasComment("Http版本");
 
                             b1.Property<int?>("VersionPolicy")
                                 .ValueGeneratedOnAdd()
                                 .HasColumnType("int")
                                 .HasDefaultValue(0)
-                                .HasColumnName("HttpVersionPolicy")
+                                .HasColumnName("http_version_policy")
                                 .HasComment("Http版本策略");
 
-                            b1.HasKey("Id");
+                            b1.Property<Guid>("service_cluster_id")
+                                .HasColumnType("char(36)");
 
-                            b1.HasIndex("ServiceClusterId")
+                            b1.HasKey("id");
+
+                            b1.HasIndex("service_cluster_id")
                                 .IsUnique();
 
-                            b1.ToTable("GW_ServiceClusterHttpRequestConfigs", (string)null);
+                            b1.ToTable("gw_service_cluster_http_request_configs", (string)null);
 
                             b1.HasComment("服务HTTP请求配置");
 
                             b1.WithOwner()
-                                .HasForeignKey("ServiceClusterId");
+                                .HasForeignKey("service_cluster_id");
                         });
 
-                    b.Navigation("HttpClientConfig")
-                        .IsRequired();
+                    b.Navigation("HttpClientConfig");
 
-                    b.Navigation("HttpRequestConfig")
-                        .IsRequired();
+                    b.Navigation("HttpRequestConfig");
                 });
 
             modelBuilder.Entity("NetNet.Gateway.AggregateModels.ServiceClusterAggregate.ServiceClusterHealthCheckConfig", b =>
@@ -360,26 +378,26 @@ namespace NetNet.Gateway.Migrations
                     b.OwnsOne("NetNet.Gateway.AggregateModels.ServiceClusterAggregate.ServiceClusterActiveHealthCheckConfig", "Active", b1 =>
                         {
                             b1.Property<Guid>("ServiceClusterHealthCheckConfigId")
-                                .HasColumnType("uniqueidentifier");
+                                .HasColumnType("char(36)");
 
                             b1.Property<bool?>("Enabled")
-                                .HasColumnType("bit");
+                                .HasColumnType("tinyint(1)");
 
                             b1.Property<int?>("IntervalSeconds")
                                 .HasColumnType("int");
 
                             b1.Property<string>("Path")
-                                .HasColumnType("nvarchar(max)");
+                                .HasColumnType("longtext");
 
                             b1.Property<string>("Policy")
-                                .HasColumnType("nvarchar(max)");
+                                .HasColumnType("longtext");
 
                             b1.Property<int?>("TimeoutSeconds")
                                 .HasColumnType("int");
 
                             b1.HasKey("ServiceClusterHealthCheckConfigId");
 
-                            b1.ToTable("GW_ServiceClusterHealthCheckConfig");
+                            b1.ToTable("gw_service_cluster_health_checks");
 
                             b1.WithOwner()
                                 .HasForeignKey("ServiceClusterHealthCheckConfigId");
@@ -388,20 +406,20 @@ namespace NetNet.Gateway.Migrations
                     b.OwnsOne("NetNet.Gateway.AggregateModels.ServiceClusterAggregate.ServiceClusterPassiveHealthCheckConfig", "Passive", b1 =>
                         {
                             b1.Property<Guid>("ServiceClusterHealthCheckConfigId")
-                                .HasColumnType("uniqueidentifier");
+                                .HasColumnType("char(36)");
 
                             b1.Property<bool?>("Enabled")
-                                .HasColumnType("bit");
+                                .HasColumnType("tinyint(1)");
 
                             b1.Property<string>("Policy")
-                                .HasColumnType("nvarchar(max)");
+                                .HasColumnType("longtext");
 
                             b1.Property<int?>("ReactivationPeriodSeconds")
                                 .HasColumnType("int");
 
                             b1.HasKey("ServiceClusterHealthCheckConfigId");
 
-                            b1.ToTable("GW_ServiceClusterHealthCheckConfig");
+                            b1.ToTable("gw_service_cluster_health_checks");
 
                             b1.WithOwner()
                                 .HasForeignKey("ServiceClusterHealthCheckConfigId");
@@ -427,39 +445,42 @@ namespace NetNet.Gateway.Migrations
                 {
                     b.OwnsMany("NetNet.Gateway.AggregateModels.ServiceRouteAggregate.ServiceRouteTransform", "Transforms", b1 =>
                         {
-                            b1.Property<Guid>("Id")
+                            b1.Property<Guid>("id")
                                 .ValueGeneratedOnAdd()
-                                .HasColumnType("uniqueidentifier");
+                                .HasColumnType("char(36)");
 
                             b1.Property<int>("GroupIndex")
                                 .HasColumnType("int")
+                                .HasColumnName("group_index")
                                 .HasComment("分组索引");
 
                             b1.Property<string>("Key")
                                 .IsRequired()
                                 .HasMaxLength(200)
-                                .HasColumnType("nvarchar(200)")
+                                .HasColumnType("varchar(200)")
+                                .HasColumnName("key")
                                 .HasComment("Key");
-
-                            b1.Property<Guid>("ServiceRouteId")
-                                .HasColumnType("uniqueidentifier");
 
                             b1.Property<string>("Value")
                                 .IsRequired()
                                 .HasMaxLength(500)
-                                .HasColumnType("nvarchar(500)")
+                                .HasColumnType("varchar(500)")
+                                .HasColumnName("value")
                                 .HasComment("Value");
 
-                            b1.HasKey("Id");
+                            b1.Property<Guid>("service_route_id")
+                                .HasColumnType("char(36)");
 
-                            b1.HasIndex("ServiceRouteId");
+                            b1.HasKey("id");
 
-                            b1.ToTable("GW_ServiceRouteTransforms", (string)null);
+                            b1.HasIndex("service_route_id");
+
+                            b1.ToTable("gw_route_transforms", (string)null);
 
                             b1.HasComment("服务路由请求转换配置");
 
                             b1.WithOwner()
-                                .HasForeignKey("ServiceRouteId");
+                                .HasForeignKey("service_route_id");
                         });
 
                     b.Navigation("Transforms");
@@ -478,8 +499,7 @@ namespace NetNet.Gateway.Migrations
                 {
                     b.Navigation("Destinations");
 
-                    b.Navigation("HealthCheckConfig")
-                        .IsRequired();
+                    b.Navigation("HealthCheckConfig");
                 });
 
             modelBuilder.Entity("NetNet.Gateway.AggregateModels.ServiceRouteAggregate.ServiceRoute", b =>

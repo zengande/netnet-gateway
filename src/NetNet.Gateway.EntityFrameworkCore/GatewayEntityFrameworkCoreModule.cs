@@ -1,15 +1,13 @@
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Debug;
 using Volo.Abp.EntityFrameworkCore;
-using Volo.Abp.EntityFrameworkCore.PostgreSql;
+using Volo.Abp.EntityFrameworkCore.MySQL;
 using Volo.Abp.Modularity;
 
 namespace NetNet.Gateway;
 
 [DependsOn(
     typeof(GatewayDomainModule),
-    typeof(AbpEntityFrameworkCorePostgreSqlModule)
+    typeof(AbpEntityFrameworkCoreMySQLModule)
 )]
 public class GatewayEntityFrameworkCoreModule : AbpModule
 {
@@ -28,8 +26,7 @@ public class GatewayEntityFrameworkCoreModule : AbpModule
              * See also BMSMigrationsDbContextFactory for EF Core tooling. */
             options.Configure<GatewayDbContext>(opts =>
             {
-                // opts.UseNpgsql();
-                opts.UseSqlServer();
+                opts.UseMySQL();
 #if DEBUG
                 opts.DbContextOptions.EnableSensitiveDataLogging();
 #endif

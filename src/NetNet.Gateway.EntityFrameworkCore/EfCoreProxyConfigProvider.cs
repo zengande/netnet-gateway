@@ -17,20 +17,20 @@ public class EfCoreProxyConfigProvider : IProxyConfigProvider, IDisposable
         _disposed = false;
         _store = store;
 
-        _subscription = ChangeToken.OnChange(_store.GetReloadToken, LoadConfig);
+        _subscription = ChangeToken.OnChange(_store.GetReloadToken, () => LoadConfig(false));
     }
 
     public IProxyConfig GetConfig()
     {
         if (_config is null)
         {
-            LoadConfig();
+            LoadConfig(true);
         }
 
         return _config!;
     }
 
-    private void LoadConfig()
+    private void LoadConfig(bool forceReload = false)
     {
         // Prevent overlapping updates, especially on startup.
         lock (LockObject)
@@ -38,7 +38,7 @@ public class EfCoreProxyConfigProvider : IProxyConfigProvider, IDisposable
             GatewayProxyConfig? config;
             try
             {
-                config = (_store.GetConfig() as GatewayProxyConfig)!;
+                config = (_store.GetConfig(forceReload) as GatewayProxyConfig)!;
             }
             catch (Exception ex)
             {
