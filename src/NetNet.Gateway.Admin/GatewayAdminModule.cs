@@ -30,14 +30,15 @@ public class GatewayAdminModule : AbpModule
     {
         var configuration = context.Services.GetConfiguration();
 
-        context.Services.AddRazorPages();
-        context.Services.AddServerSideBlazor();
-        context.Services.AddBootstrapBlazor();
+        Configure<AbpAspNetCoreMvcOptions>(opt =>
+        {
+            opt.ConventionalControllers.Create(typeof(GatewayApplicationModule).Assembly);
+        });
 
         context.Services
             .AddYarpDistributedRedis(config =>
             {
-                config.RedisConnectionString = configuration.GetValue<string>("Redis:Configuration");
+                config.RedisConnectionString = configuration.GetValue<string>("Redis:Configuration")!;
             })
             .AddYarpRedisDistributedEventDispatcher()
             .AddServerNode(YarpNodeType.Admin);
@@ -113,10 +114,6 @@ public class GatewayAdminModule : AbpModule
         app.UseAuthentication();
         app.UseAuthorization();
 
-        app.UseEndpoints(route =>
-        {
-            route.MapBlazorHub();
-            route.MapFallbackToPage("/_Host");
-        });
+        app.UseConfiguredEndpoints();
     }
 }

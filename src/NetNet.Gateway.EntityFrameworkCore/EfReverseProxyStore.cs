@@ -8,6 +8,7 @@ using NetNet.Gateway.AggregateModels.ServiceRouteAggregate;
 using System.Text.Json;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Timing;
+using Yarp.ReverseProxy.Configuration;
 
 namespace NetNet.Gateway;
 
