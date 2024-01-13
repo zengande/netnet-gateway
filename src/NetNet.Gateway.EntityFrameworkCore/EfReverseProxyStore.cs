@@ -35,9 +35,9 @@ public class EfReverseProxyStore : IReverseProxyStore, ISingletonDependency
         OnConfigChanged += ReloadConfig;
     }
 
-    public GatewayProxyConfig GetConfig(bool useCaching = true)
+    public IProxyConfig GetConfig(bool forceReload = false)
     {
-        var config = useCaching ? TryGetFromCache() : null;
+        GatewayProxyConfig? config = forceReload ? null : TryGetFromCache();
         if (config is null)
         {
             config = GetFromDataBase();

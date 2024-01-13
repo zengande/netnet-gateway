@@ -1,20 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
-        <TargetFramework>net7.0</TargetFramework>
+        <TargetFramework>net6.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-      <UserSecretsId>5680d283-54e1-4b8b-b7eb-61e3e969d366</UserSecretsId>
-      <LangVersion>default</LangVersion>
+      <UserSecretsId>bfb2502b-78b6-487d-bebc-20d9a472bfcb</UserSecretsId>
   </PropertyGroup>
 
     <ItemGroup>
       <PackageReference Include="AgileConfig.Client" Version="1.6.11" />
       <PackageReference Include="Serilog.AspNetCore" Version="6.1.0" />
-      <PackageReference Include="Volo.Abp.AspNetCore.Mvc" Version="7.0.2" />
-      <PackageReference Include="Volo.Abp.Autofac" Version="7.0.2" />
-      <PackageReference Include="Volo.Abp.Caching.StackExchangeRedis" Version="7.0.2" />
+      <PackageReference Include="Volo.Abp.AspNetCore.Mvc" Version="6.0.1" />
+      <PackageReference Include="Volo.Abp.Autofac" Version="6.0.1" />
+      <PackageReference Include="Volo.Abp.Caching.StackExchangeRedis" Version="6.0.1" />
     </ItemGroup>
 
     <ItemGroup>

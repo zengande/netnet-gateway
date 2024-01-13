@@ -6,8 +6,9 @@ using Volo.Abp.EventBus;
 
 namespace NetNet.Gateway.DomainEventHandlers;
 
-public class ServiceClusterOrRouteChangedDomainEventHandler
-    : ILocalEventHandler<ServiceClusterChangedDomainEvent>, ILocalEventHandler<ServiceRouteChangedDomainEvent>, ITransientDependency
+public class ServiceClusterOrRouteChangedDomainEventHandler : ITransientDependency,
+    ILocalEventHandler<ServiceClusterChangedDomainEvent>,
+    ILocalEventHandler<ServiceRouteChangedDomainEvent>
 {
     private readonly ILogger<ServiceClusterOrRouteChangedDomainEventHandler> _logger;
     private readonly IReverseProxyStore _store;

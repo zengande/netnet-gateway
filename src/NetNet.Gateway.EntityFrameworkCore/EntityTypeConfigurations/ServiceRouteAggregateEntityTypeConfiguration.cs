@@ -17,49 +17,58 @@ internal static class ServiceRouteAggregateEntityTypeConfiguration
 
     private static void ConfigureServiceRoute(EntityTypeBuilder<ServiceRoute> builder)
     {
-        builder.ToTable(GatewayEfConstant.TablePrefix + "ServiceRoutes")
+        builder.ToTable(GatewayEfConstant.TablePrefix + "routes")
             .HasComment("服务路由");
         builder.ConfigureByConvention();
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Id)
             .ValueGeneratedOnAdd()
-            .HasValueGenerator<SequentialGuidValueGenerator>();
+            .HasValueGenerator<SequentialGuidValueGenerator>()
+            .HasColumnName("id");
         builder.Property(x => x.Name)
             .HasMaxLength(200)
             .IsRequired()
+            .HasColumnName("name")
             .HasComment("路由名称");
         builder.Property(x => x.ServiceClusterId)
             .IsRequired()
+            .HasColumnName("service_cluster_id")
             .HasComment("服务id");
         builder.Property(x => x.AuthorizationPolicy)
             .IsRequired(false)
+            .HasColumnName("authorization_policy")
             .HasMaxLength(200)
             .HasComment("授权策略");
         builder.Property(x => x.CrosPolicy)
             .IsRequired(false)
+            .HasColumnName("cros_policy")
             .HasMaxLength(200)
             .HasComment("跨域策略");
         builder.Property(x => x.Order)
             .IsRequired(false)
+            .HasColumnName("order")
             .HasComment("排序");
         builder.OwnsMany(x => x.Transforms, transform =>
         {
-            transform.ToTable(GatewayEfConstant.TablePrefix + "ServiceRouteTransforms")
+            transform.ToTable(GatewayEfConstant.TablePrefix + "route_transforms")
                 .HasComment("服务路由请求转换配置");
-            transform.WithOwner().HasForeignKey("ServiceRouteId");
-            transform.Property<Guid>("Id")
+            transform.WithOwner().HasForeignKey("service_route_id");
+            transform.Property<Guid>("id")
                 .HasValueGenerator<SequentialGuidValueGenerator>()
                 .ValueGeneratedOnAdd();
-            transform.HasKey("Id");
+            transform.HasKey("id");
             transform.Property(x => x.GroupIndex)
                 .IsRequired()
+                .HasColumnName("group_index")
                 .HasComment("分组索引");
             transform.Property(x => x.Key)
                 .IsRequired()
+                .HasColumnName("key")
                 .HasMaxLength(200)
                 .HasComment("Key");
             transform.Property(x => x.Value)
                 .IsRequired()
+                .HasColumnName("value")
                 .HasMaxLength(500)
                 .HasComment("Value");
         });
