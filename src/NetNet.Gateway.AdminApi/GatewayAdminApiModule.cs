@@ -2,29 +2,26 @@
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using NetNet.Gateway.Admin.Configurations;
 using NetNet.Gateway.Distributed;
 using NetNet.Gateway.Distributed.Extensions;
 using NetNet.Gateway.Distributed.Models;
-using NetNet.Gateway.Swagger;
 using Volo.Abp;
 using Volo.Abp.AspNetCore.Mvc;
 using Volo.Abp.Autofac;
 using Volo.Abp.Caching.StackExchangeRedis;
 using Volo.Abp.Modularity;
 
-namespace NetNet.Gateway.Admin;
+namespace NetNet.Gateway.AdminApi;
 
 [DependsOn(
     typeof(AbpAspNetCoreMvcModule),
     typeof(AbpAutofacModule),
     typeof(AbpCachingStackExchangeRedisModule),
-    typeof(GatewaySwaggerModule),
     typeof(GatewayDistributedModule),
     typeof(GatewayEntityFrameworkCoreModule),
     typeof(GatewayApplicationModule)
 )]
-public class GatewayAdminModule : AbpModule
+public class GatewayAdminApiModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)
     {
@@ -43,13 +40,11 @@ public class GatewayAdminModule : AbpModule
             .AddYarpRedisDistributedEventDispatcher()
             .AddServerNode(YarpNodeType.Admin);
 
-        Configure<GatewayAdminConfig>(configuration.GetSection("Gateway:Admin"));
-
         context.Services
-            .AddSwaggerForYarpGen(options =>
+            .AddSwaggerGen(options =>
             {
-                options.SwaggerDoc("gateway", new OpenApiInfo { Title = "YaYa External Gateway", Version = "v1" });
-                options.DocInclusionPredicate((docName, description) => true);
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "NetNet Gateway AdminAPI", Version = "v1" });
+                options.DocInclusionPredicate((doc, description) => true);
                 options.CustomSchemaIds(type => type.FullName);
             });
 
@@ -100,13 +95,11 @@ public class GatewayAdminModule : AbpModule
 
         app.UseCookiePolicy(new CookiePolicyOptions { Secure = CookieSecurePolicy.Always });
 
-        // 添加内部服务的Swagger终点
-        app.UseSwaggerUIWithYarp(options =>
+        app.UseSwagger();
+        app.UseSwaggerUI(options =>
         {
-            options.DocumentTitle = "NetNet Gateway Admin";
-
-            // 网关自己的 swagger
-            options.SwaggerEndpoint("/gateway/swagger.json", "NetNet Gateway Admin");
+            options.DocumentTitle = "NetNet Gateway AdminAPI";
+            options.SwaggerEndpoint("/swagger/v1/swagger.json", "NetNet Gateway Admin");
         });
 
         app.UseRouting();

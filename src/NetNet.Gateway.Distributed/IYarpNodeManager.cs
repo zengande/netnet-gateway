@@ -1,5 +1,4 @@
-﻿using NetNet.Gateway.Distributed.Configurations;
-using NetNet.Gateway.Distributed.Models;
+﻿using NetNet.Gateway.Distributed.Models;
 
 namespace NetNet.Gateway.Distributed;
 

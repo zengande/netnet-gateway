@@ -2,7 +2,7 @@ using Serilog;
 using Serilog.Events;
 using System.Text;
 
-namespace NetNet.Gateway.Admin;
+namespace NetNet.Gateway.AdminApi;
 
 public class Program
 {
@@ -25,13 +25,11 @@ public class Program
             Log.Information("Starting web host.");
             var builder = WebApplication.CreateBuilder(args);
             builder.Host
-                .UseAgileConfig(e => Log.Logger.Debug($"configs {e.Action}"))
                 .AddAppSettingsSecretsJson()
                 .UseAutofac()
                 .UseSerilog();
-            await builder.AddApplicationAsync<GatewayAdminModule>();
+            await builder.AddApplicationAsync<GatewayAdminApiModule>();
             var app = builder.Build();
-            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
             await app.InitializeApplicationAsync();
             await app.RunAsync();
         }
@@ -41,7 +39,7 @@ public class Program
         }
         finally
         {
-            Log.CloseAndFlush();
+            await Log.CloseAndFlushAsync();
         }
     }
 }

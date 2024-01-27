@@ -13,9 +13,9 @@ namespace NetNet.Gateway.Ingress;
     typeof(AbpAspNetCoreMvcModule),
     typeof(AbpAutofacModule),
     typeof(AbpCachingStackExchangeRedisModule),
-    typeof(GatewayDistributedModule),
     typeof(GatewayEntityFrameworkCoreModule),
-    typeof(GatewayApplicationModule)
+    typeof(GatewayDistributedModule),
+    typeof(GatewayEntityFrameworkCoreModule)
 )]
 public class GatewayIngressModule : AbpModule
 {
@@ -26,7 +26,7 @@ public class GatewayIngressModule : AbpModule
         context.Services
             .AddYarpDistributedRedis(config =>
             {
-                config.RedisConnectionString = configuration.GetValue<string>("Redis:Configuration");
+                config.RedisConnectionString = configuration.GetValue<string>("Redis:Configuration")!;
             })
             .AddRedisEventSubscriber()
             .AddServerNode(YarpNodeType.Ingress);

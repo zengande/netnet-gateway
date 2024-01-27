@@ -4,21 +4,29 @@
         <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-      <UserSecretsId>bfb2502b-78b6-487d-bebc-20d9a472bfcb</UserSecretsId>
-      <LangVersion>default</LangVersion>
+      <UserSecretsId>28d2f441-4c8d-495f-91de-b2197aaf0914</UserSecretsId>
+      <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Serilog.AspNetCore" Version="8.0.0" />
+      <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="8.0.1" />
+      <PackageReference Include="Serilog.AspNetCore" Version="8.0.1" />
+      <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
       <PackageReference Include="Volo.Abp.AspNetCore.Mvc" Version="8.0.1" />
       <PackageReference Include="Volo.Abp.Autofac" Version="8.0.1" />
       <PackageReference Include="Volo.Abp.Caching.StackExchangeRedis" Version="8.0.1" />
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\NetNet.Gateway.Application\NetNet.Gateway.Application.csproj" />
       <ProjectReference Include="..\NetNet.Gateway.Distributed\NetNet.Gateway.Distributed.csproj" />
       <ProjectReference Include="..\NetNet.Gateway.EntityFrameworkCore\NetNet.Gateway.EntityFrameworkCore.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\..\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
     </ItemGroup>
 
 </Project>
