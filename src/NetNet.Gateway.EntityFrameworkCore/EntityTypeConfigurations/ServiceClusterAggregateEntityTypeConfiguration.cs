@@ -20,8 +20,7 @@ internal static class ServiceClusterAggregateEntityTypeConfiguration
 
     private static void ConfigureServiceCluster(EntityTypeBuilder<ServiceCluster> builder)
     {
-        builder.ToTable(GatewayEfConstant.TablePrefix + "service_clusters")
-            .HasComment("服务集群");
+        builder.ToTable(GatewayEfConstant.TablePrefix + "service_clusters", x => x.HasComment("服务集群"));
         builder.ConfigureByConvention();
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Id)
@@ -102,21 +101,21 @@ internal static class ServiceClusterAggregateEntityTypeConfiguration
         });
         builder.OwnsMany(x => x.Metadata, metadata =>
         {
-            metadata.ToTable(GatewayEfConstant.TablePrefix + "ServiceClusterMetadata")
+            metadata.ToTable(GatewayEfConstant.TablePrefix + "service_cluster_metadata")
                 .HasComment("服务元数据");
-            metadata.WithOwner().HasForeignKey("ServiceClusterId");
-            metadata.Property<Guid>("Id")
+            metadata.WithOwner().HasForeignKey("service_cluster_id");
+            metadata.Property<Guid>("id")
                 .HasValueGenerator<SequentialGuidValueGenerator>()
                 .ValueGeneratedOnAdd();
-            metadata.HasKey("Id");
+            metadata.HasKey("id");
             metadata.Property(x => x.Key)
                 .IsRequired()
                 .HasMaxLength(200)
-                .HasComment("Key");
+                .HasComment("key");
             metadata.Property(x => x.Value)
                 .IsRequired(false)
                 .HasMaxLength(500)
-                .HasComment("Value");
+                .HasComment("value");
         });
 
         builder.HasIndex(x => x.Name)

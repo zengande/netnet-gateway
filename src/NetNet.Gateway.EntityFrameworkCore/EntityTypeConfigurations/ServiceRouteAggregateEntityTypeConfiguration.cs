@@ -17,8 +17,7 @@ internal static class ServiceRouteAggregateEntityTypeConfiguration
 
     private static void ConfigureServiceRoute(EntityTypeBuilder<ServiceRoute> builder)
     {
-        builder.ToTable(GatewayEfConstant.TablePrefix + "routes")
-            .HasComment("服务路由");
+        builder.ToTable(GatewayEfConstant.TablePrefix + "routes", x => x.HasComment("服务路由"));
         builder.ConfigureByConvention();
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Id)

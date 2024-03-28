@@ -13,7 +13,6 @@ namespace NetNet.Gateway.Ingress;
     typeof(AbpAspNetCoreMvcModule),
     typeof(AbpAutofacModule),
     typeof(AbpCachingStackExchangeRedisModule),
-    typeof(GatewayEntityFrameworkCoreModule),
     typeof(GatewayDistributedModule),
     typeof(GatewayEntityFrameworkCoreModule)
 )]
